@@ -58,6 +58,7 @@
         <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
     </c:otherwise>
 </c:choose>
+
 <html>
     <head>
         <meta charset="utf-8" />

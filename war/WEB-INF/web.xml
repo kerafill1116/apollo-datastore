@@ -1,8 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5">
+
+    <filter>
+        <filter-name>LangFilter</filter-name>
+        <filter-class>apollo.datastore.LangFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LangFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>UtilsSessionCheckFilter</filter-name>
+        <filter-class>apollo.datastore.utils.SessionCheckFilter</filter-class>
+        <init-param>
+            <param-name>excludeURL1</param-name>
+            <param-value>/utils/sign-out</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>UtilsSessionCheckFilter</filter-name>
+        <url-pattern>/utils/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>apollo.datastore.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/auth/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>SignIn</servlet-name>
+        <servlet-class>apollo.datastore.utils.SignInServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignIn</servlet-name>
+        <url-pattern>/utils/sign-in</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SignOut</servlet-name>
+        <servlet-class>apollo.datastore.utils.SignOutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignOut</servlet-name>
+        <url-pattern>/utils/sign-out</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ResetPasswordRequest</servlet-name>
+        <servlet-class>apollo.datastore.utils.ResetPasswordRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordRequest</servlet-name>
+        <url-pattern>/utils/reset-password-request</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ResetPasswordRequestSendMailTask</servlet-name>
+        <servlet-class>apollo.datastore.utils.ResetPasswordRequestSendMailTask</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordRequestSendMailTask</servlet-name>
+        <url-pattern>/utils/reset-password-request-send-mail</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>ResetPasswordRequestSendMailTask</web-resource-name>
+            <url-pattern>/utils/reset-password-request-send-mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>apollo.datastore.utils.ResetPasswordServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/utils/reset-password</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ResetPasswordSendMailTask</servlet-name>
+        <servlet-class>apollo.datastore.utils.ResetPasswordSendMailTask</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordSendMailTask</servlet-name>
+        <url-pattern>/utils/reset-password-send-mail</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>ResetPasswordSendMailTask</web-resource-name>
+            <url-pattern>/utils/reset-password-send-mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <servlet>
+        <servlet-name>CheckUserIdAvailability</servlet-name>
+        <servlet-class>apollo.datastore.utils.CheckUserIdAvailabilityServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CheckUserIdAvailability</servlet-name>
+        <url-pattern>/utils/check-user-id</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterUserServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.RegisterUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterUserServlet</servlet-name>
+        <url-pattern>/utils/register-user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>RegisterUserSendMailTask</servlet-name>
+        <servlet-class>apollo.datastore.utils.RegisterUserSendMailTask</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegisterUserSendMailTask</servlet-name>
+        <url-pattern>/utils/register-user-send-mail</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>RegisterUserSendMailTask</web-resource-name>
+            <url-pattern>/utils/register-user-send-mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <servlet>
+        <servlet-name>ActivateUserServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.ActivateUserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ActivateUserServlet</servlet-name>
+        <url-pattern>/utils/activate-user</url-pattern>
+    </servlet-mapping>
+
 </web-app>

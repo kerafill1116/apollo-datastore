@@ -1,0 +1,95 @@
+body {
+    padding-top: 45px;
+}
+
+#top-navbar {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#check-availability-div {
+    margin-top: -10px;
+}
+
+.alert {
+    margin-bottom: 5px;
+}
+
+.alert-row {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.btn-default:focus {
+    background-color: #ffffff;
+}
+
+.btn-default:hover {
+    background-color: #ebebeb;
+}
+
+.btn-default:active,
+.btn-default.active {
+    background-color: #eaeaea;
+}
+
+.dropdown-menu {
+    padding: 2px 0px;
+    min-width: 0px;
+}
+
+.dropdown-menu li a {
+    padding: 8px 15px;
+}
+
+.page-header {
+    background-color: #563d7c;
+    color: #fff;
+    padding-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+
+label {
+    white-space: nowrap;
+}
+
+.popover-content {
+    font-size: 12px;
+    padding: 3px 7px;
+}
+
+.blink {
+    -webkit-animation-name: blinker;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+
+    -moz-animation-name: blinker;
+    -moz-animation-duration: 0.5s;
+    -moz-animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+
+    animation-name: blinker;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@-moz-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@-webkit-keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+
+@keyframes blinker {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}

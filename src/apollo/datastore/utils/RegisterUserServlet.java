@@ -1,14 +1,18 @@
 package apollo.datastore.utils;
 
+import apollo.datastore.AdminPermissions;
+import apollo.datastore.PermissionsFactory;
 import apollo.datastore.TimeZone;
 import apollo.datastore.User;
 import apollo.datastore.UserFactory;
+import apollo.datastore.UserPermissions;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -56,7 +60,7 @@ public class RegisterUserServlet extends HttpServlet {
         if(error == Error.NONE) {
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Queue queue = QueueFactory.getQueue(SEND_MAIL_TASK_QUEUE);
-            Transaction txn = datastore.beginTransaction();
+            Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
             User user = UserFactory.getByUserId(datastore, txn, userId);
             if(user != null)
                 error = Error.NOT_AVAILABLE_USER_ID;
@@ -66,6 +70,10 @@ public class RegisterUserServlet extends HttpServlet {
                     Key timeZoneKey = (timeZoneId == null || timeZoneId.length() == 0) ? null : KeyFactory.createKey(TimeZone.DatastoreProperties.KIND.getName(), timeZoneId);
                     user = new User(userId, password, emailAddress, timeZoneKey);
                     UserFactory.add(datastore, txn, user);
+                    AdminPermissions adminPermissions = new AdminPermissions(userId);
+                    PermissionsFactory.addAdminPermissions(datastore, txn, adminPermissions);
+                    UserPermissions userPermissions = new UserPermissions(userId);
+                    PermissionsFactory.addUserPermissions(datastore, txn, userPermissions);
                     queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), userId).param(HtmlVariable.PASSWORD.getName(), password));
                     txn.commit();
                 }

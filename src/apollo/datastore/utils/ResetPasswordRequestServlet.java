@@ -69,7 +69,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
         }
 
         if(error == Error.NONE)
-            resp.sendRedirect("/utils/reset-password-notice.jsp");
+            req.getRequestDispatcher("/utils/reset-password-notice.jsp").forward(req, resp);
         else {
             StringBuilder urlParams = new StringBuilder("/utils/reset-password.jsp?");
             urlParams.append(HtmlVariable.ERROR.getName());

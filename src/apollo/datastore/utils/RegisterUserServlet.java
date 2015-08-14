@@ -35,6 +35,13 @@ public class RegisterUserServlet extends HttpServlet {
     public final static String SEND_MAIL_TASK_URL = "/utils/register-user-send-mail";
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.getRequestDispatcher("/WEB-INF/utils/register-user.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -86,9 +93,9 @@ public class RegisterUserServlet extends HttpServlet {
         }
 
         if(error == Error.NONE)
-            resp.sendRedirect("/utils/register-user-thank-you.jsp");
+            req.getRequestDispatcher("/WEB-INF/utils/register-user-thank-you.jsp").forward(req, resp);
         else {
-            StringBuilder urlParams = new StringBuilder("/utils/register-user.jsp?");
+            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/register-user.jsp?");
             urlParams.append(HtmlVariable.ERROR.getName());
             urlParams.append("=");
             urlParams.append(String.valueOf(error));
@@ -110,7 +117,7 @@ public class RegisterUserServlet extends HttpServlet {
                 urlParams.append("=");
                 urlParams.append(timeZoneId);
             }
-            resp.sendRedirect(resp.encodeRedirectURL(urlParams.toString()));
+            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
         }
     }
 }

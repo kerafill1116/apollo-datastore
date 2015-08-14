@@ -108,7 +108,7 @@
 
                     <script type="text/javascript">
 $(document).ready(function() {
-    signInURL = '/utils/sign-in.jsp';
+    signInURL = '/utils/sign-in';
     $('#sign-in-link').attr('href', signInURL);
 
     // redirect to sign in page after 5 seconds

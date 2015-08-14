@@ -53,7 +53,7 @@ public class ResetPasswordSendMailTask extends HttpServlet {
                         MimeMessage msg = new MimeMessage(session);
                         msg.setFrom(new InternetAddress("kerafill1116@gmail.com", "Kera Fill"));
                         msg.addRecipient(Message.RecipientType.TO, new InternetAddress(user.getEmailAddress()));
-                        msg.setSubject(utilitiesMailBundle.getString("subject_reset_password_request"), "UTF-8");
+                        msg.setSubject(utilitiesMailBundle.getString("subject_reset_password"), "UTF-8");
 
                         StringBuilder sbText1 = new StringBuilder();
                         sbText1.append(utilitiesMailBundle.getString("message_reset_password"));
@@ -72,7 +72,7 @@ public class ResetPasswordSendMailTask extends HttpServlet {
                         sbText1.append("<br /><br />");
                         sbText1.append(utilitiesMailBundle.getString("click_link_reset_password"));
                         sbText1.append("<br />");
-                        URL signInURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/sign-in.jsp");
+                        URL signInURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/sign-in");
                         sbText1.append("<a href=\"");
                         sbText1.append(signInURL.toString());
                         sbText1.append("\">");

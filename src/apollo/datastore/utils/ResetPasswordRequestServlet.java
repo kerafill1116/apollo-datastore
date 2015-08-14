@@ -31,6 +31,13 @@ public class ResetPasswordRequestServlet extends HttpServlet {
     public final static String SEND_MAIL_TASK_URL = "/utils/reset-password-request-send-mail";
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.getRequestDispatcher("/WEB-INF/utils/reset-password.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -69,9 +76,9 @@ public class ResetPasswordRequestServlet extends HttpServlet {
         }
 
         if(error == Error.NONE)
-            req.getRequestDispatcher("/utils/reset-password-notice.jsp").forward(req, resp);
+            req.getRequestDispatcher("/WEB-INF/utils/reset-password-notice.jsp").forward(req, resp);
         else {
-            StringBuilder urlParams = new StringBuilder("/utils/reset-password.jsp?");
+            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/reset-password.jsp?");
             urlParams.append(HtmlVariable.ERROR.getName());
             urlParams.append("=");
             urlParams.append(error.toString());
@@ -81,7 +88,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
                 urlParams.append("=");
                 urlParams.append(userId);
             }
-            resp.sendRedirect(resp.encodeRedirectURL(urlParams.toString()));
+            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
         }
     }
 }

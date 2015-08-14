@@ -85,7 +85,7 @@ public class SignOutServlet extends HttpServlet {
                 txn.rollback();
         }
 
-        StringBuilder urlParams = new StringBuilder("/utils/sign-in.jsp?");
+        StringBuilder urlParams = new StringBuilder("/utils/sign-in?");
         urlParams.append(HtmlVariable.ERROR.getName());
         urlParams.append("=");
         urlParams.append(error.toString());

@@ -6,7 +6,6 @@ import apollo.datastore.utils.HtmlVariable;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
 
@@ -98,7 +97,7 @@ public class AuthFilter implements Filter {
 
         if(error == Error.NONE && causeOfDisconnect == CauseOfDisconnect.NONE && !fromSessionLog) {
             Key userKey = session.getUserKey();
-            request.setAttribute(AuthRequestAttribute.USER_KEY.getName(), KeyFactory.keyToString(userKey));
+            request.setAttribute(AuthRequestAttribute.USER_KEY.getName(), userKey);
 
             Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), sessionId);
             sessionIdCookie.setMaxAge(Cookies.MAX_AGE);
@@ -113,7 +112,7 @@ public class AuthFilter implements Filter {
             sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);
             response.addCookie(sessionIdCookie);
 
-            StringBuilder urlParams = new StringBuilder("/utils/sign-in.jsp?");
+            StringBuilder urlParams = new StringBuilder("/utils/sign-in?");
             urlParams.append(HtmlVariable.ERROR.getName());
             urlParams.append("=");
             urlParams.append(error.toString());

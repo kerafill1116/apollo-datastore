@@ -6,8 +6,8 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-8 col-sm-10">
-                        <a href="/utils/sign-in.jsp" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-in"></span><span class="hidden-xs"> <fmt:message key="sign_in" bundle="${topNavbar}" /></span></a>
-                        <a href="/utils/register-user.jsp" class="btn btn-default" role="button"><span class="glyphicon glyphicon-pencil"></span><span class="hidden-xs"> <fmt:message key="register" bundle="${topNavbar}" /></span></a>
+                        <a href="/utils/sign-in" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-in"></span><span class="hidden-xs"> <fmt:message key="sign_in" bundle="${topNavbar}" /></span></a>
+                        <a href="/utils/register-user" class="btn btn-default" role="button"><span class="glyphicon glyphicon-pencil"></span><span class="hidden-xs"> <fmt:message key="register" bundle="${topNavbar}" /></span></a>
                     </div>
                     <div class="col-xs-4 col-sm-2 text-right">
                         <div class="btn-group">

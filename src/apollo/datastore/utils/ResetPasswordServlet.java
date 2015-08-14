@@ -83,6 +83,6 @@ public class ResetPasswordServlet extends HttpServlet {
                 txn.rollback();
         }
 
-        resp.sendRedirect("/utils/reset-password-report.jsp?" + HtmlVariable.ERROR.getName() + "=" + error.toString());
+        req.getRequestDispatcher("/WEB-INF/utils/reset-password-report.jsp?" + HtmlVariable.ERROR.getName() + "=" + error.toString()).forward(req, resp);
     }
 }

@@ -73,8 +73,8 @@ $(document).ready(function() {
     userIdInput = $('#user-id');
     signInForm = $('#sign-in-form');
 
-    $('#reset-password-link').attr('href', 'reset-password.jsp');
-    $('#register-user-link').attr('href', 'register-user.jsp');
+    $('#reset-password-link').attr('href', '/utils/reset-password-request');
+    $('#register-user-link').attr('href', '/utils/register-user');
 
     $('#clear-btn').click(function () {
         signInFormValidator.resetForm();

@@ -29,6 +29,13 @@ import javax.servlet.http.HttpServletResponse;
 public class SignInServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        req.getRequestDispatcher("/WEB-INF/utils/sign-in.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -114,7 +121,7 @@ public class SignInServlet extends HttpServlet {
                                     resp.addCookie(userIdCookie);
                                 }
 
-                                resp.sendRedirect("/auth/index.jsp");
+                                resp.sendRedirect("/auth/");
                             }
                         }
                     }
@@ -128,7 +135,7 @@ public class SignInServlet extends HttpServlet {
         }
 
         if(error != Error.NONE) {
-            StringBuilder urlParams = new StringBuilder("/utils/sign-in.jsp?");
+            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/sign-in.jsp?");
             urlParams.append(HtmlVariable.ERROR.getName());
             urlParams.append("=");
             urlParams.append(error.toString());
@@ -138,7 +145,8 @@ public class SignInServlet extends HttpServlet {
                 urlParams.append("=");
                 urlParams.append(userId);
             }
-            resp.sendRedirect(resp.encodeRedirectURL(urlParams.toString()));
+            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
+
         }
     }
 }

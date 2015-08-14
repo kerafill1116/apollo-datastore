@@ -118,7 +118,7 @@ public class SessionCheckFilter implements Filter {
             sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);
             response.addCookie(sessionIdCookie);
 
-            response.sendRedirect("/auth/index.jsp");
+            response.sendRedirect("/auth/");
         }
         else {
             Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), "");

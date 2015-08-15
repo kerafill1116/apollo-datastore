@@ -292,9 +292,7 @@ $(document).ready(function() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row">
-                            <h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_register" bundle="${utilities}" /></h3>
-                        </div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_register" bundle="${utilities}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -305,14 +303,12 @@ $(document).ready(function() {
             <div class="row">
                 <div class="col-xs-12 col-sm-offset-2 col-sm-8">
 
-                <form name="register-form" method="post" action="/utils/register-user" class="form-horizontal" id="register-form" role="form">
+                    <form name="register-form" method="post" action="/utils/register-user" class="form-horizontal" id="register-form" role="form">
 
-                <fieldset>
+                    <fieldset>
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilities}" /></label>
-                        <div class="col-xs-12 col-sm-8">
-                            <input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" pattern="^[a-zA-Z][a-zA-Z0-9_]{4,31}$" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" />
-                        </div>
+                        <div class="col-xs-12 col-sm-8"><input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" pattern="^[a-zA-Z][a-zA-Z0-9_]{4,31}$" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" /></div>
                     </div>
 
                     <div id="check-availability-div" class="form-group">
@@ -331,16 +327,12 @@ $(document).ready(function() {
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="password"><fmt:message key="password_label" bundle="${utilities}" /></label>
-                        <div class="col-xs-12 col-sm-8">
-                            <input name="${passwordVariable.name}" type="password" class="form-control" id="password" maxlength="64" />
-                        </div>
+                        <div class="col-xs-12 col-sm-8"><input name="${passwordVariable.name}" type="password" class="form-control" id="password" maxlength="64" /></div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="email-address"><fmt:message key="email_address_label" bundle="${utilities}" /></label>
-                        <div class="col-xs-12 col-sm-8">
-                            <input name="${emailAddressVariable.name}" type="email" class="form-control" id="email-address" maxlength="256" required value="<c:out value='${emailAddressVariable.value}' />" />
-                        </div>
+                        <div class="col-xs-12 col-sm-8"><input name="${emailAddressVariable.name}" type="email" class="form-control" id="email-address" maxlength="256" required value="<c:out value='${emailAddressVariable.value}' />" /></div>
                     </div>
 
                     <div class="form-group">
@@ -399,9 +391,7 @@ $(document).ready(function() {
             <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
         </c:otherwise>
     </c:choose>
-                    <div class="row alert-row">
-                        <p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p>
-                    </div>
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
                     </fieldset>
 

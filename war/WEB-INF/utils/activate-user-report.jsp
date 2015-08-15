@@ -84,9 +84,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row">
-                            <h3 class="col-xs-12 col-sm-12">${pageHeader}</h3>
-                        </div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-12">${pageHeader}</h3></div>
                     </div>
                 </div>
             </div>

@@ -120,9 +120,7 @@ $(document).ready(function() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row">
-                            <h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_reset_password_request" bundle="${utilities}" /></h3>
-                        </div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_reset_password_request" bundle="${utilities}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -133,18 +131,14 @@ $(document).ready(function() {
             <div class="row">
                 <div class="col-xs-12 col-sm-offset-2 col-sm-8">
 
-                <form name="reset-password-form" method="post" action="/utils/reset-password-request" class="form-horizontal" id="reset-password-form" role="form">
+                    <form name="reset-password-form" method="post" action="/utils/reset-password-request" class="form-horizontal" id="reset-password-form" role="form">
 
-                <fieldset>
-                    <div class="row">
-                        <p class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="message_reset_password_request" bundle="${utilities}" /></p>
-                    </div>
+                    <fieldset>
+                    <div class="row"><p class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="message_reset_password_request" bundle="${utilities}" /></p></div>
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilities}" /></label>
-                        <div class="col-xs-12 col-sm-8">
-                            <input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" />
-                        </div>
+                        <div class="col-xs-12 col-sm-8"><input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" /></div>
                     </div>
 
                     <div class="form-group">
@@ -186,14 +180,10 @@ $(document).ready(function() {
             <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
         </c:otherwise>
     </c:choose>
-                    <div class="row alert-row">
-                        <p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p>
-                    </div>
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
-
-                </fieldset>
-
-                </form>
+                    </fieldset>
+                    </form>
                 </div>
             </div>
         </div>

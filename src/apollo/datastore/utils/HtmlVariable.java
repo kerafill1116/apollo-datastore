@@ -10,7 +10,11 @@ public enum HtmlVariable {
     EMAIL_ADDRESS("email-address"),
     TIME_ZONE_ID("time-zone-id"),
     AVAILABLE("available"),
-    ACTIVATION_KEY("activation-key");
+    ACTIVATION_KEY("activation-key"),
+    SESSION_TIMEOUT("session-timeout"),
+    MAX_SESSIONS("max-sessions"),
+    EXCLUSIVE_SESSION("exclusive-session"),
+    MAX_FAILED_ATTEMPTS("max-failed-attempts");
 
     private final String name;
 

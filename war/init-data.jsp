@@ -7,6 +7,8 @@
 <%@ page import="apollo.datastore.User" %>
 <%@ page import="apollo.datastore.UserFactory" %>
 <%@ page import="apollo.datastore.UserPermissions" %>
+<%@ page import="apollo.datastore.utils.admin.*" %>
+<%@ page import="apollo.datastore.utils.user.*" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory" %>
 <%@ page import="com.google.appengine.api.datastore.EntityNotFoundException"%>
@@ -74,7 +76,7 @@ try {
     if(UserFactory.getByUserId(datastore, txn, userId) == null) {
         User user = new User(userId, password, emailAddress, null);
         user.setActivated(true);
-        user.setSessionTimeout(300);
+        // user.setSessionTimeout(300);
         UserFactory.add(datastore, txn, user);
         out.print("added - ");
     }
@@ -82,6 +84,9 @@ try {
 
     if(PermissionsFactory.getAdminPermissionsByUserId(datastore, txn, userId) == null) {
         AdminPermissions adminPermissions = new AdminPermissions(userId);
+        adminPermissions.setUsersPermissions(UsersPermissions.ALL_PERMISSIONS.getCode());
+        adminPermissions.setSessionsPermissions(SessionsPermissions.ALL_PERMISSIONS.getCode());
+        adminPermissions.setSessionLogsPermissions(SessionLogsPermissions.ALL_PERMISSIONS.getCode());
         PermissionsFactory.addAdminPermissions(datastore, txn, adminPermissions);
         out.print("added - ");
     }
@@ -89,6 +94,9 @@ try {
 
     if(PermissionsFactory.getUserPermissionsByUserId(datastore, txn, userId) == null) {
         UserPermissions userPermissions = new UserPermissions(userId);
+        userPermissions.setUserPermissions(UserPermissions2.ALL_PERMISSIONS.getCode());
+        userPermissions.setSessionPermissions(SessionPermissions.ALL_PERMISSIONS.getCode());
+        userPermissions.setSessionLogPermissions(SessionLogPermissions.ALL_PERMISSIONS.getCode());
         PermissionsFactory.addUserPermissions(datastore, txn, userPermissions);
         out.print("added - ");
     }

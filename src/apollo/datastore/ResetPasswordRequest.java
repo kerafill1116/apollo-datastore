@@ -4,10 +4,12 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ResetPasswordRequest {
+@SuppressWarnings("serial")
+public class ResetPasswordRequest implements Serializable {
 
     public static final int DEFAULT_DAYS_OF_EXPIRATION = 3;
 

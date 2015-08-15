@@ -54,11 +54,11 @@ public class AuthFilter implements Filter {
                 break;
             }
 
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         if(sessionId == null || sessionId.length() == 0)
             error = Error.NON_EXISTENT_SESSION;
         else {
             // requires withXG for disconnectSession
-            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
             session = SessionFactory.getBySessionId(datastore, txn, sessionId);
             if(session != null) {
@@ -97,7 +97,16 @@ public class AuthFilter implements Filter {
 
         if(error == Error.NONE && causeOfDisconnect == CauseOfDisconnect.NONE && !fromSessionLog) {
             Key userKey = session.getUserKey();
-            request.setAttribute(AuthRequestAttribute.USER_KEY.getName(), userKey);
+            User user = UserFactory.getByKey(datastore, null, userKey);
+            if(user != null) {
+                request.setAttribute(AuthRequestAttribute.USER.getName(), new UserBean(user));
+                AdminPermissions adminPermissions = PermissionsFactory.getAdminPermissionsByUserId(datastore, null, user.getUserId());
+                if(adminPermissions != null)
+                    request.setAttribute(AuthRequestAttribute.ADMIN_PERMISSIONS.getName(), new AdminPermissionsBean(adminPermissions));
+                UserPermissions userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, null, user.getUserId());
+                if(userPermissions != null)
+                    request.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), new UserPermissionsBean(userPermissions));
+            }
 
             Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), sessionId);
             sessionIdCookie.setMaxAge(Cookies.MAX_AGE);

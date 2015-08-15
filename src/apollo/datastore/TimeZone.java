@@ -4,7 +4,10 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-public class TimeZone {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class TimeZone implements Serializable {
 
     private Entity entity;
 

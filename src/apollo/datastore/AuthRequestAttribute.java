@@ -1,9 +1,9 @@
 package apollo.datastore;
 
 public enum AuthRequestAttribute {
-    USER_KEY("user-key"),
-    ADMIN_PERMISSIONS("admin-permissions"),
-    USER_PERMISSIONS("user-permissions");
+    USER("user"),
+    ADMIN_PERMISSIONS("adminPermissions"),
+    USER_PERMISSIONS("userPermissions");
 
     private final String name;
 

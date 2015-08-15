@@ -5,7 +5,7 @@
         <nav id="top-navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xs-8 col-sm-10">
+                    <div class="col-xs-8 col-sm-10" id="permissions-top-navbar">
                         <a href="/utils/sign-out" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-xs"> <fmt:message key="sign_out" bundle="${topNavbar}" /></span></a>
                     </div>
                     <div class="col-xs-4 col-sm-2 text-right">

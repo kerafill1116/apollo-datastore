@@ -42,6 +42,7 @@ $(document).ready(function() {
     </head>
     <body>
 <%@ include file="/WEB-INF/jspf/auth/top-navbar.jspf" %>
+<%@ include file="/WEB-INF/jspf/auth/permissions-navbar.jspf" %>
 
 
     </body>

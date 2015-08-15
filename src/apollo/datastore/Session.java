@@ -4,9 +4,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Session {
+@SuppressWarnings("serial")
+public class Session implements Serializable {
 
     private Entity entity;
 

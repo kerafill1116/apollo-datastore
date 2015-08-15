@@ -6,9 +6,11 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+@SuppressWarnings("serial")
+public class User implements Serializable {
 
     public static final int DEFAULT_MAX_SESSIONS = 1;
     public static final boolean DEFAULT_EXCLUSIVE_SESSION = false;

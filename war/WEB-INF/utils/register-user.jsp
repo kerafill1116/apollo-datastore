@@ -123,8 +123,14 @@ $(document).ready(function() {
 	    unavailableBtn.addClass('hidden');
 	    errorBtn.addClass('hidden');
 	    checkBtn.removeClass('hidden');
-	    checkBtn.addClass('disabled');
-	    checkBtn.prop('disabled', true);
+        if(registerFormValidator.element('#user-id')) {
+            checkBtn.removeClass('disabled');
+            checkBtn.prop('disabled', false);
+        }
+        else {
+            checkBtn.addClass('disabled');
+            checkBtn.prop('disabled', true);
+        }
 	});
 
     function inputChangeHandler(event) {

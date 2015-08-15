@@ -55,6 +55,7 @@ $(document).ready(function() {
 
     $('#clear-btn').click(function () {
         resetPasswordFormValidator.resetForm();
+        resetPasswordForm[0].reset();
         userIdInput.popover('hide');
     });
 

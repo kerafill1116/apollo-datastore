@@ -78,6 +78,7 @@ $(document).ready(function() {
 
     $('#clear-btn').click(function () {
         signInFormValidator.resetForm();
+        signInForm[0].reset();
         userIdInput.popover('hide');
     });
 

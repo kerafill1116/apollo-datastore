@@ -115,15 +115,16 @@ $(document).ready(function() {
 	    });
 	});
 
-	$('#clear-btn').click(function () {
-	    registerFormValidator.resetForm();
-	    userIdInput.popover('hide');
-	    emailAddressInput.popover('hide');
-	    availableBtn.addClass('hidden');
-	    unavailableBtn.addClass('hidden');
-	    errorBtn.addClass('hidden');
-	    checkBtn.removeClass('hidden');
-        if(registerFormValidator.element('#user-id')) {
+    $('#clear-btn').click(function () {
+        registerFormValidator.resetForm();
+        registerForm[0].reset();
+        userIdInput.popover('hide');
+        emailAddressInput.popover('hide');
+        availableBtn.addClass('hidden');
+        unavailableBtn.addClass('hidden');
+        errorBtn.addClass('hidden');
+        checkBtn.removeClass('hidden');
+        if(registerFormValidator.element(userIdInput)) {
             checkBtn.removeClass('disabled');
             checkBtn.prop('disabled', false);
         }
@@ -131,7 +132,7 @@ $(document).ready(function() {
             checkBtn.addClass('disabled');
             checkBtn.prop('disabled', true);
         }
-	});
+    });
 
     function inputChangeHandler(event) {
         var validElement = false;
@@ -271,7 +272,7 @@ $(document).ready(function() {
 
     // for when back button is pressed on browser
     if(userIdInput.val().length)
-        if(registerFormValidator.element('#user-id')) {
+        if(registerFormValidator.element(userIdInput)) {
             checkBtn.removeClass('disabled');
             checkBtn.prop('disabled', false);
         }

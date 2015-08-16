@@ -24,7 +24,17 @@ public class AdminPermissionsBean implements Serializable {
         this.usersPermissions = adminPermissions.getUsersPermissions();
         this.sessionsPermissions = adminPermissions.getSessionsPermissions();
         this.sessionLogsPermissions = adminPermissions.getSessionLogsPermissions();
+        this.evaluatePermissions();
+    }
 
+    public AdminPermissionsBean() {
+        this.usersPermissions = UsersPermissions.DEFAULT_PERMISSIONS.getCode();
+        this.sessionsPermissions = SessionsPermissions.DEFAULT_PERMISSIONS.getCode();
+        this.sessionLogsPermissions = SessionLogsPermissions.DEFAULT_PERMISSIONS.getCode();
+        this.evaluatePermissions();
+    }
+
+    private void evaluatePermissions() {
         this.viewUsers = (this.usersPermissions & UsersPermissions.VIEW_USERS.getCode()) == UsersPermissions.VIEW_USERS.getCode();
         this.viewUsersPermissions = (this.usersPermissions & UsersPermissions.VIEW_USERS_PERMISSIONS.getCode()) == UsersPermissions.VIEW_USERS_PERMISSIONS.getCode();
 

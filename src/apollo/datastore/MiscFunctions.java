@@ -14,7 +14,7 @@ public class MiscFunctions {
     /**
      * Defines the date string format used by date conversion functions in this class
      */
-    public static final String DATE_FORMAT_STRING = "yyyy/MM/dd HH:mm:ss";
+    public static final String DATE_FORMAT_STRING = "yyyy/MM/dd HH:mm:ss Z";
     public static final String UTC_STRING = "UTC";
 
     public enum HashAlgorithms {
@@ -37,6 +37,11 @@ public class MiscFunctions {
         }
     }
 
+    /**
+     * Encrypts a String using the specified HashAlgorithm
+     * @param str String to be encrypted, null is converted to empty string ""
+     * @return hashAlgorithm hash algorithm to be used for the encryption
+     */
     public static String getEncryptedHash(String str, HashAlgorithms hashAlgorithm) {
         MessageDigest md = null;
         str = (str != null) ? str : "";

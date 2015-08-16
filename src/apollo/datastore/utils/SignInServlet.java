@@ -42,6 +42,7 @@ public class SignInServlet extends HttpServlet {
         Error error = Error.NONE;
 
         String userId = req.getParameter(HtmlVariable.USER_ID.getName());
+        String password = req.getParameter(HtmlVariable.PASSWORD.getName());
 
         if(userId == null || userId.length() == 0)
             error = Error.REQUIRED_USER_ID;
@@ -56,7 +57,6 @@ public class SignInServlet extends HttpServlet {
                 error = Error.NON_EXISTENT_USER;
             else
                 try {
-                    String password = req.getParameter(HtmlVariable.PASSWORD.getName());
                     if(user.getPassword().compareTo(MiscFunctions.getEncryptedHash(password, HashAlgorithms.SHA_256)) != 0) {
                         error = Error.INCORRECT_PASSWORD;
                         if(UserFactory.updateFailedAttempts(datastore, txn, user))
@@ -146,7 +146,6 @@ public class SignInServlet extends HttpServlet {
                 urlParams.append(userId);
             }
             req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
-
         }
     }
 }

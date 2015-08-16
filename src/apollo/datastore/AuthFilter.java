@@ -5,7 +5,6 @@ import apollo.datastore.utils.HtmlVariable;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
 
@@ -96,26 +95,26 @@ public class AuthFilter implements Filter {
         }
 
         if(error == Error.NONE && causeOfDisconnect == CauseOfDisconnect.NONE && !fromSessionLog) {
-            Key userKey = session.getUserKey();
-            User user = UserFactory.getByKey(datastore, null, userKey);
-            if(user != null) {
+            User user = UserFactory.getByKey(datastore, null, session.getUserKey());
+            if(user == null)
+                error = Error.NON_EXISTENT_USER;
+            else {
                 request.setAttribute(AuthRequestAttribute.USER.getName(), new UserBean(user));
                 AdminPermissions adminPermissions = PermissionsFactory.getAdminPermissionsByUserId(datastore, null, user.getUserId());
-                if(adminPermissions != null)
-                    request.setAttribute(AuthRequestAttribute.ADMIN_PERMISSIONS.getName(), new AdminPermissionsBean(adminPermissions));
+                request.setAttribute(AuthRequestAttribute.ADMIN_PERMISSIONS.getName(), (adminPermissions != null) ? new AdminPermissionsBean(adminPermissions) : new AdminPermissionsBean());
                 UserPermissions userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, null, user.getUserId());
-                if(userPermissions != null)
-                    request.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), new UserPermissionsBean(userPermissions));
+                request.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), (userPermissions != null) ? new UserPermissionsBean(userPermissions) : new UserPermissionsBean());
+
+                Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), sessionId);
+                sessionIdCookie.setMaxAge(Cookies.MAX_AGE);
+                sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);
+                response.addCookie(sessionIdCookie);
+
+                chain.doFilter(request, response);
             }
-
-            Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), sessionId);
-            sessionIdCookie.setMaxAge(Cookies.MAX_AGE);
-            sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);
-            response.addCookie(sessionIdCookie);
-
-            chain.doFilter(request, response);
         }
-        else {
+
+        if(error != Error.NONE) {
             Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), "");
             sessionIdCookie.setMaxAge(0);
             sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);

@@ -48,6 +48,7 @@ public class RegisterUserServlet extends HttpServlet {
         Error error = Error.NONE;
 
         String userId = req.getParameter(HtmlVariable.USER_ID.getName());
+        String password = req.getParameter(HtmlVariable.PASSWORD.getName());
         String emailAddress = req.getParameter(HtmlVariable.EMAIL_ADDRESS.getName());
         String timeZoneId = req.getParameter(HtmlVariable.TIME_ZONE_ID.getName());
 
@@ -73,7 +74,6 @@ public class RegisterUserServlet extends HttpServlet {
                 error = Error.NOT_AVAILABLE_USER_ID;
             else
                 try {
-                    String password = req.getParameter(HtmlVariable.PASSWORD.getName());
                     Key timeZoneKey = (timeZoneId == null || timeZoneId.length() == 0) ? null : KeyFactory.createKey(TimeZone.DatastoreProperties.KIND.getName(), timeZoneId);
                     user = new User(userId, password, emailAddress, timeZoneKey);
                     UserFactory.add(datastore, txn, user);
@@ -98,7 +98,7 @@ public class RegisterUserServlet extends HttpServlet {
             StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/register-user.jsp?");
             urlParams.append(HtmlVariable.ERROR.getName());
             urlParams.append("=");
-            urlParams.append(String.valueOf(error));
+            urlParams.append(error.toString());
             if(userId != null) {
                 urlParams.append("&");
                 urlParams.append(HtmlVariable.USER_ID.getName());

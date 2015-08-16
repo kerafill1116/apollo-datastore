@@ -38,7 +38,17 @@ public class UserPermissionsBean implements Serializable {
         this.userPermissions = userPermissions.getUserPermissions();
         this.sessionPermissions = userPermissions.getSessionPermissions();
         this.sessionLogPermissions = userPermissions.getSessionLogPermissions();
+        this.evaluatePermissions();
+    }
 
+    public UserPermissionsBean() {
+        this.userPermissions = UserPermissions2.DEFAULT_PERMISSIONS.getCode();
+        this.sessionPermissions = SessionPermissions.DEFAULT_PERMISSIONS.getCode();
+        this.sessionLogPermissions = SessionLogPermissions.DEFAULT_PERMISSIONS.getCode();
+        this.evaluatePermissions();
+    }
+
+    private void evaluatePermissions() {
         this.changePassword = (this.userPermissions & UserPermissions2.CHANGE_PASSWORD.getCode()) == UserPermissions2.CHANGE_PASSWORD.getCode();
         this.viewEmailAddress = (this.userPermissions & UserPermissions2.VIEW_EMAIL_ADDRESS.getCode()) == UserPermissions2.VIEW_EMAIL_ADDRESS.getCode();
         this.changeEmailAddress = (this.userPermissions & UserPermissions2.CHANGE_EMAIL_ADDRESS.getCode()) == UserPermissions2.CHANGE_EMAIL_ADDRESS.getCode();
@@ -52,7 +62,6 @@ public class UserPermissionsBean implements Serializable {
         this.changeExclusiveSession = (this.userPermissions & UserPermissions2.CHANGE_EXCLUSIVE_SESSION.getCode()) == UserPermissions2.CHANGE_EXCLUSIVE_SESSION.getCode();
         this.viewMaxFailedAttempts = (this.userPermissions & UserPermissions2.VIEW_MAX_FAILED_ATTEMPTS.getCode()) == UserPermissions2.VIEW_MAX_FAILED_ATTEMPTS.getCode();
         this.changeMaxFailedAttempts = (this.userPermissions & UserPermissions2.CHANGE_MAX_FAILED_ATTEMPTS.getCode()) == UserPermissions2.CHANGE_MAX_FAILED_ATTEMPTS.getCode();
-
         this.viewDisabledStatus = (this.userPermissions & UserPermissions2.VIEW_DISABLED_STATUS.getCode()) == UserPermissions2.VIEW_DISABLED_STATUS.getCode();
         this.viewActivatedStatus = (this.userPermissions & UserPermissions2.VIEW_ACTIVATED_STATUS.getCode()) == UserPermissions2.VIEW_ACTIVATED_STATUS.getCode();
 
@@ -144,5 +153,4 @@ public class UserPermissionsBean implements Serializable {
     public boolean getViewSessionLogPermissions() {
         return this.viewSessionLogPermissions;
     }
-
 }

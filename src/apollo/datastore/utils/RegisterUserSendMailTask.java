@@ -55,11 +55,9 @@ public class RegisterUserSendMailTask extends HttpServlet {
 
                         StringBuilder sbText1 = new StringBuilder();
                         sbText1.append(utilitiesMailBundle.getString("message_register"));
-                        sbText1.append("<br />");
                         sbText1.append("<h3>");
                         sbText1.append(utilitiesMailBundle.getString("user_account_details"));
                         sbText1.append("</h3>");
-                        sbText1.append("<br />");
                         sbText1.append(utilitiesMailBundle.getString("user_id_label"));
                         sbText1.append(" ");
                         sbText1.append(userId);
@@ -88,5 +86,4 @@ public class RegisterUserSendMailTask extends HttpServlet {
             }
         }
     }
-
 }

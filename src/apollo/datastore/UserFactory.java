@@ -1,5 +1,6 @@
 package apollo.datastore;
 
+import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.User.DatastoreProperties;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -10,6 +11,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 
 import java.util.ConcurrentModificationException;
+import java.util.Date;
 
 public class UserFactory {
 
@@ -32,12 +34,6 @@ public class UserFactory {
 
     public static User getByUserId(DatastoreService datastore, Transaction txn, String userId) {
         return getByKey(datastore, txn, KeyFactory.createKey(DatastoreProperties.KIND.getName(), userId));
-    }
-
-    public static void update(DatastoreService datastore, Transaction txn, User user)
-            throws ConcurrentModificationException {
-
-        datastore.put(txn, user.getEntity());
     }
 
     public static boolean updateFailedAttempts(DatastoreService datastore, Transaction txn, User user)
@@ -65,5 +61,14 @@ public class UserFactory {
 
         user.setActivated(true);
         datastore.put(txn, user.getEntity());
+    }
+
+    public static String resetPassword(DatastoreService datastore, Transaction txn, User user)
+            throws ConcurrentModificationException {
+
+        String newPassword = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(new Date()), HashAlgorithms.MD5).substring(0, 8);
+        user.setPassword(newPassword);
+        datastore.put(txn, user.getEntity());
+        return newPassword;
     }
 }

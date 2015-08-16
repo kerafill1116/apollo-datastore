@@ -1,7 +1,5 @@
 package apollo.datastore.utils;
 
-import apollo.datastore.MiscFunctions;
-import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.ResetPasswordRequest;
 import apollo.datastore.ResetPasswordRequestFactory;
 import apollo.datastore.User;
@@ -64,12 +62,8 @@ public class ResetPasswordServlet extends HttpServlet {
                         error = Error.DISABLED_USER;
                     else
                         try {
-                            String newPassword = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow), HashAlgorithms.MD5).substring(0, 8);
-                            user.setPassword(newPassword);
-                            resetPasswordRequest.setApproved(true);
-                            resetPasswordRequest.setDateApproved(dateNow);
-                            UserFactory.update(datastore, txn, user);
-                            ResetPasswordRequestFactory.update(datastore, txn, resetPasswordRequest);
+                            String newPassword = UserFactory.resetPassword(datastore, txn, user);
+                            ResetPasswordRequestFactory.approve(datastore, txn, resetPasswordRequest, dateNow);
                             queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.PASSWORD.getName(), newPassword));
                             txn.commit();
                         }

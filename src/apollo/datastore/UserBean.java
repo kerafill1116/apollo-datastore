@@ -39,12 +39,34 @@ public class UserBean implements Serializable {
         this.dateCreated = user.getDateCreated();
     }
 
+    public UserBean() {
+        this.key = null;
+        this.userId = "";
+        this.emailAddress = "";
+        this.activated = false;
+        this.disabled = false;
+        this.maxSessions = User.DEFAULT_MAX_SESSIONS;
+        this.exclusiveSession = User.DEFAULT_EXCLUSIVE_SESSION;
+        this.sessionTimeout = User.DEFAULT_SESSION_TIMEOUT;
+        this.failedAttempts = 0;
+        this.maxFailedAttempts = User.DEFAULT_MAX_FAILED_ATTEMPTS;
+        this.useTimeSlots = User.DEFAULT_USE_TIME_SLOTS;
+        this.timeZoneKey = null;
+        this.dateCreated = new Date();
+    }
+
     public Key getKey() {
         return this.key;
     }
 
     public String getKeyString() {
-        return KeyFactory.keyToString(this.key);
+        String keyString = null;
+        try {
+            keyString = KeyFactory.keyToString(this.key);
+        }
+        catch(IllegalArgumentException e) { }
+        catch(NullPointerException e) { }
+        return keyString;
     }
 
     public String getUserId() {

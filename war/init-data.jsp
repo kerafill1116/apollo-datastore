@@ -76,7 +76,7 @@ try {
     if(UserFactory.getByUserId(datastore, txn, userId) == null) {
         User user = new User(userId, password, emailAddress, null);
         user.setActivated(true);
-        // user.setSessionTimeout(300);
+        // user.setSessionTimeout(30);
         UserFactory.add(datastore, txn, user);
         out.print("added - ");
     }

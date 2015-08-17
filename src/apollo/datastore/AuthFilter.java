@@ -114,7 +114,7 @@ public class AuthFilter implements Filter {
             }
         }
 
-        if(error != Error.NONE) {
+        if(error != Error.NONE || causeOfDisconnect != CauseOfDisconnect.NONE || fromSessionLog) {
             Cookie sessionIdCookie = new Cookie(Cookies.SESSION_ID.getName(), "");
             sessionIdCookie.setMaxAge(0);
             sessionIdCookie.setPath(Cookies.SESSION_ID_PATH);

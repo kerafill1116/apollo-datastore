@@ -48,6 +48,14 @@
 </c:if>
 
         <script type="text/javascript">
+function inputChangeHandler(event) {
+    var validElement = false;
+    if(event.target.value.length)
+        validElement = resetPasswordFormValidator.element(event.target);
+    else
+        $(event.target).popover('hide');
+}
+
 $(document).ready(function() {
     // globals
     userIdInput = $('#user-id');
@@ -58,14 +66,6 @@ $(document).ready(function() {
         resetPasswordForm[0].reset();
         userIdInput.popover('hide');
     });
-
-    function inputChangeHandler(event) {
-        var validElement = false;
-        if(event.target.value.length)
-            validElement = resetPasswordFormValidator.element(event.target);
-        else
-            $(event.target).popover('hide');
-    }
 
     resetPasswordFormValidator = resetPasswordForm.validate({
         errorPlacement: function(error, element) { },

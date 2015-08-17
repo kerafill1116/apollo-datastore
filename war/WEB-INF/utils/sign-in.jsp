@@ -68,6 +68,13 @@
 </c:if>
 
         <script type="text/javascript">
+function inputChangeHandler(event) {
+    if(event.target.value.length)
+        signInFormValidator.element(event.target);
+    else
+        $(event.target).popover('hide');
+}
+
 $(document).ready(function() {
     // globals
     userIdInput = $('#user-id');
@@ -81,13 +88,6 @@ $(document).ready(function() {
         signInForm[0].reset();
         userIdInput.popover('hide');
     });
-
-    function inputChangeHandler(event) {
-        if(event.target.value.length)
-            signInFormValidator.element(event.target);
-        else
-            $(event.target).popover('hide');
-    }
 
     signInFormValidator = signInForm.validate({
         errorPlacement: function(error, element) { },

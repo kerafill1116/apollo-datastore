@@ -67,8 +67,38 @@
 </c:if>
 
         <script type="text/javascript">
+function inputChangeHandler(event) {
+    var validElement = false;
+    if(event.target.value.length)
+        validElement = registerFormValidator.element(event.target);
+    else
+        $(event.target).popover('hide');
+    if(event.target.id == 'user-id') {
+        availableBtn.addClass('hidden');
+        unavailableBtn.addClass('hidden');
+        errorBtn.addClass('hidden');
+        checkBtn.removeClass('hidden');
+        if(validElement) {
+            checkBtn.removeClass('disabled');
+            checkBtn.prop('disabled', false);
+        }
+        else {
+            checkBtn.addClass('disabled');
+            checkBtn.prop('disabled', true);
+        }
+    }
+}
+
+function blinkUnavailableBtn() {
+    userIdInput.trigger('focus');
+    unavailableBtn.addClass('blink');
+    setTimeout(function() {
+        unavailableBtn.removeClass('blink');
+    }, 1500);
+}
+
 $(document).ready(function() {
-	// globals
+    // globals
     userIdInput = $('#user-id');
     emailAddressInput = $('#email-address');
     registerForm = $('#register-form');
@@ -76,44 +106,44 @@ $(document).ready(function() {
     // hack for select placeholder
     document.getElementById('time-zone-id').options[0].disabled = true;
 
-	checkBtn = $('#check-availability-btn');
-	availableBtn = $('#available-btn');
-	unavailableBtn = $('#unavailable-btn');
-	errorBtn = $('#error-btn');
+    checkBtn = $('#check-availability-btn');
+    availableBtn = $('#available-btn');
+    unavailableBtn = $('#unavailable-btn');
+    errorBtn = $('#error-btn');
 
-	checkBtn.click(function () {
-	    checkBtn.button('loading');
-	    $.ajax({
-	        cache: false,
-	        dataType: 'json',
-	        url: '/utils/check-user-id',
-	        data: '${userIdVariable.name}=' + userIdInput.val()
-	    }).done(function(data, textStatus, jqXHR) {
-	        checkBtn.button('reset');
-	        checkBtn.addClass('hidden');
-	        if(data['${checkUserIdErrorVariable.name}']) {
-	            availableBtn.addClass('hidden');
-	            unavailableBtn.addClass('hidden');
-	            errorBtn.removeClass('hidden');
-	        }
-	        else if(data['${checkUserIdAvailableVariable.name}']) {
-	            availableBtn.removeClass('hidden');
-	            unavailableBtn.addClass('hidden');
-	            errorBtn.addClass('hidden');
-	        }
-	        else {
-	            availableBtn.addClass('hidden');
-	            unavailableBtn.removeClass('hidden');
-	            errorBtn.addClass('hidden');
-	        }
-	    }).fail(function(jqXHR, textStatus, errorThrown) {
-	        checkBtn.button('reset');
-	        checkBtn.addClass('hidden');
-	        availableBtn.addClass('hidden');
-	        unavailableBtn.addClass('hidden');
-	        errorBtn.removeClass('hidden');
-	    });
-	});
+    checkBtn.click(function () {
+        checkBtn.button('loading');
+        $.ajax({
+            cache: false,
+            dataType: 'json',
+            url: '/utils/check-user-id',
+            data: '${userIdVariable.name}=' + userIdInput.val()
+        }).done(function(data, textStatus, jqXHR) {
+            checkBtn.button('reset');
+            checkBtn.addClass('hidden');
+            if(data['${checkUserIdErrorVariable.name}']) {
+                availableBtn.addClass('hidden');
+                unavailableBtn.addClass('hidden');
+                errorBtn.removeClass('hidden');
+            }
+            else if(data['${checkUserIdAvailableVariable.name}']) {
+                availableBtn.removeClass('hidden');
+                unavailableBtn.addClass('hidden');
+                errorBtn.addClass('hidden');
+            }
+            else {
+                availableBtn.addClass('hidden');
+                unavailableBtn.removeClass('hidden');
+                errorBtn.addClass('hidden');
+            }
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+            checkBtn.button('reset');
+            checkBtn.addClass('hidden');
+            availableBtn.addClass('hidden');
+            unavailableBtn.addClass('hidden');
+            errorBtn.removeClass('hidden');
+        });
+    });
 
     $('#clear-btn').click(function () {
         registerFormValidator.resetForm();
@@ -133,36 +163,6 @@ $(document).ready(function() {
             checkBtn.prop('disabled', true);
         }
     });
-
-    function inputChangeHandler(event) {
-        var validElement = false;
-        if(event.target.value.length)
-            validElement = registerFormValidator.element(event.target);
-        else
-            $(event.target).popover('hide');
-        if(event.target.id == 'user-id') {
-            availableBtn.addClass('hidden');
-            unavailableBtn.addClass('hidden');
-            errorBtn.addClass('hidden');
-            checkBtn.removeClass('hidden');
-            if(validElement) {
-                checkBtn.removeClass('disabled');
-                checkBtn.prop('disabled', false);
-            }
-            else {
-                checkBtn.addClass('disabled');
-                checkBtn.prop('disabled', true);
-            }
-        }
-    }
-
-    function blinkUnavailableBtn() {
-        userIdInput.trigger('focus');
-        unavailableBtn.addClass('blink');
-        setTimeout(function() {
-        	unavailableBtn.removeClass('blink');
-        }, 1500);
-    }
 
     registerFormValidator = registerForm.validate({
         errorPlacement: function(error, element) { },
@@ -283,7 +283,7 @@ $(document).ready(function() {
 <c:if test="${errorVariable.value ne errorNone.code}">
     registerForm.valid();
 </c:if>
-    });
+});
         </script>
     </head>
     <body>

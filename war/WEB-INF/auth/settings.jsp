@@ -36,25 +36,110 @@
 </c:if>
 
         <script type="text/javascript">
+function inputChangeHandler(event) {
+<c:if test="${userPermissions.viewMaxSessions and userPermissions.changeMaxSessions and userPermissions.viewExclusiveSession and userPermissions.changeExclusiveSession}">
+    if(event.target.id == 'max-sessions') {
+        var disabled = (event.target.value != 1);
+        exclusiveSessionCheckbox.prop('disabled', disabled);
+        if(disabled)
+            exclusiveSessionCheckbox.parent().addClass('text-muted').parent().addClass('disabled');
+        else
+            exclusiveSessionCheckbox.parent().removeClass('text-muted').parent().removeClass('disabled');
+    }
+</c:if>
+    settingsFormValidator.element(event.target);
+}
+
 $(document).ready(function() {
     // globals
-
-
+    settingsForm = $('#settings-form');
+<c:if test="${userPermissions.viewTimeZone and userPermissions.changeTimeZone}">
+    // hack for select placeholder
+    document.getElementById('time-zone-id').options[0].disabled = true;
+</c:if>
+    settingsFormValidator = settingsForm.validate({
+        errorPlacement: function(error, element) { },
+        highlight: function(element, errorClass, validClass) { },
+        unhighlight: function(element, errorClass, validClass) {
+            var popoverElement = $(element);
+            if(element.id == 'session-timeout')
+                popoverElement = popoverElement.parent();
+            popoverElement.popover('hide');
+        },
+        showErrors: function(errorMap, errorList) {
+            for(var i = 0; i < errorList.length; i++) {
+                var errorListItem = $(errorList[i].element);
+                if(errorList[i].element.id == 'session-timeout')
+                    errorListItem = errorListItem.parent();
+                var popoverDiv = errorListItem.next();
+                if(!popoverDiv.length) {
+                    errorListItem.popover('show');
+                    popoverDiv = errorListItem.next();
+                    popoverDiv.css({'left': '0px', 'margin-left': '10px', 'margin-right': '10px'});
+                    popoverDiv.children('.popover-content').addClass('text-danger');
+                }
+                popoverDiv.children('.popover-content').html(errorList[i].message);
+            }
+            this.defaultShowErrors();
+        },
+        rules: {
 <c:if test="${userPermissions.viewSessionTimeout and userPermissions.changeSessionTimeout}">
     <jsp:useBean id="sessionTimeoutVariable" class="apollo.datastore.utils.HtmlVariableBean" />
     <jsp:setProperty name="sessionTimeoutVariable" property="varName" value="SESSION_TIMEOUT" />
+            '${sessionTimeoutVariable.name}': {
+                min: 0,
+                number: true,
+                required: true
+            }
+    <c:set var="addComma" value="," />
 </c:if>
-
 <c:if test="${userPermissions.viewMaxSessions and userPermissions.changeMaxSessions}">
     <jsp:useBean id="maxSessionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
     <jsp:setProperty name="maxSessionsVariable" property="varName" value="MAX_SESSIONS" />
+            ${addComma}'${maxSessionsVariable.name}': {
+                min: 0,
+                number: true,
+                required: true
+            }
+    <c:set var="addComma" value="," />
 </c:if>
-
 <c:if test="${userPermissions.viewMaxFailedAttempts and userPermissions.changeMaxFailedAttempts}">
     <jsp:useBean id="maxFailedAttemptsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
     <jsp:setProperty name="maxFailedAttemptsVariable" property="varName" value="MAX_FAILED_ATTEMPTS" />
+            ${addComma}'${maxFailedAttemptsVariable.name}': {
+                min: -1,
+                number: true,
+                required: true
+            }
 </c:if>
+        },
+        onkeyup: function(element, event) { },
+        onfocusout: function(element, event) {
+            settingsFormValidator.element(element);
+        }
+    });
 
+<c:if test="${userPermissions.viewSessionTimeout and userPermissions.changeSessionTimeout}">
+    sessionTimeoutInput = $('#session-timeout');
+    $('#session-timeout-input-group').popover({placement: 'bottom', trigger: 'manual', content: '_'});
+    sessionTimeoutInput.on('input', inputChangeHandler);
+    sessionTimeoutInput.data('oldVal', sessionTimeoutInput.val());
+</c:if>
+<c:if test="${userPermissions.viewMaxSessions and userPermissions.changeMaxSessions}">
+    maxSessionsInput = $('#max-sessions');
+    maxSessionsInput.popover({placement: 'bottom', trigger: 'manual', content: '_'});
+    maxSessionsInput.on('input', inputChangeHandler);
+    maxSessionsInput.data('oldVal', maxSessionsInput.val());
+</c:if>
+<c:if test="${userPermissions.viewMaxFailedAttempts and userPermissions.changeMaxFailedAttempts}">
+    maxFailedAttemptsInput = $('#max-failed-attempts');
+    maxFailedAttemptsInput.popover({placement: 'bottom', trigger: 'manual', content: '_'});
+    maxFailedAttemptsInput.on('input', inputChangeHandler);
+    maxFailedAttemptsInput.data('oldVal', maxFailedAttemptsInput.val());
+</c:if>
+<c:if test="${userPermissions.viewExclusiveSession and userPermissions.changeExclusiveSession}">
+    exclusiveSessionCheckbox = $('#exclusive-session');
+</c:if>
 });
         </script>
     </head>
@@ -184,7 +269,7 @@ $(document).ready(function() {
                                 <div class="col-xs-12 col-sm-8">
     <c:choose>
         <c:when test="${userPermissions.changeMaxFailedAttempts}">
-                                    <input name="${maxFailedAttemptsVariable.name}" type="number" min="-1" class="form-control" id="maxFailedAttempts" required value="<c:out value='${user.maxFailedAttempts}' />" />
+                                    <input name="${maxFailedAttemptsVariable.name}" type="number" min="-1" class="form-control" id="max-failed-attempts" required value="<c:out value='${user.maxFailedAttempts}' />" />
         </c:when>
         <c:otherwise>
                                     <p id="max-failed-attempts" class="form-control-static">${user.maxFailedAttempts}</p>

@@ -71,4 +71,10 @@ public class UserFactory {
         datastore.put(txn, user.getEntity());
         return newPassword;
     }
+
+    public static void update(DatastoreService datastore, Transaction txn, User user)
+            throws ConcurrentModificationException {
+
+        datastore.put(txn, user.getEntity());
+    }
 }

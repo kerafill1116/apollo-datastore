@@ -10,6 +10,9 @@
 <fmt:setBundle basename="apollo.datastore.i18n.SettingsBundle" var="settings" />
 <fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZones" />
 
+<jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
+
 <html>
     <head>
         <meta charset="utf-8" />
@@ -48,6 +51,44 @@ function inputChangeHandler(event) {
     }
 </c:if>
     settingsFormValidator.element(event.target);
+}
+
+function updateSetting(element) {
+    var inputElement = $(element);
+    var isCheckbox = (element.type == 'checkbox');
+    if(!isCheckbox && (inputElement.data('oldVal') == inputElement.val()))
+        return;
+
+    updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settings}" />');
+    updateSettingModalContentDiv.removeClass('text-danger');
+    updateSettingModalContentDiv.removeClass('text-success');
+    updateSettingModal.modal('show');
+
+    var elementValue = element.value;
+    if(isCheckbox && !element.checked)
+        elementValue = '0';
+    $.ajax({
+        cache: false,
+        dataType: 'json',
+        url: '/auth/settings',
+        data: element.name + '=' + elementValue
+    }).done(function(data, textStatus, jqXHR) {
+        if(!data['${errorVariable.name}']) {
+            updateSettingModalContentDiv.html('<fmt:message key="updated" bundle="${settings}" />');
+            updateSettingModalContentDiv.addClass('text-success');
+            if(!isCheckbox)
+                inputElement.data('oldVal', elementValue);
+        }
+        else {
+            updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
+            updateSettingModalContentDiv.addClass('text-danger');
+        }
+        setTimeout(function() { updateSettingModal.modal('hide'); }, 500);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
+        updateSettingModalContentDiv.addClass('text-danger');
+        setTimeout(function() { updateSettingModal.modal('hide'); }, 500);
+    });
 }
 
 $(document).ready(function() {
@@ -115,7 +156,8 @@ $(document).ready(function() {
         },
         onkeyup: function(element, event) { },
         onfocusout: function(element, event) {
-            settingsFormValidator.element(element);
+            if(element.id != 'time-zone-id' && element.id != 'exclusive-session' && settingsFormValidator.element(element))
+                updateSetting(element);
         }
     });
 
@@ -140,6 +182,14 @@ $(document).ready(function() {
 <c:if test="${userPermissions.viewExclusiveSession and userPermissions.changeExclusiveSession}">
     exclusiveSessionCheckbox = $('#exclusive-session');
 </c:if>
+
+    updateSettingModal = $('#update-setting-modal');
+    updateSettingModal.modal({
+        backdrop: 'static',
+        keyboard: false,
+        show: false
+    });
+    updateSettingModalContentDiv = $('#update-setting-modal-content-div');
 });
         </script>
     </head>
@@ -154,6 +204,12 @@ $(document).ready(function() {
                         <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_settings" bundle="${settings}" /></h3></div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="update-setting-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" id="update-setting-modal-content-div"></div>
             </div>
         </div>
 
@@ -179,7 +235,7 @@ $(document).ready(function() {
         <c:when test="${userPermissions.changeTimeZone}">
             <jsp:useBean id="timeZoneIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
             <jsp:setProperty name="timeZoneIdVariable" property="varName" value="TIME_ZONE_ID" />
-                            <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id">
+                            <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id" onchange="javascript: updateSetting(this)">
                                 <option value=""><fmt:message key="time_zone_choose_option" bundle="${settings}" /></option>
             <c:forEach var="timeZone" items="${jf:timeZonesArray()}" varStatus="loopCounter" >
                                 <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneId ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZones}" /></option>
@@ -247,7 +303,7 @@ $(document).ready(function() {
                 <jsp:useBean id="exclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
                 <jsp:setProperty name="exclusiveSessionVariable" property="varName" value="EXCLUSIVE_SESSION" />
                                 <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
+                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} onchange="javascript: updateSetting(this)" /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
                                 </div>
             </c:when>
             <c:otherwise>

@@ -93,3 +93,7 @@ label {
     50% { opacity: 0.0; }
     100% { opacity: 1.0; }
 }
+
+#update-setting-modal-content-div {
+    padding-left: 5px;
+}

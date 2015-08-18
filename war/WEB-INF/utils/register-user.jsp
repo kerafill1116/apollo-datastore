@@ -61,7 +61,7 @@
 
 <c:if test="${langCookie.value ne jf:defaultLanguage()}">
         <!-- Link messages file for localized validation. -->
-        <script type="text/javascript" src="/js/messages_${langCookie.value}.js"></script>
+        <script type="text/javascript" src="/js/messages_${langCookie.value}.min.js"></script>
         <!-- localization for misc script above -->
         <script type="text/javascript" src="/js/scripts-messages_${langCookie.value}.js"></script>
 </c:if>

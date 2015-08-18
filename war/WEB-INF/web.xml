@@ -169,13 +169,23 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserSettingsServlet</servlet-name>
+        <servlet-name>SettingsServlet</servlet-name>
         <servlet-class>apollo.datastore.utils.user.SettingsServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>UserSettingsServlet</servlet-name>
+        <servlet-name>SettingsServlet</servlet-name>
         <url-pattern>/auth/settings</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.user.ChangePasswordServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ChangePasswordServlet</servlet-name>
+        <url-pattern>/auth/change-password</url-pattern>
     </servlet-mapping>
 
 </web-app>

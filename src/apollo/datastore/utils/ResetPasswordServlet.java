@@ -34,7 +34,7 @@ public class ResetPasswordServlet extends HttpServlet {
 
         Error error = Error.NONE;
 
-        String requestId = req.getParameter(HtmlVariable.RESET_PASSWORD_REQUEST_ID.getName());
+        String requestId = req.getParameter(HtmlVariable.REQUEST_ID.getName());
 
         if(requestId == null || requestId.length() == 0)
             error = Error.REQUIRED_REQUEST_ID;

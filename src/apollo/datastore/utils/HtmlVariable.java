@@ -10,10 +10,11 @@ public enum HtmlVariable {
     EXCLUSIVE_SESSION("exclusive-session"),
     MAX_FAILED_ATTEMPTS("max-failed-attempts"),
     MAX_SESSIONS("max-sessions"),
+    NEW_EMAIL_ADDRESS("new-email-address"),
     NEW_PASSWORD("new-password"),
     PASSWORD("password"),
     REMEMBER_ME("remember-me"),
-    RESET_PASSWORD_REQUEST_ID("request-id"),
+    REQUEST_ID("request-id"),
     SESSION_TIMEOUT("session-timeout"),
     TIME_ZONE_ID("time-zone-id"),
     USER_ID("user-id");

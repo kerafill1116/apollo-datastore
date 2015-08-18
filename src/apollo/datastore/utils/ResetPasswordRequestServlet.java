@@ -64,7 +64,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
                     String requestId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + userId, HashAlgorithms.MD5);
                     ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(requestId, user.getKey(), dateNow);
                     ResetPasswordRequestFactory.add(datastore, txn, resetPasswordRequest);
-                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.RESET_PASSWORD_REQUEST_ID.getName(), requestId));
+                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.REQUEST_ID.getName(), requestId));
                     txn.commit();
                 }
                 catch(ConcurrentModificationException e) {

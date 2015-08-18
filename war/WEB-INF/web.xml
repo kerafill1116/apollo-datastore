@@ -188,4 +188,14 @@
         <url-pattern>/auth/change-password</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ChangeEmailAddressServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.user.ChangeEmailAddressServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ChangeEmailAddressServlet</servlet-name>
+        <url-pattern>/auth/change-email-address</url-pattern>
+    </servlet-mapping>
+
 </web-app>

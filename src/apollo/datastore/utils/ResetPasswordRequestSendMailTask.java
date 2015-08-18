@@ -37,7 +37,7 @@ public class ResetPasswordRequestSendMailTask extends HttpServlet {
         String queueName = req.getHeader("X-AppEngine-QueueName");
         if(queueName != null && queueName.compareTo(ResetPasswordRequestServlet.SEND_MAIL_TASK_QUEUE) == 0) {
 
-            String requestId = req.getParameter(HtmlVariable.RESET_PASSWORD_REQUEST_ID.getName());
+            String requestId = req.getParameter(HtmlVariable.REQUEST_ID.getName());
             if(requestId != null && requestId.length() != 0) {
                 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
                 ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByRequestId(datastore, null, requestId);
@@ -71,7 +71,7 @@ public class ResetPasswordRequestSendMailTask extends HttpServlet {
                                 sbText1.append("<br /><br />");
                                 sbText1.append(utilitiesMailBundle.getString("click_link_reset_password_request"));
                                 sbText1.append("<br />");
-                                URL resetPasswordURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/reset-password?" + HtmlVariable.RESET_PASSWORD_REQUEST_ID.getName() + "=" + requestId);
+                                URL resetPasswordURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/reset-password?" + HtmlVariable.REQUEST_ID.getName() + "=" + requestId);
                                 sbText1.append("<a href=\"");
                                 sbText1.append(resetPasswordURL.toString());
                                 sbText1.append("\">");

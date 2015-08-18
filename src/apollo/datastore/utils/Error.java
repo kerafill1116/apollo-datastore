@@ -47,8 +47,9 @@ public enum Error {
     INVALID_SESSION_TIMEOUT(31),
     INVALID_MAX_SESSIONS(32),
     INVALID_MAX_FAILED_ATTEMPTS(33),
+    ERROR_IN_CHANGE_PASSWORD(34),
 
-    INVALID_ERROR(34);
+    INVALID_ERROR(35);
 
     private static final Error[] errorValues = Error.values();
 

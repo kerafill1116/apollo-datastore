@@ -40,7 +40,7 @@ public class SettingsServlet extends HttpServlet {
         Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
         User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
 
-        String paramValue;
+        String paramValue = null;
         if((paramValue = req.getParameter(HtmlVariable.TIME_ZONE_ID.getName())) != null) {
             updateSetting = true;
             if(userPermissionsBean.getViewTimeZone() && userPermissionsBean.getChangeTimeZone()) {

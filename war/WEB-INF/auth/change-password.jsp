@@ -10,8 +10,6 @@
 <fmt:setBundle basename="apollo.datastore.i18n.ChangePasswordBundle" var="changePassword" />
 <fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZones" />
 
-<jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
-<jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
 <jsp:useBean id="currentPasswordVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="currentPasswordVariable" property="varName" value="CURRENT_PASSWORD" />
 <jsp:useBean id="newPasswordVariable" class="apollo.datastore.utils.HtmlVariableBean" />
@@ -138,7 +136,32 @@ $(document).ready(function() {
                             <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${changePassword}' />" />
                         </div>
                     </div>
-
+<jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
+<c:if test="${not empty param[errorVariable.name]}">
+    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
+    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
+    <jsp:useBean id="errorNone" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorNone" property="constant" value="NONE" />
+    <jsp:useBean id="errorIncorrectPassword" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorIncorrectPassword" property="constant" value="INCORRECT_PASSWORD" />
+    <jsp:useBean id="errorInChangePassword" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorInChangePassword" property="constant" value="ERROR_IN_CHANGE_PASSWORD" />
+    <c:choose>
+        <c:when test="${errorVariable.value eq errorNone.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-warning"><fmt:message key="message_password_changed" bundle="${changePassword}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorIncorrectPassword.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_incorrect_password" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorInChangePassword.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_in_change_password" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:otherwise>
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_invalid" bundle="${errorMessages}" /></p></div>
+        </c:otherwise>
+    </c:choose>
+</c:if>
                     </fieldset>
                     </form>
                 </div>

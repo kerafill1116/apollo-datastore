@@ -3,7 +3,8 @@ package apollo.datastore;
 public enum AuthRequestAttribute {
     USER("user"),
     ADMIN_PERMISSIONS("adminPermissions"),
-    USER_PERMISSIONS("userPermissions");
+    USER_PERMISSIONS("userPermissions"),
+    CHANGE_EMAIL_ADDRESS_REQUEST("changeEmailAddressRequest");
 
     private final String name;
 

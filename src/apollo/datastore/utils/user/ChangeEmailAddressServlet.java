@@ -2,6 +2,7 @@ package apollo.datastore.utils.user;
 
 import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.ChangeEmailAddressRequest;
+import apollo.datastore.ChangeEmailAddressRequestBean;
 import apollo.datastore.ChangeEmailAddressRequestFactory;
 import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
@@ -97,12 +98,23 @@ public class ChangeEmailAddressServlet extends HttpServlet {
                     }
 
                 // add request bean to auth attributes for jsp display
+                req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
             }
 
             if(error != Error.NONE && txn.isActive())
                 txn.rollback();
 
-            req.getRequestDispatcher("/WEB-INF/auth/change-email-address.jsp?" + HtmlVariable.ERROR.getName() + "=" + error.toString()).forward(req, resp);
+            StringBuilder urlParams = new StringBuilder("/WEB-INF/auth/change-email-address.jsp?");
+            urlParams.append(HtmlVariable.ERROR.getName());
+            urlParams.append("=");
+            urlParams.append(error.toString());
+            if(newEmailAddress != null) {
+                urlParams.append("&");
+                urlParams.append(HtmlVariable.NEW_EMAIL_ADDRESS.getName());
+                urlParams.append("=");
+                urlParams.append(newEmailAddress);
+            }
+            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
         }
         else
             resp.sendRedirect("/auth/settings");

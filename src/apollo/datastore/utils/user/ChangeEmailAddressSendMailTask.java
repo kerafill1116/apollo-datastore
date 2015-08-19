@@ -69,7 +69,7 @@ public class ChangeEmailAddressSendMailTask extends HttpServlet {
                         sbText1.append("<br /><br />");
                         sbText1.append(changeEmailAddressMailBundle.getString("click_link_change_email_address"));
                         sbText1.append("<br />");
-                        URL verifyEmailAddressURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/verify-email-address?" + HtmlVariable.USER_ID.getName() + "=" + userId + "&" + HtmlVariable.REQUEST_ID.getName() + "=" + requestId);
+                        URL verifyEmailAddressURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/auth/change-email-address?" + HtmlVariable.REQUEST_ID.getName() + "=" + requestId);
                         sbText1.append("<a href=\"");
                         sbText1.append(verifyEmailAddressURL.toString());
                         sbText1.append("\">");

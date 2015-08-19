@@ -185,9 +185,25 @@ $(document).ready(function() {
     <jsp:setProperty name="errorNone" property="constant" value="NONE" />
     <jsp:useBean id="errorIncorrectPassword" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorIncorrectPassword" property="constant" value="INCORRECT_PASSWORD" />
+    <jsp:useBean id="errorRequiredEmailAddress" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorRequiredEmailAddress" property="constant" value="REQUIRED_EMAIL_ADDRESS" />
+    <jsp:useBean id="errorInvalidEmailAddress" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorInvalidEmailAddress" property="constant" value="INVALID_EMAIL_ADDRESS" />
+    <jsp:useBean id="errorAlreadyExistsRequest" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorAlreadyExistsRequest" property="constant" value="ALREADY_EXISTS_REQUEST" />
+    <jsp:useBean id="errorNonExistentRequest" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorNonExistentRequest" property="constant" value="NON_EXISTENT_REQUEST" />
+    <jsp:useBean id="errorInChangeEmailAddress" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorInChangeEmailAddress" property="constant" value="ERROR_IN_CHANGE_EMAIL_ADDRESS" />
     <c:choose>
         <c:when test="${errorVariable.value eq errorNone.code}" >
             <c:choose>
+                <c:when test="${not empty cancel}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_cancel_change_email_address" bundle="${changeEmailAddress}" /></p></div>
+                </c:when>
+                <c:when test="${not empty resend}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_resent_verification_email" bundle="${changeEmailAddress}" /></p></div>
+                </c:when>
                 <c:when test="${not empty changeEmailAddressRequest}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_verify_email_address" bundle="${changeEmailAddress}" /></p></div>
                 </c:when>
@@ -197,6 +213,21 @@ $(document).ready(function() {
         </c:when>
         <c:when test="${errorVariable.value eq errorIncorrectPassword.code}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_incorrect_password" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorRequiredEmailAddress.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_required_email_address" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorInvalidEmailAddress.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_invalid_email_address" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorAlreadyExistsRequest.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_already_exists_request" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorNonExistentRequest.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_non_existent_request" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorInChangeEmailAddress.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_in_change_email_address" bundle="${errorMessages}" /></p></div>
         </c:when>
         <c:otherwise>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_invalid" bundle="${errorMessages}" /></p></div>

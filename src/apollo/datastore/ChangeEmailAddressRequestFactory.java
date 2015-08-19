@@ -33,4 +33,10 @@ public class ChangeEmailAddressRequestFactory {
     public static ChangeEmailAddressRequest getByUserId(DatastoreService datastore, Transaction txn, String userId) {
         return getByKey(datastore, txn, KeyFactory.createKey(DatastoreProperties.KIND.getName(), userId));
     }
+
+    public static void remove(DatastoreService datastore, Transaction txn, ChangeEmailAddressRequest changeEmailAddressRequest)
+            throws ConcurrentModificationException {
+
+        datastore.delete(txn, changeEmailAddressRequest.getKey());
+    }
 }

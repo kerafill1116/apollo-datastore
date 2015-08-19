@@ -46,11 +46,46 @@ public class ChangeEmailAddressServlet extends HttpServlet {
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
         if(userPermissionsBean.getViewEmailAddress() && userPermissionsBean.getChangeEmailAddress()) {
+            Error error = Error.NONE;
             UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-            ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
-            if(changeEmailAddressRequest != null)
-                req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
+            if(req.getParameter(HtmlVariable.CANCEL.getName()) != null) {
+                Transaction txn = datastore.beginTransaction();
+                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, txn, userBean.getUserId());
+                if(changeEmailAddressRequest == null)
+                    error = Error.NON_EXISTENT_REQUEST;
+                else
+                    try {
+                        ChangeEmailAddressRequestFactory.remove(datastore, txn, changeEmailAddressRequest);
+                        txn.commit();
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_CHANGE_EMAIL_ADDRESS;
+                    }
+
+                if(error != Error.NONE && txn.isActive())
+                    txn.rollback();
+
+                req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+                req.setAttribute(HtmlVariable.CANCEL.getName(), true);
+            }
+            else if(req.getParameter(HtmlVariable.RESEND.getName()) != null) {
+                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
+                if(changeEmailAddressRequest == null)
+                    error = Error.NON_EXISTENT_REQUEST;
+                else {
+                    Queue queue = QueueFactory.getQueue(SEND_MAIL_TASK_QUEUE);
+                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), userBean.getUserId()).param(HtmlVariable.REQUEST_ID.getName(), changeEmailAddressRequest.getRequestId()).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
+                    req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
+                }
+                req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+                req.setAttribute(HtmlVariable.RESEND.getName(), true);
+            }
+            else {
+                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
+                if(changeEmailAddressRequest != null)
+                    req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
+            }
 
             req.getRequestDispatcher("/WEB-INF/auth/change-email-address.jsp").forward(req, resp);
         }
@@ -74,8 +109,9 @@ public class ChangeEmailAddressServlet extends HttpServlet {
             Queue queue = QueueFactory.getQueue(SEND_MAIL_TASK_QUEUE);
             Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
             User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
-
-            if(user.getPassword().compareTo(MiscFunctions.getEncryptedHash(currentPassword, HashAlgorithms.SHA_256)) != 0)
+            if(user == null)
+                error = Error.NON_EXISTENT_USER;
+            else if(user.getPassword().compareTo(MiscFunctions.getEncryptedHash(currentPassword, HashAlgorithms.SHA_256)) != 0)
                 error = Error.INCORRECT_PASSWORD;
             else if(newEmailAddress == null || newEmailAddress.length() == 0)
                 error = Error.REQUIRED_EMAIL_ADDRESS;

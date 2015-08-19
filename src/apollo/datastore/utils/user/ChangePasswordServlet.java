@@ -52,8 +52,9 @@ public class ChangePasswordServlet extends HttpServlet {
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Transaction txn = datastore.beginTransaction();
             User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
-
-            if(user.getPassword().compareTo(MiscFunctions.getEncryptedHash(currentPassword, HashAlgorithms.SHA_256)) != 0)
+            if(user == null)
+                error = Error.NON_EXISTENT_USER;
+            else if(user.getPassword().compareTo(MiscFunctions.getEncryptedHash(currentPassword, HashAlgorithms.SHA_256)) != 0)
                 error = Error.INCORRECT_PASSWORD;
             else
                 try {

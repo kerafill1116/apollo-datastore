@@ -1,6 +1,7 @@
 package apollo.datastore.utils;
 
 import apollo.datastore.AdminPermissions;
+import apollo.datastore.Cookies;
 import apollo.datastore.PermissionsFactory;
 import apollo.datastore.TimeZone;
 import apollo.datastore.User;
@@ -31,8 +32,8 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class RegisterUserServlet extends HttpServlet {
 
-    public final static String SEND_MAIL_TASK_QUEUE = "utilsQueue";
-    public final static String SEND_MAIL_TASK_URL = "/utils/register-user-send-mail";
+    public final static String SEND_MAIL_TASK_QUEUE = "sendMailQueue";
+    public final static String SEND_MAIL_TASK_URL = "/tasks/register-user-send-mail";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -81,7 +82,7 @@ public class RegisterUserServlet extends HttpServlet {
                     PermissionsFactory.addAdminPermissions(datastore, txn, adminPermissions);
                     UserPermissions userPermissions = new UserPermissions(userId);
                     PermissionsFactory.addUserPermissions(datastore, txn, userPermissions);
-                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), userId).param(HtmlVariable.PASSWORD.getName(), password));
+                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), userId).param(HtmlVariable.PASSWORD.getName(), password).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
                     txn.commit();
                 }
                 catch(ConcurrentModificationException e) {

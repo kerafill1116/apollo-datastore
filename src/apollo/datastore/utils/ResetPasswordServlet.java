@@ -1,5 +1,6 @@
 package apollo.datastore.utils;
 
+import apollo.datastore.Cookies;
 import apollo.datastore.ResetPasswordRequest;
 import apollo.datastore.ResetPasswordRequestFactory;
 import apollo.datastore.User;
@@ -25,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class ResetPasswordServlet extends HttpServlet {
 
-    public final static String SEND_MAIL_TASK_QUEUE = "utilsQueue";
-    public final static String SEND_MAIL_TASK_URL = "/utils/reset-password-send-mail";
+    public final static String SEND_MAIL_TASK_QUEUE = "sendMailQueue";
+    public final static String SEND_MAIL_TASK_URL = "/tasks/reset-password-send-mail";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -64,7 +65,7 @@ public class ResetPasswordServlet extends HttpServlet {
                         try {
                             String newPassword = UserFactory.resetPassword(datastore, txn, user);
                             ResetPasswordRequestFactory.approve(datastore, txn, resetPasswordRequest, dateNow);
-                            queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.PASSWORD.getName(), newPassword));
+                            queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.PASSWORD.getName(), newPassword).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
                             txn.commit();
                         }
                         catch(ConcurrentModificationException e) {

@@ -48,7 +48,7 @@ public class ResetPasswordRequestSendMailTask extends HttpServlet {
                         User user = UserFactory.getByKey(datastore, null, resetPasswordRequest.getUserKey());
                         if(user != null)
                             try {
-                                Locale locale = new Locale((String)req.getAttribute(Cookies.LANG.getName()));
+                                Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                                 // get i18n ResourceBundle
                                 ResourceBundle utilitiesMailBundle = ResourceBundle.getBundle("apollo.datastore.i18n.UtilitiesMailBundle", locale);
 

@@ -8,11 +8,4 @@
         <max-concurrent-requests>10</max-concurrent-requests>
     </queue>
 
-    <queue>
-        <name>utilsQueue</name>
-        <rate>5/s</rate>
-        <bucket-size>5</bucket-size>
-        <max-concurrent-requests>10</max-concurrent-requests>
-    </queue>
-
 </queue-entries>

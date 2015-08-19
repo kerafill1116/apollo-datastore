@@ -30,6 +30,12 @@ public class LangFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
+        // exclude certain urls from init param
+        if(request.getServletPath().startsWith("/tasks/")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         boolean languageSet = false;
         String language = Locale.DEFAULT_LANGUAGE;
 

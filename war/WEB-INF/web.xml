@@ -69,13 +69,13 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPasswordRequestSendMailTask</servlet-name>
-        <url-pattern>/utils/reset-password-request-send-mail</url-pattern>
+        <url-pattern>/tasks/reset-password-request-send-mail</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>ResetPasswordRequestSendMailTask</web-resource-name>
-            <url-pattern>/utils/reset-password-request-send-mail</url-pattern>
+            <url-pattern>/tasks/reset-password-request-send-mail</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -97,13 +97,13 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ResetPasswordSendMailTask</servlet-name>
-        <url-pattern>/utils/reset-password-send-mail</url-pattern>
+        <url-pattern>/tasks/reset-password-send-mail</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>ResetPasswordSendMailTask</web-resource-name>
-            <url-pattern>/utils/reset-password-send-mail</url-pattern>
+            <url-pattern>/tasks/reset-password-send-mail</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>
@@ -134,13 +134,13 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterUserSendMailTask</servlet-name>
-        <url-pattern>/utils/register-user-send-mail</url-pattern>
+        <url-pattern>/tasks/register-user-send-mail</url-pattern>
     </servlet-mapping>
 
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>RegisterUserSendMailTask</web-resource-name>
-            <url-pattern>/utils/register-user-send-mail</url-pattern>
+            <url-pattern>/tasks/register-user-send-mail</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>admin</role-name>

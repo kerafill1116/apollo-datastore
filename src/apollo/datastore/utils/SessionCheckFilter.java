@@ -51,9 +51,9 @@ public class SessionCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         // exclude certain urls from init param
-        String servletPath = request.getServletPath();
+        String requestUri = request.getRequestURI();
         for(String URL : this.excludeURLs)
-            if(servletPath.compareToIgnoreCase(URL) == 0) {
+            if(requestUri.startsWith(URL)) {
                 chain.doFilter(request, response);
                 return;
             }

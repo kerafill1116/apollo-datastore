@@ -42,7 +42,7 @@ public class ChangeEmailAddressSendMailTask extends HttpServlet {
                 ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userId);
                 if(changeEmailAddressRequest != null && changeEmailAddressRequest.getRequestId().compareTo(requestId) == 0)
                     try {
-                        Locale locale = new Locale((String)req.getAttribute(Cookies.LANG.getName()));
+                        Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                         // get i18n ResourceBundle
                         ResourceBundle changeEmailAddressMailBundle = ResourceBundle.getBundle("apollo.datastore.i18n.ChangeEmailAddressMailBundle", locale);
 

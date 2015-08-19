@@ -1,5 +1,6 @@
 package apollo.datastore.utils;
 
+import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.ResetPasswordRequest;
@@ -27,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class ResetPasswordRequestServlet extends HttpServlet {
 
-    public final static String SEND_MAIL_TASK_QUEUE = "utilsQueue";
-    public final static String SEND_MAIL_TASK_URL = "/utils/reset-password-request-send-mail";
+    public final static String SEND_MAIL_TASK_QUEUE = "sendMailQueue";
+    public final static String SEND_MAIL_TASK_URL = "/tasks/reset-password-request-send-mail";
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -64,7 +65,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
                     String requestId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + userId, HashAlgorithms.MD5);
                     ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(requestId, user.getKey(), dateNow);
                     ResetPasswordRequestFactory.add(datastore, txn, resetPasswordRequest);
-                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.REQUEST_ID.getName(), requestId));
+                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.REQUEST_ID.getName(), requestId).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
                     txn.commit();
                 }
                 catch(ConcurrentModificationException e) {

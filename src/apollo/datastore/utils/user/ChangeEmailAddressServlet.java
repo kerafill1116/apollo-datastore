@@ -3,6 +3,7 @@ package apollo.datastore.utils.user;
 import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.ChangeEmailAddressRequest;
 import apollo.datastore.ChangeEmailAddressRequestFactory;
+import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.User;
 import apollo.datastore.UserBean;
@@ -88,7 +89,7 @@ public class ChangeEmailAddressServlet extends HttpServlet {
                         String requestId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + user.getUserId(), HashAlgorithms.MD5);
                         changeEmailAddressRequest = new ChangeEmailAddressRequest(requestId, user.getKey(), newEmailAddress, dateNow);
                         ChangeEmailAddressRequestFactory.add(datastore, txn, changeEmailAddressRequest);
-                        queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.REQUEST_ID.getName(), requestId));
+                        queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.REQUEST_ID.getName(), requestId).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
                         txn.commit();
                     }
                     catch(ConcurrentModificationException e) {

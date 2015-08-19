@@ -41,7 +41,7 @@ public class RegisterUserSendMailTask extends HttpServlet {
                 User user = UserFactory.getByUserId(datastore, null, userId);
                 if(user != null)
                     try {
-                        Locale locale = new Locale((String)req.getAttribute(Cookies.LANG.getName()));
+                        Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                         // get i18n ResourceBundle
                         ResourceBundle utilitiesMailBundle = ResourceBundle.getBundle("apollo.datastore.i18n.UtilitiesMailBundle", locale);
 

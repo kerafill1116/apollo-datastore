@@ -48,7 +48,7 @@ $(document).ready(function() {
     // globals
     currentPasswordInput = $('#current-password');
     newEmailAddressInput = $('#new-email-address');
-    changeEmailAddressForm = $('#change-email-address');
+    changeEmailAddressForm = $('#change-email-address-form');
 
     changeEmailAddressFormValidator = changeEmailAddressForm.validate({
         errorPlacement: function(error, element) { },

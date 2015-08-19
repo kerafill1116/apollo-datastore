@@ -49,7 +49,11 @@ public enum Error {
     INVALID_MAX_FAILED_ATTEMPTS(33),
     ERROR_IN_CHANGE_PASSWORD(34),
 
-    INVALID_ERROR(35);
+    ALREADY_EXISTS_REQUEST(35),
+    ERROR_IN_CHANGE_EMAIL_ADDRESS(36),
+
+
+    INVALID_ERROR(37);
 
     private static final Error[] errorValues = Error.values();
 

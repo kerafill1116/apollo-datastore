@@ -198,4 +198,23 @@
         <url-pattern>/auth/change-email-address</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>ChangeEmailAddressSendMailTask</servlet-name>
+        <servlet-class>apollo.datastore.utils.user.ChangeEmailAddressSendMailTask</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangeEmailAddressSendMailTask</servlet-name>
+        <url-pattern>/tasks/change-email-address-send-mail</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>ChangeEmailAddressSendMailTask</web-resource-name>
+            <url-pattern>/tasks/change-email-address-send-mail</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
 </web-app>

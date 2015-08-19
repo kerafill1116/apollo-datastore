@@ -32,6 +32,14 @@ public class SignInServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
+        String error = req.getParameter(HtmlVariable.ERROR.getName());
+        String causeOfDisconnect = req.getParameter(HtmlVariable.CAUSE_OF_DISCONNECT.getName());
+
+        if(error != null)
+            req.setAttribute(HtmlVariable.ERROR.getName(), error);
+        if(causeOfDisconnect != null)
+            req.setAttribute(HtmlVariable.CAUSE_OF_DISCONNECT.getName(), causeOfDisconnect);
+
         req.getRequestDispatcher("/WEB-INF/utils/sign-in.jsp").forward(req, resp);
     }
 
@@ -135,17 +143,9 @@ public class SignInServlet extends HttpServlet {
         }
 
         if(error != Error.NONE) {
-            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/sign-in.jsp?");
-            urlParams.append(HtmlVariable.ERROR.getName());
-            urlParams.append("=");
-            urlParams.append(error.toString());
-            if(userId != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.USER_ID.getName());
-                urlParams.append("=");
-                urlParams.append(userId);
-            }
-            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
+            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+            req.setAttribute(HtmlVariable.USER_ID.getName(), userId);
+            req.getRequestDispatcher("/WEB-INF/utils/sign-in.jsp").forward(req, resp);
         }
     }
 }

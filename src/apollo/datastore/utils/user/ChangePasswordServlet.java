@@ -68,7 +68,8 @@ public class ChangePasswordServlet extends HttpServlet {
             if(error != Error.NONE && txn.isActive())
                 txn.rollback();
 
-            req.getRequestDispatcher("/WEB-INF/auth/change-password.jsp?" + HtmlVariable.ERROR.getName() + "=" + error.toString()).forward(req, resp);
+            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+            req.getRequestDispatcher("/WEB-INF/auth/change-password.jsp").forward(req, resp);
         }
         else
             resp.sendRedirect("/auth/settings");

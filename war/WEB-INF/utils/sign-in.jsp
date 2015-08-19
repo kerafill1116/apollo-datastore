@@ -33,12 +33,12 @@
 
 <jsp:useBean id="causeOfDisconnectVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="causeOfDisconnectVariable" property="varName" value="CAUSE_OF_DISCONNECT" />
-<c:if test="${not empty param[errorVariable.name]}">
-    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
-    <jsp:setProperty name="causeOfDisconnectVariable" property="value" value="${param[causeOfDisconnectVariable.name]}" />
+<c:if test="${not empty requestScope[errorVariable.name]}">
+    <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
+    <jsp:setProperty name="causeOfDisconnectVariable" property="value" value="${requestScope[causeOfDisconnectVariable.name]}" />
 </c:if>
-<c:if test="${not empty param[userIdVariable.name]}">
-    <jsp:setProperty name="userIdVariable" property="value" value="${param[userIdVariable.name]}" />
+<c:if test="${not empty requestScope[userIdVariable.name]}">
+    <jsp:setProperty name="userIdVariable" property="value" value="${requestScope[userIdVariable.name]}" />
     <jsp:setProperty name="rememberMeVariable" property="value" value="${null}" />
 </c:if>
 
@@ -173,6 +173,13 @@ $(document).ready(function() {
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <div class="checkbox"><label><input name="${rememberMeVariable.name}" type="checkbox" id="remember-me" value="1"${not empty rememberMeVariable.value ? " checked" : ""} /> <fmt:message key="remember_me" bundle="${utilities}" /></label></div>
+                        </div>
+                    </div>
+                    </fieldset>
+                    </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
     <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
@@ -242,7 +249,6 @@ $(document).ready(function() {
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
-
 <c:if test="${not empty causeOfDisconnectVariable.value and errorVariable.value eq errorNone.code}">
     <fmt:setBundle basename="apollo.datastore.i18n.CauseOfDisconnectMessagesBundle" var="causeOfDisconnectMessages" />
     <jsp:useBean id="noneDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
@@ -267,23 +273,12 @@ $(document).ready(function() {
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-warning">${causeOfDisconnectMessage}</p></div>
 </c:if>
-
-                    <div class="form-group">
-                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                            <div class="checkbox"><label><input name="${rememberMeVariable.name}" type="checkbox" id="remember-me" value="1"${not empty rememberMeVariable.value ? " checked" : ""} /> <fmt:message key="remember_me" bundle="${utilities}" /></label></div>
-                        </div>
-                    </div>
-
                     <div class="row">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="forgot_password" bundle="${utilities}" /></div>
                     </div>
-
                     <div class="row">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="register_now" bundle="${utilities}" /></div>
                     </div>
-
-                    </fieldset>
-                    </form>
                 </div>
             </div>
         </div>

@@ -11,8 +11,8 @@
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
-<c:if test="${not empty param[errorVariable.name]}">
-    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
+<c:if test="${not empty requestScope[errorVariable.name]}">
+    <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
 </c:if>
 
 <jsp:useBean id="errorNone" class="apollo.datastore.utils.ErrorBean" />

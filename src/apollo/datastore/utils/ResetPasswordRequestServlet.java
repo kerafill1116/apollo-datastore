@@ -79,17 +79,9 @@ public class ResetPasswordRequestServlet extends HttpServlet {
         if(error == Error.NONE)
             req.getRequestDispatcher("/WEB-INF/utils/reset-password-notice.jsp").forward(req, resp);
         else {
-            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/reset-password.jsp?");
-            urlParams.append(HtmlVariable.ERROR.getName());
-            urlParams.append("=");
-            urlParams.append(error.toString());
-            if(userId != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.USER_ID.getName());
-                urlParams.append("=");
-                urlParams.append(userId);
-            }
-            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
+            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+            req.setAttribute(HtmlVariable.USER_ID.getName(), userId);
+            req.getRequestDispatcher("/WEB-INF/utils/reset-password.jsp").forward(req, resp);
         }
     }
 }

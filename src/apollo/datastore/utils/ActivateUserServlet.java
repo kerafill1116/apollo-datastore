@@ -59,6 +59,7 @@ public class ActivateUserServlet extends HttpServlet {
                 txn.rollback();
         }
 
-        req.getRequestDispatcher("/WEB-INF/utils/activate-user-report.jsp?" + HtmlVariable.ERROR.getName() + "=" + error.toString()).forward(req, resp);
+        req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+        req.getRequestDispatcher("/WEB-INF/utils/activate-user-report.jsp").forward(req, resp);
     }
 }

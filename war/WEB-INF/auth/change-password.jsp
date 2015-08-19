@@ -135,11 +135,13 @@ $(document).ready(function() {
                             <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${changePassword}' />" />
                         </div>
                     </div>
+                    </fieldset>
+                    </form>
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
-<c:if test="${not empty param[errorVariable.name]}">
+<c:if test="${not empty requestScope[errorVariable.name]}">
     <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
-    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
+    <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
     <jsp:useBean id="errorNone" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorNone" property="constant" value="NONE" />
     <jsp:useBean id="errorIncorrectPassword" class="apollo.datastore.utils.ErrorBean" />
@@ -161,11 +163,9 @@ $(document).ready(function() {
         </c:otherwise>
     </c:choose>
 </c:if>
-                    </fieldset>
-                    </form>
                 </div>
             </div>
         </div>
-
+        </main>
     </body>
 </html>

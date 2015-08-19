@@ -17,9 +17,9 @@
 
 <jsp:useBean id="userIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="userIdVariable" property="varName" value="USER_ID" />
-<c:if test="${not empty param[errorVariable.name]}">
-    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
-    <jsp:setProperty name="userIdVariable" property="value" value="${param[userIdVariable.name]}" />
+<c:if test="${not empty requestScope[errorVariable.name]}">
+    <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
+    <jsp:setProperty name="userIdVariable" property="value" value="${requestScope[userIdVariable.name]}" />
 </c:if>
 
 <html>
@@ -147,7 +147,8 @@ $(document).ready(function() {
                             <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${utilities}' />" />
                         </div>
                     </div>
-
+                    </fieldset>
+                    </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
     <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
@@ -182,12 +183,10 @@ $(document).ready(function() {
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
-                    </fieldset>
-                    </form>
                 </div>
             </div>
         </div>
-    </main>
+        </main>
 
     </body>
 </html>

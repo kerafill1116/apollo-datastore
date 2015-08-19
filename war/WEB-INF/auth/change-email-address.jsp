@@ -9,10 +9,17 @@
 <fmt:setLocale value="${langCookie.value}" />
 <fmt:setBundle basename="apollo.datastore.i18n.ChangeEmailAddressBundle" var="changeEmailAddress" />
 
+<jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
 <jsp:useBean id="currentPasswordVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="currentPasswordVariable" property="varName" value="CURRENT_PASSWORD" />
 <jsp:useBean id="newEmailAddressVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="newEmailAddressVariable" property="varName" value="NEW_EMAIL_ADDRESS" />
+
+<c:if test="${not empty requestScope[errorVariable.name]}">
+    <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
+    <jsp:setProperty name="newEmailAddressVariable" property="value" value="${requestScope[newEmailAddressVariable.name]}" />
+</c:if>
 
 <html>
     <head>
@@ -38,7 +45,7 @@
         <!-- Link messages file for localized validation. -->
         <script type="text/javascript" src="/js/messages_${langCookie.value}.min.js"></script>
 </c:if>
-
+<c:if test="${empty changeEmailAddressRequest}">
         <script type="text/javascript">
 function inputChangeHandler(event) {
 	changeEmailAddressFormValidator.element(event.target);
@@ -92,6 +99,7 @@ $(document).ready(function() {
 
 });
         </script>
+</c:if>
     </head>
     <body>
 <%@ include file="/WEB-INF/jspf/auth/top-navbar.jspf" %>
@@ -112,17 +120,53 @@ $(document).ready(function() {
             <div class="row">
                 <div class="col-xs-12 col-sm-offset-2 col-sm-8">
 
-                    <form name="change-email-address-form" method="post" action="/auth/change-email-address" class="form-horizontal" id="change-email-address-form" role="form">
+<c:choose>
+    <c:when test="${not empty changeEmailAddressRequest}" >
+        <jsp:useBean id="cancelVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+        <jsp:setProperty name="cancelVariable" property="varName" value="CANCEL" />
+        <jsp:useBean id="resendVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+        <jsp:setProperty name="resendVariable" property="varName" value="RESEND" />
+                    <form name="change-email-address-form" class="form-horizontal" id="change-email-address-form" role="form">
                     <fieldset>
 
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="current-password"><fmt:message key="current_password_label" bundle="${changeEmailAddress}" /></label>
-                        <div class="col-xs-12 col-sm-8"><input name="${currentPasswordVariable.name}" type="password" class="form-control" id="current-password" maxlength="64" /></div>
+                        <label class="col-xs-12 col-sm-3 control-label" for="current-email-address"><fmt:message key="current_email_address_label" bundle="${changeEmailAddress}" /></label>
+                        <div class="col-xs-12 col-sm-8"><p id="current-email-address" class="form-control-static"><c:out value="${user.emailAddress}" /></p></div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="new-email-address"><fmt:message key="new_email_address_label" bundle="${changeEmailAddress}" /></label>
-                        <div class="col-xs-12 col-sm-8"><input name="${newEmailAddressVariable.name}" type="email" class="form-control" id="new-email-address" maxlength="256" required /></div>
+                        <div class="col-xs-12 col-sm-8">
+                            <p id="new-email-address" class="form-control-static"><c:out value='${changeEmailAddressRequest.emailAddress}' />
+                            <span class="label label-danger"><fmt:message key='unverified_label' bundle='${changeEmailAddress}' /></span></p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <a href="/auth/change-email-address?${cancelVariable.name}" class="btn btn-default"><fmt:message key='cancel_button' bundle='${changeEmailAddress}' /></a>
+                            <a href="/auth/change-email-address?${resendVariable.name}" class="btn btn-default"><fmt:message key='resend_button' bundle='${changeEmailAddress}' /></a>
+                        </div>
+                    </div>
+                    </fieldset>
+                    </form>
+    </c:when>
+    <c:otherwise>
+                    <form name="change-email-address-form" method="post" action="/auth/change-email-address" class="form-horizontal" id="change-email-address-form" role="form">
+                    <fieldset>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 control-label" for="current-email-address"><fmt:message key="current_email_address_label" bundle="${changeEmailAddress}" /></label>
+                        <div class="col-xs-12 col-sm-8"><p id="current-email-address" class="form-control-static"><c:out value="${user.emailAddress}" /></p></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 control-label" for="new-email-address"><fmt:message key="new_email_address_label" bundle="${changeEmailAddress}" /></label>
+                        <div class="col-xs-12 col-sm-8"><input name="${newEmailAddressVariable.name}" type="email" class="form-control" id="new-email-address" maxlength="256" required value="<c:out value='${newEmailAddressVariable.value}' />" /></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-12 col-sm-3 control-label" for="current-password"><fmt:message key="current_password_label" bundle="${changeEmailAddress}" /></label>
+                        <div class="col-xs-12 col-sm-8"><input name="${currentPasswordVariable.name}" type="password" class="form-control" id="current-password" maxlength="64" /></div>
                     </div>
 
                     <div class="form-group">
@@ -131,18 +175,25 @@ $(document).ready(function() {
                             <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${changeEmailAddress}' />" />
                         </div>
                     </div>
-<jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
-<jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
-<c:if test="${not empty param[errorVariable.name]}">
+                    </fieldset>
+                    </form>
+    </c:otherwise>
+</c:choose>
+<c:if test="${not empty errorVariable.value}">
     <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
-    <jsp:setProperty name="errorVariable" property="value" value="${param[errorVariable.name]}" />
     <jsp:useBean id="errorNone" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorNone" property="constant" value="NONE" />
     <jsp:useBean id="errorIncorrectPassword" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorIncorrectPassword" property="constant" value="INCORRECT_PASSWORD" />
     <c:choose>
         <c:when test="${errorVariable.value eq errorNone.code}" >
-                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-warning"><fmt:message key="message_password_changed" bundle="${changePassword}" /></p></div>
+            <c:choose>
+                <c:when test="${not empty changeEmailAddressRequest}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_verify_email_address" bundle="${changeEmailAddress}" /></p></div>
+                </c:when>
+                <c:otherwise>
+                </c:otherwise>
+            </c:choose>
         </c:when>
         <c:when test="${errorVariable.value eq errorIncorrectPassword.code}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_incorrect_password" bundle="${errorMessages}" /></p></div>
@@ -152,11 +203,9 @@ $(document).ready(function() {
         </c:otherwise>
     </c:choose>
 </c:if>
-                    </fieldset>
-                    </form>
                 </div>
             </div>
         </div>
-
+        </main>
     </body>
 </html>

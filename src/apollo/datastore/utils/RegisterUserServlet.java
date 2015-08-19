@@ -96,29 +96,11 @@ public class RegisterUserServlet extends HttpServlet {
         if(error == Error.NONE)
             req.getRequestDispatcher("/WEB-INF/utils/register-user-thank-you.jsp").forward(req, resp);
         else {
-            StringBuilder urlParams = new StringBuilder("/WEB-INF/utils/register-user.jsp?");
-            urlParams.append(HtmlVariable.ERROR.getName());
-            urlParams.append("=");
-            urlParams.append(error.toString());
-            if(userId != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.USER_ID.getName());
-                urlParams.append("=");
-                urlParams.append(userId);
-            }
-            if(emailAddress != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.EMAIL_ADDRESS.getName());
-                urlParams.append("=");
-                urlParams.append(emailAddress);
-            }
-            if(timeZoneId != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.TIME_ZONE_ID.getName());
-                urlParams.append("=");
-                urlParams.append(timeZoneId);
-            }
-            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
+            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+            req.setAttribute(HtmlVariable.USER_ID.getName(), userId);
+            req.setAttribute(HtmlVariable.EMAIL_ADDRESS.getName(), emailAddress);
+            req.setAttribute(HtmlVariable.TIME_ZONE_ID.getName(), timeZoneId);
+            req.getRequestDispatcher("/WEB-INF/utils/register-user.jsp").forward(req, resp);
         }
     }
 }

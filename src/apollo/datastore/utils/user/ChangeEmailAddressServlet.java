@@ -45,7 +45,13 @@ public class ChangeEmailAddressServlet extends HttpServlet {
 
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
-        if(userPermissionsBean.getChangeEmailAddress()) {
+        if(userPermissionsBean.getViewEmailAddress() && userPermissionsBean.getChangeEmailAddress()) {
+            UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
+            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+            ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
+            if(changeEmailAddressRequest != null)
+                req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
+
             req.getRequestDispatcher("/WEB-INF/auth/change-email-address.jsp").forward(req, resp);
         }
         else
@@ -58,7 +64,7 @@ public class ChangeEmailAddressServlet extends HttpServlet {
 
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
-        if(userPermissionsBean.getChangeEmailAddress()) {
+        if(userPermissionsBean.getViewEmailAddress() && userPermissionsBean.getChangeEmailAddress()) {
             Error error = Error.NONE;
             UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
             String currentPassword = req.getParameter(HtmlVariable.CURRENT_PASSWORD.getName());
@@ -104,17 +110,9 @@ public class ChangeEmailAddressServlet extends HttpServlet {
             if(error != Error.NONE && txn.isActive())
                 txn.rollback();
 
-            StringBuilder urlParams = new StringBuilder("/WEB-INF/auth/change-email-address.jsp?");
-            urlParams.append(HtmlVariable.ERROR.getName());
-            urlParams.append("=");
-            urlParams.append(error.toString());
-            if(newEmailAddress != null) {
-                urlParams.append("&");
-                urlParams.append(HtmlVariable.NEW_EMAIL_ADDRESS.getName());
-                urlParams.append("=");
-                urlParams.append(newEmailAddress);
-            }
-            req.getRequestDispatcher(resp.encodeRedirectURL(urlParams.toString())).forward(req, resp);
+            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+            req.setAttribute(HtmlVariable.NEW_EMAIL_ADDRESS.getName(), newEmailAddress);
+            req.getRequestDispatcher("/WEB-INF/auth/change-email-address.jsp").forward(req, resp);
         }
         else
             resp.sendRedirect("/auth/settings");

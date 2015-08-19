@@ -365,6 +365,6 @@ $(document).ready(function() {
                 </div>
             </div>
         </div>
-
+        </main>
     </body>
 </html>

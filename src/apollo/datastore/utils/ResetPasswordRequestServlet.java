@@ -49,28 +49,37 @@ public class ResetPasswordRequestServlet extends HttpServlet {
         if(userId == null || userId.length() == 0)
             error = Error.REQUIRED_USER_ID;
         else {
+            Date dateNow = new Date();
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Queue queue = QueueFactory.getQueue(SEND_MAIL_TASK_QUEUE);
             Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
-            User user = UserFactory.getByUserId(datastore, txn, userId);
-            if(user == null)
-                error = Error.NON_EXISTENT_USER;
-            else if(!user.getActivated())
-                error = Error.NOT_ACTIVATED_USER;
-            else if(user.getDisabled())
-                error = Error.DISABLED_USER;
-            else
-                try {
-                    Date dateNow = new Date();
-                    String requestId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + userId, HashAlgorithms.MD5);
-                    ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest(requestId, user.getKey(), dateNow);
-                    ResetPasswordRequestFactory.add(datastore, txn, resetPasswordRequest);
-                    queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.REQUEST_ID.getName(), requestId).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
-                    txn.commit();
-                }
-                catch(ConcurrentModificationException e) {
-                    error = Error.ERROR_IN_RESET_PASSWORD_REQUEST;
-                }
+            ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByUserId(datastore, txn, userId);
+            if(resetPasswordRequest != null) {
+                if(dateNow.before(resetPasswordRequest.getDateOfExpiration()))
+                    error = Error.ALREADY_EXISTS_REQUEST;
+                else
+                    ResetPasswordRequestFactory.remove(datastore, txn, resetPasswordRequest);
+            }
+            if(error == Error.NONE) {
+                User user = UserFactory.getByUserId(datastore, txn, userId);
+                if(user == null)
+                    error = Error.NON_EXISTENT_USER;
+                else if(!user.getActivated())
+                    error = Error.NOT_ACTIVATED_USER;
+                else if(user.getDisabled())
+                    error = Error.DISABLED_USER;
+                else
+                    try {
+                        String requestId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + userId, HashAlgorithms.MD5);
+                        resetPasswordRequest = new ResetPasswordRequest(requestId, user.getKey(), dateNow);
+                        ResetPasswordRequestFactory.add(datastore, txn, resetPasswordRequest);
+                        queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.REQUEST_ID.getName(), requestId).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
+                        txn.commit();
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_RESET_PASSWORD_REQUEST;
+                    }
+            }
 
             if(error != Error.NONE && txn.isActive())
                 txn.rollback();

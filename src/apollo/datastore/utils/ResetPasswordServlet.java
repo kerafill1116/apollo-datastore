@@ -35,24 +35,35 @@ public class ResetPasswordServlet extends HttpServlet {
 
         Error error = Error.NONE;
 
+        String userId = req.getParameter(HtmlVariable.USER_ID.getName());
         String requestId = req.getParameter(HtmlVariable.REQUEST_ID.getName());
 
+        if(userId == null || userId.length() == 0)
+            error = Error.REQUIRED_USER_ID;
         if(requestId == null || requestId.length() == 0)
             error = Error.REQUIRED_REQUEST_ID;
         else {
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
             Queue queue = QueueFactory.getQueue(SEND_MAIL_TASK_QUEUE);
             Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
-            ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByRequestId(datastore, txn, requestId);
+            ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByUserId(datastore, txn, userId);
             if(resetPasswordRequest == null)
                 error = Error.NON_EXISTENT_REQUEST;
             else {
                 Date dateNow = new Date();
                 Date dateOfExpiration = resetPasswordRequest.getDateOfExpiration();
-                if(!dateNow.before(dateOfExpiration))
+                if(!dateNow.before(dateOfExpiration)) {
                     error = Error.EXPIRED_REQUEST;
-                else if(resetPasswordRequest.getApproved())
-                    error = Error.ALREADY_APPROVED_REQUEST;
+                    try {
+                        ResetPasswordRequestFactory.remove(datastore, txn, resetPasswordRequest);
+                        txn.commit();
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_RESET_PASSWORD;
+                    }
+                }
+                else if(resetPasswordRequest.getRequestId().compareTo(requestId) != 0)
+                    error = Error.REQUIRED_REQUEST_ID;
                 else {
                     User user = UserFactory.getByKey(datastore, txn, resetPasswordRequest.getUserKey());
                     if(user == null)
@@ -64,8 +75,8 @@ public class ResetPasswordServlet extends HttpServlet {
                     else
                         try {
                             String newPassword = UserFactory.resetPassword(datastore, txn, user);
-                            ResetPasswordRequestFactory.approve(datastore, txn, resetPasswordRequest, dateNow);
-                            queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.PASSWORD.getName(), newPassword).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
+                            ResetPasswordRequestFactory.remove(datastore, txn, resetPasswordRequest);
+                            queue.add(TaskOptions.Builder.withUrl(SEND_MAIL_TASK_URL).param(HtmlVariable.USER_ID.getName(), user.getUserId()).param(HtmlVariable.NEW_PASSWORD.getName(), newPassword).param(Cookies.LANG.getName(), (String)req.getAttribute(Cookies.LANG.getName())));
                             txn.commit();
                         }
                         catch(ConcurrentModificationException e) {

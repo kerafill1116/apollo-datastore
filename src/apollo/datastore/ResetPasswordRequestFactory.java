@@ -10,7 +10,6 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 
 import java.util.ConcurrentModificationException;
-import java.util.Date;
 
 public class ResetPasswordRequestFactory {
 
@@ -31,15 +30,13 @@ public class ResetPasswordRequestFactory {
         return null;
     }
 
-    public static ResetPasswordRequest getByRequestId(DatastoreService datastore, Transaction txn, String requestId) {
-        return getByKey(datastore, txn, KeyFactory.createKey(DatastoreProperties.KIND.getName(), requestId));
+    public static ResetPasswordRequest getByUserId(DatastoreService datastore, Transaction txn, String userId) {
+        return getByKey(datastore, txn, KeyFactory.createKey(DatastoreProperties.KIND.getName(), userId));
     }
 
-    public static void approve(DatastoreService datastore, Transaction txn, ResetPasswordRequest resetPasswordRequest, Date dateApproved)
+    public static void remove(DatastoreService datastore, Transaction txn, ResetPasswordRequest resetPasswordRequest)
             throws ConcurrentModificationException {
 
-        resetPasswordRequest.setApproved(true);
-        resetPasswordRequest.setDateApproved(dateApproved);
-        datastore.put(txn, resetPasswordRequest.getEntity());
+        datastore.delete(txn, resetPasswordRequest.getKey());
     }
 }

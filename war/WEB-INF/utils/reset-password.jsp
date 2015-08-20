@@ -153,6 +153,8 @@ $(document).ready(function() {
     <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorRequiredUserId" property="constant" value="REQUIRED_USER_ID" />
+    <jsp:useBean id="errorAlreadyExistsRequest" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorAlreadyExistsRequest" property="constant" value="ALREADY_EXISTS_REQUEST" />
     <jsp:useBean id="errorNonExistentUser" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorNonExistentUser" property="constant" value="NON_EXISTENT_USER" />
     <jsp:useBean id="errorNotActivatedUser" class="apollo.datastore.utils.ErrorBean" />
@@ -164,6 +166,9 @@ $(document).ready(function() {
     <c:choose>
         <c:when test="${errorVariable.value eq errorRequiredUserId.code}" >
             <fmt:message key="message_error_required_user_id" bundle="${errorMessages}" var="errorMessage" />
+        </c:when>
+        <c:when test="${errorVariable.value eq errorAlreadyExistsRequest.code}" >
+            <fmt:message key="message_error_already_exists_request" bundle="${errorMessages}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorNonExistentUser.code}" >
             <fmt:message key="message_error_non_existent_user" bundle="${errorMessages}" var="errorMessage" />

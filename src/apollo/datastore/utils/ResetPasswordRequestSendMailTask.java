@@ -37,14 +37,15 @@ public class ResetPasswordRequestSendMailTask extends HttpServlet {
         String queueName = req.getHeader("X-AppEngine-QueueName");
         if(queueName != null && queueName.compareTo(ResetPasswordRequestServlet.SEND_MAIL_TASK_QUEUE) == 0) {
 
+            String userId = req.getParameter(HtmlVariable.USER_ID.getName());
             String requestId = req.getParameter(HtmlVariable.REQUEST_ID.getName());
-            if(requestId != null && requestId.length() != 0) {
+            if(userId != null && userId.length() != 0) {
                 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-                ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByRequestId(datastore, null, requestId);
-                if(resetPasswordRequest != null) {
+                ResetPasswordRequest resetPasswordRequest = ResetPasswordRequestFactory.getByUserId(datastore, null, userId);
+                if(resetPasswordRequest != null && resetPasswordRequest.getRequestId().compareTo(requestId) == 0) {
                     Date dateNow = new Date();
                     Date dateOfExpiration = resetPasswordRequest.getDateOfExpiration();
-                    if(dateNow.before(dateOfExpiration) && !resetPasswordRequest.getApproved()) {
+                    if(dateNow.before(dateOfExpiration)) {
                         User user = UserFactory.getByKey(datastore, null, resetPasswordRequest.getUserKey());
                         if(user != null)
                             try {
@@ -71,7 +72,7 @@ public class ResetPasswordRequestSendMailTask extends HttpServlet {
                                 sbText1.append("<br /><br />");
                                 sbText1.append(utilitiesMailBundle.getString("click_link_reset_password_request"));
                                 sbText1.append("<br />");
-                                URL resetPasswordURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/reset-password?" + HtmlVariable.REQUEST_ID.getName() + "=" + requestId);
+                                URL resetPasswordURL = new URL(req.getScheme(), req.getServerName(), req.getServerPort(), "/utils/reset-password?" + HtmlVariable.USER_ID.getName() + "=" + userId + "&" + HtmlVariable.REQUEST_ID.getName() + "=" + requestId);
                                 sbText1.append("<a href=\"");
                                 sbText1.append(resetPasswordURL.toString());
                                 sbText1.append("\">");

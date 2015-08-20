@@ -11,12 +11,12 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class ResetPasswordRequest implements Serializable {
 
-    public static final int DEFAULT_DAYS_OF_EXPIRATION = 3;
+    public static final int DEFAULT_DAYS_OF_EXPIRATION = 1;
 
     private Entity entity;
 
     public ResetPasswordRequest(String requestId, Key userKey, Date dateRequested) {
-        this.entity = new Entity(DatastoreProperties.KIND.getName(), requestId);
+        this.entity = new Entity(DatastoreProperties.KIND.getName(), userKey.getName());
 
         this.entity.setProperty(DatastoreProperties.REQUEST_ID.getName(), requestId);
         this.entity.setProperty(DatastoreProperties.USER_KEY.getName(), userKey);
@@ -25,9 +25,6 @@ public class ResetPasswordRequest implements Serializable {
         Calendar dateOfExpiration = MiscFunctions.toCalendar(dateRequested);
         dateOfExpiration.add(Calendar.DATE, DEFAULT_DAYS_OF_EXPIRATION);
         this.entity.setProperty(DatastoreProperties.DATE_OF_EXPIRATION.getName(), MiscFunctions.toUTCDateString(dateOfExpiration.getTime()));
-
-        this.entity.setProperty(DatastoreProperties.APPROVED.getName(), false);
-        this.entity.setProperty(DatastoreProperties.DATE_APPROVED.getName(), null);
     }
 
     public ResetPasswordRequest(Entity entity) {
@@ -50,22 +47,6 @@ public class ResetPasswordRequest implements Serializable {
         return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.DATE_OF_EXPIRATION.getName()));
     }
 
-    public boolean getApproved() {
-        return (boolean)this.entity.getProperty(DatastoreProperties.APPROVED.getName());
-    }
-
-    public void setApproved(boolean approved) {
-        this.entity.setProperty(DatastoreProperties.APPROVED.getName(), approved);
-    }
-
-    public Date getDateApproved() {
-        return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.DATE_APPROVED.getName()));
-    }
-
-    public void setDateApproved(Date dateApproved) {
-        this.entity.setProperty(DatastoreProperties.DATE_APPROVED.getName(), MiscFunctions.toUTCDateString(dateApproved));
-    }
-
     public Entity getEntity() {
         return this.entity;
     }
@@ -83,9 +64,7 @@ public class ResetPasswordRequest implements Serializable {
         REQUEST_ID("requestId"),
         USER_KEY("userKey"),
         DATE_REQUESTED("dateRequested"),
-        DATE_OF_EXPIRATION("dateOfExpiration"),
-        APPROVED("approved"),
-        DATE_APPROVED("dateApproved");
+        DATE_OF_EXPIRATION("dateOfExpiration");
 
         private final String name;
 

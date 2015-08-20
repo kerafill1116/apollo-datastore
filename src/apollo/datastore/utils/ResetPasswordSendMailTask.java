@@ -37,11 +37,11 @@ public class ResetPasswordSendMailTask extends HttpServlet {
         if(queueName != null && queueName.compareTo(ResetPasswordServlet.SEND_MAIL_TASK_QUEUE) == 0) {
 
             String userId = req.getParameter(HtmlVariable.USER_ID.getName());
-            String password = req.getParameter(HtmlVariable.PASSWORD.getName());
+            String newPassword = req.getParameter(HtmlVariable.NEW_PASSWORD.getName());
             if(userId != null && userId.length() != 0) {
                 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
                 User user = UserFactory.getByUserId(datastore, null, userId);
-                if(user != null && user.getPassword().compareTo(MiscFunctions.getEncryptedHash(password, HashAlgorithms.SHA_256)) == 0)
+                if(user != null && user.getPassword().compareTo(MiscFunctions.getEncryptedHash(newPassword, HashAlgorithms.SHA_256)) == 0)
                     try {
                         Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                         // get i18n ResourceBundle
@@ -66,7 +66,7 @@ public class ResetPasswordSendMailTask extends HttpServlet {
                         sbText1.append("<br />");
                         sbText1.append(utilitiesMailBundle.getString("password_label"));
                         sbText1.append(" ");
-                        sbText1.append(password);
+                        sbText1.append(newPassword);
                         sbText1.append("<br /><br />");
                         sbText1.append(utilitiesMailBundle.getString("click_link_reset_password"));
                         sbText1.append("<br />");

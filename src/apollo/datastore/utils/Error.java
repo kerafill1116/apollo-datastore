@@ -52,7 +52,6 @@ public enum Error {
     ALREADY_EXISTS_REQUEST(35),
     ERROR_IN_CHANGE_EMAIL_ADDRESS(36),
 
-
     INVALID_ERROR(37);
 
     private static final Error[] errorValues = Error.values();

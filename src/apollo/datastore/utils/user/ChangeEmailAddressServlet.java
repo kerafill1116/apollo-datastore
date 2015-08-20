@@ -14,6 +14,14 @@ import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+
 import java.io.IOException;
 import java.util.ConcurrentModificationException;
 import java.util.Date;
@@ -24,14 +32,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Transaction;
-import com.google.appengine.api.datastore.TransactionOptions;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
-import com.google.appengine.api.taskqueue.TaskOptions;
 
 @SuppressWarnings("serial")
 public class ChangeEmailAddressServlet extends HttpServlet {
@@ -48,10 +48,39 @@ public class ChangeEmailAddressServlet extends HttpServlet {
         if(userPermissionsBean.getViewEmailAddress() && userPermissionsBean.getChangeEmailAddress()) {
             Error error = Error.NONE;
             UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
+            ChangeEmailAddressRequest changeEmailAddressRequest = null;
             DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-            if(req.getParameter(HtmlVariable.CANCEL.getName()) != null) {
+            String requestId = req.getParameter(HtmlVariable.REQUEST_ID.getName());
+            if(requestId != null) {
+                Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
+                User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
+                if(user == null)
+                    error = Error.NON_EXISTENT_USER;
+                else if((changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, txn, userBean.getUserId())) == null)
+                    error = Error.NON_EXISTENT_REQUEST;
+                else if(requestId.length() == 0 || changeEmailAddressRequest.getRequestId().compareTo(requestId) != 0)
+                    error = Error.REQUIRED_REQUEST_ID;
+                else
+                    try {
+                        user.setEmailAddress(changeEmailAddressRequest.getEmailAddress());
+                        UserFactory.update(datastore, txn, user);
+                        ChangeEmailAddressRequestFactory.remove(datastore, txn, changeEmailAddressRequest);
+                        txn.commit();
+                        req.setAttribute(AuthRequestAttribute.USER.getName(), new UserBean(user));
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_CHANGE_EMAIL_ADDRESS;
+                    }
+
+                if(error != Error.NONE && txn.isActive())
+                    txn.rollback();
+
+                req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+                req.setAttribute(HtmlVariable.REQUEST_ID.getName(), true);
+            }
+            else if(req.getParameter(HtmlVariable.CANCEL.getName()) != null) {
                 Transaction txn = datastore.beginTransaction();
-                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, txn, userBean.getUserId());
+                changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, txn, userBean.getUserId());
                 if(changeEmailAddressRequest == null)
                     error = Error.NON_EXISTENT_REQUEST;
                 else
@@ -70,7 +99,7 @@ public class ChangeEmailAddressServlet extends HttpServlet {
                 req.setAttribute(HtmlVariable.CANCEL.getName(), true);
             }
             else if(req.getParameter(HtmlVariable.RESEND.getName()) != null) {
-                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
+                changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
                 if(changeEmailAddressRequest == null)
                     error = Error.NON_EXISTENT_REQUEST;
                 else {
@@ -82,7 +111,7 @@ public class ChangeEmailAddressServlet extends HttpServlet {
                 req.setAttribute(HtmlVariable.RESEND.getName(), true);
             }
             else {
-                ChangeEmailAddressRequest changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
+                changeEmailAddressRequest = ChangeEmailAddressRequestFactory.getByUserId(datastore, null, userBean.getUserId());
                 if(changeEmailAddressRequest != null)
                     req.setAttribute(AuthRequestAttribute.CHANGE_EMAIL_ADDRESS_REQUEST.getName(), new ChangeEmailAddressRequestBean(changeEmailAddressRequest));
             }

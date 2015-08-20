@@ -15,6 +15,12 @@
 <jsp:setProperty name="currentPasswordVariable" property="varName" value="CURRENT_PASSWORD" />
 <jsp:useBean id="newEmailAddressVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="newEmailAddressVariable" property="varName" value="NEW_EMAIL_ADDRESS" />
+<jsp:useBean id="requestIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="requestIdVariable" property="varName" value="REQUEST_ID" />
+<jsp:useBean id="cancelVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="cancelVariable" property="varName" value="CANCEL" />
+<jsp:useBean id="resendVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="resendVariable" property="varName" value="RESEND" />
 
 <c:if test="${not empty requestScope[errorVariable.name]}">
     <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
@@ -122,10 +128,6 @@ $(document).ready(function() {
 
 <c:choose>
     <c:when test="${not empty changeEmailAddressRequest}" >
-        <jsp:useBean id="cancelVariable" class="apollo.datastore.utils.HtmlVariableBean" />
-        <jsp:setProperty name="cancelVariable" property="varName" value="CANCEL" />
-        <jsp:useBean id="resendVariable" class="apollo.datastore.utils.HtmlVariableBean" />
-        <jsp:setProperty name="resendVariable" property="varName" value="RESEND" />
                     <form name="change-email-address-form" class="form-horizontal" id="change-email-address-form" role="form">
                     <fieldset>
 
@@ -193,15 +195,20 @@ $(document).ready(function() {
     <jsp:setProperty name="errorAlreadyExistsRequest" property="constant" value="ALREADY_EXISTS_REQUEST" />
     <jsp:useBean id="errorNonExistentRequest" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorNonExistentRequest" property="constant" value="NON_EXISTENT_REQUEST" />
+    <jsp:useBean id="errorRequiredRequestId" class="apollo.datastore.utils.ErrorBean" />
+    <jsp:setProperty name="errorRequiredRequestId" property="constant" value="REQUIRED_REQUEST_ID" />
     <jsp:useBean id="errorInChangeEmailAddress" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorInChangeEmailAddress" property="constant" value="ERROR_IN_CHANGE_EMAIL_ADDRESS" />
     <c:choose>
         <c:when test="${errorVariable.value eq errorNone.code}" >
             <c:choose>
-                <c:when test="${not empty cancel}" >
+                <c:when test="${not empty requestScope[requestIdVariable.name]}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_change_email_address_verified" bundle="${changeEmailAddress}" /></p></div>
+                </c:when>
+                <c:when test="${not empty requestScope[cancelVariable.name]}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_cancel_change_email_address" bundle="${changeEmailAddress}" /></p></div>
                 </c:when>
-                <c:when test="${not empty resend}" >
+                <c:when test="${not empty requestScope[resendVariable.name]}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-info"><fmt:message key="message_resent_verification_email" bundle="${changeEmailAddress}" /></p></div>
                 </c:when>
                 <c:when test="${not empty changeEmailAddressRequest}" >
@@ -225,6 +232,9 @@ $(document).ready(function() {
         </c:when>
         <c:when test="${errorVariable.value eq errorNonExistentRequest.code}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_non_existent_request" bundle="${errorMessages}" /></p></div>
+        </c:when>
+        <c:when test="${errorVariable.value eq errorRequiredRequestId.code}" >
+                    <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_required_request_id" bundle="${errorMessages}" /></p></div>
         </c:when>
         <c:when test="${errorVariable.value eq errorInChangeEmailAddress.code}" >
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger"><fmt:message key="message_error_in_change_email_address" bundle="${errorMessages}" /></p></div>

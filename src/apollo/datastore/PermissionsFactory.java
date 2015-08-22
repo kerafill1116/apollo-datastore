@@ -50,4 +50,18 @@ public class PermissionsFactory {
     public static UserPermissions getUserPermissionsByUserId(DatastoreService datastore, Transaction txn, String userId) {
         return getUserPermissionsByKey(datastore, txn, KeyFactory.createKey(UserPermissions.DatastoreProperties.KIND.getName(), userId));
     }
+
+    public static void updateAdminPermissions(DatastoreService datastore, Transaction txn, AdminPermissions adminPermissions)
+            throws ConcurrentModificationException {
+
+        datastore.put(txn, adminPermissions.getEntity());
+    }
+
+    public static void updateUserPermissions(DatastoreService datastore, Transaction txn, UserPermissions userPermissions)
+            throws ConcurrentModificationException {
+
+        datastore.put(txn, userPermissions.getEntity());
+    }
+
+
 }

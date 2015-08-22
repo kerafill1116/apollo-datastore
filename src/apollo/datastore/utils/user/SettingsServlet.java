@@ -140,7 +140,7 @@ public class SettingsServlet extends HttpServlet {
                     txn.commit();
                 }
                 catch(ConcurrentModificationException e) {
-                    error = Error.ERROR_IN_UPDATE_SETTING;
+                    error = Error.ERROR_IN_SETTINGS;
                 }
             else if(txn.isActive())
                 txn.rollback();

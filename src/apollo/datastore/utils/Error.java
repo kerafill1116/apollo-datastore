@@ -41,7 +41,7 @@ public enum Error {
     REQUIRED_ACTIVATION_KEY(26),
 
     NO_PERMISSIONS(27),
-    ERROR_IN_UPDATE_SETTING(28),
+    ERROR_IN_SETTINGS(28),
     INVALID_EXCLUSIVE_SESSION(29),
     INVALID_SESSION_TIMEOUT(30),
     INVALID_MAX_SESSIONS(31),
@@ -50,8 +50,9 @@ public enum Error {
 
     ALREADY_EXISTS_REQUEST(34),
     ERROR_IN_CHANGE_EMAIL_ADDRESS(35),
+    ERROR_IN_USER_PERMISSIONS(36),
 
-    INVALID_ERROR(36);
+    INVALID_ERROR(37);
 
     private static final Error[] errorValues = Error.values();
 

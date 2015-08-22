@@ -53,6 +53,10 @@ function inputChangeHandler(event) {
     settingsFormValidator.element(event.target);
 }
 
+function updateSettingHandler(event) {
+    updateSetting(event.target);
+}
+
 function updateSetting(element) {
     var inputElement = $(element);
     var isCheckbox = (element.type == 'checkbox');
@@ -97,6 +101,7 @@ $(document).ready(function() {
 <c:if test="${userPermissions.viewTimeZone and userPermissions.changeTimeZone}">
     // hack for select placeholder
     document.getElementById('time-zone-id').options[0].disabled = true;
+    $('#time-zone-id').on('change', updateSettingHandler);
 </c:if>
     settingsFormValidator = settingsForm.validate({
         errorPlacement: function(error, element) { },
@@ -181,6 +186,7 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${userPermissions.viewExclusiveSession and userPermissions.changeExclusiveSession}">
     exclusiveSessionCheckbox = $('#exclusive-session');
+    exclusiveSessionCheckbox.on('change', updateSettingHandler);
 </c:if>
 
     updateSettingModal = $('#update-setting-modal');
@@ -200,7 +206,7 @@ $(document).ready(function() {
         <div class="page-header">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+                    <div class="col-xs-12 col-sm-offset-2 col-sm-8">
                         <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_settings" bundle="${settings}" /></h3></div>
                     </div>
                 </div>
@@ -216,7 +222,7 @@ $(document).ready(function() {
         <main role="main">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-12 col-sm-offset-1 col-sm-10">
+                <div class="col-xs-12 col-sm-offset-2 col-sm-8">
 
                     <form name="settings-form" class="form-horizontal" id="settings-form" role="form">
                     <fieldset>
@@ -235,7 +241,7 @@ $(document).ready(function() {
         <c:when test="${userPermissions.changeTimeZone}">
             <jsp:useBean id="timeZoneIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
             <jsp:setProperty name="timeZoneIdVariable" property="varName" value="TIME_ZONE_ID" />
-                            <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id" onchange="javascript: updateSetting(this)">
+                            <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id" >
                                 <option value=""><fmt:message key="time_zone_choose_option" bundle="${settings}" /></option>
             <c:forEach var="timeZone" items="${jf:timeZonesArray()}" varStatus="loopCounter" >
                                 <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneId ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZones}" /></option>
@@ -303,7 +309,7 @@ $(document).ready(function() {
                 <jsp:useBean id="exclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
                 <jsp:setProperty name="exclusiveSessionVariable" property="varName" value="EXCLUSIVE_SESSION" />
                                 <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} onchange="javascript: updateSetting(this)" /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
+                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
                                 </div>
             </c:when>
             <c:otherwise>

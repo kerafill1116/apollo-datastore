@@ -76,7 +76,6 @@ try {
     if(UserFactory.getByUserId(datastore, txn, userId) == null) {
         User user = new User(userId, password, emailAddress, null);
         user.setActivated(true);
-        user.setSessionTimeout(180);
         UserFactory.add(datastore, txn, user);
         out.print("added - ");
     }
@@ -94,7 +93,7 @@ try {
 
     if(PermissionsFactory.getUserPermissionsByUserId(datastore, txn, userId) == null) {
         UserPermissions userPermissions = new UserPermissions(userId);
-        userPermissions.setUserPermissions(UserPermissions2.ALL_PERMISSIONS.getCode());
+        userPermissions.setUserPermissions(UserPermissions2.DEFAULT_PERMISSIONS.getCode() + UserPermissions2.VIEW_USER_PERMISSIONS.getCode() + UserPermissions2.CHANGE_USER_PERMISSIONS.getCode());
         userPermissions.setSessionPermissions(SessionPermissions.ALL_PERMISSIONS.getCode());
         userPermissions.setSessionLogPermissions(SessionLogPermissions.ALL_PERMISSIONS.getCode());
         PermissionsFactory.addUserPermissions(datastore, txn, userPermissions);

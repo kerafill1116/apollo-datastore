@@ -221,4 +221,14 @@
         </auth-constraint>
     </security-constraint>
 
+    <servlet>
+        <servlet-name>UserPermissionsServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.user.UserPermissionsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserPermissionsServlet</servlet-name>
+        <url-pattern>/auth/user-permissions</url-pattern>
+    </servlet-mapping>
+
 </web-app>

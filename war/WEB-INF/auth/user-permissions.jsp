@@ -7,17 +7,52 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UserPermissionsBundle" var="userPermissions" />
+<fmt:setBundle basename="apollo.datastore.i18n.UserPermissionsBundle" var="userPermissionsBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
+
+<jsp:useBean id="changePasswordVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changePasswordVariable" property="varName" value="CHANGE_PASSWORD" />
+<jsp:useBean id="viewEmailAddressVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewEmailAddressVariable" property="varName" value="VIEW_EMAIL_ADDRESS" />
+<jsp:useBean id="changeEmailAddressVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeEmailAddressVariable" property="varName" value="CHANGE_EMAIL_ADDRESS" />
+<jsp:useBean id="viewTimeZoneVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewTimeZoneVariable" property="varName" value="VIEW_TIME_ZONE" />
+<jsp:useBean id="changeTimeZoneVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeTimeZoneVariable" property="varName" value="CHANGE_TIME_ZONE" />
+<jsp:useBean id="viewSessionTimeoutVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewSessionTimeoutVariable" property="varName" value="VIEW_SESSION_TIMEOUT" />
+<jsp:useBean id="changeSessionTimeoutVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeSessionTimeoutVariable" property="varName" value="CHANGE_SESSION_TIMEOUT" />
+<jsp:useBean id="viewMaxSessionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewMaxSessionsVariable" property="varName" value="VIEW_MAX_SESSIONS" />
+<jsp:useBean id="changeMaxSessionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeMaxSessionsVariable" property="varName" value="CHANGE_MAX_SESSIONS" />
+<jsp:useBean id="viewExclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewExclusiveSessionVariable" property="varName" value="VIEW_EXCLUSIVE_SESSION" />
+<jsp:useBean id="changeExclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeExclusiveSessionVariable" property="varName" value="CHANGE_EXCLUSIVE_SESSION" />
+<jsp:useBean id="viewMaxFailedAttemptsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewMaxFailedAttemptsVariable" property="varName" value="VIEW_MAX_FAILED_ATTEMPTS" />
+<jsp:useBean id="changeMaxFailedAttemptsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeMaxFailedAttemptsVariable" property="varName" value="CHANGE_MAX_FAILED_ATTEMPTS" />
+<jsp:useBean id="viewDisabledStatusVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewDisabledStatusVariable" property="varName" value="VIEW_DISABLED_STATUS" />
+<jsp:useBean id="viewActivatedStatusVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewActivatedStatusVariable" property="varName" value="VIEW_ACTIVATED_STATUS" />
+<jsp:useBean id="viewUserPermissionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="viewUserPermissionsVariable" property="varName" value="VIEW_USER_PERMISSIONS" />
+<jsp:useBean id="changeUserPermissionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="changeUserPermissionsVariable" property="varName" value="CHANGE_USER_PERMISSIONS" />
 
 <html>
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_user_permissions" bundle="${userPermissions}" /></title>
+        <title><fmt:message key="title_user_permissions" bundle="${userPermissionsBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -38,12 +73,77 @@
 </c:if>
 
         <script type="text/javascript">
+function disableCheckboxes(element, id) {
+    var checkbox;
+    if(id == 'all')
+        checkbox = $('input[type=checkbox]');
+    else
+        checkbox = $(id);
+    if(element.checked) {
+        checkbox.prop('disabled', false);
+        checkbox.parent().next().removeClass('text-muted').removeClass('disabled');
+    }
+    else {
+        checkbox.prop('disabled', true);
+        checkbox.parent().next().addClass('text-muted').addClass('disabled');
+    }
+    $(element).prop('disabled', false);
+    $(element).parent().next().removeClass('text-muted').removeClass('disabled');
+    if(id == 'all' && element.checked) {
+        $('#user-permissions-form :input').each(function(index) {
+            if(this.id != 'view-user-permissions' && this.id != 'change-user-permissions')
+                $(this).triggerHandler('change');
+        });
+    }
+}
+
 function inputChangeHandler(event) {
-    // settingsFormValidator.element(event.target);
+    dependentId = $(event.target).data('dependentId');
+    disableCheckboxes(event.target, dependentId);
 }
 
 $(document).ready(function() {
 
+    viewEmailAddressCheckbox = $('#view-email-address');
+    viewEmailAddressCheckbox.data('dependentId', '#change-email-address');
+    viewEmailAddressCheckbox.on('change', inputChangeHandler);
+
+    viewTimeZoneCheckbox = $('#view-time-zone');
+    viewTimeZoneCheckbox.data('dependentId', '#change-time-zone');
+    viewTimeZoneCheckbox.on('change', inputChangeHandler);
+
+    viewSessionTimeoutCheckbox = $('#view-session-timeout');
+    viewSessionTimeoutCheckbox.data('dependentId', '#change-session-timeout');
+    viewSessionTimeoutCheckbox.on('change', inputChangeHandler);
+
+    viewMaxSessionsCheckbox = $('#view-max-sessions');
+    viewMaxSessionsCheckbox.data('dependentId', '#change-max-sessions');
+    viewMaxSessionsCheckbox.on('change', inputChangeHandler);
+
+    viewExclusiveSessionCheckbox = $('#view-exclusive-session');
+    viewExclusiveSessionCheckbox.data('dependentId', '#change-exclusive-session');
+    viewExclusiveSessionCheckbox.on('change', inputChangeHandler);
+
+    viewMaxFailedAttemptsCheckbox = $('#view-max-failed-attempts');
+    viewMaxFailedAttemptsCheckbox.data('dependentId', '#change-max-failed-attempts');
+    viewMaxFailedAttemptsCheckbox.on('change', inputChangeHandler);
+
+    viewUserPermissionsCheckbox = $('#view-user-permissions');
+    viewUserPermissionsCheckbox.data('dependentId', 'all');
+    viewUserPermissionsCheckbox.on('change', inputChangeHandler);
+
+    changeUserPermissionsCheckbox = $('#change-user-permissions');
+    changeUserPermissionsCheckbox.data('dependentId', 'all');
+    changeUserPermissionsCheckbox.on('change', inputChangeHandler);
+
+    resetBtn = $('#reset-btn');
+    resetBtn.on('click', function(event) {
+        this.form.reset();
+        $('#user-permissions-form :input').each(function(index) {
+            $(this).triggerHandler('change');
+        });
+    });
+    resetBtn.trigger('click');
 });
         </script>
     </head>
@@ -54,8 +154,8 @@ $(document).ready(function() {
         <div class="page-header">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_user_permissions" bundle="${userPermissions}" /></h3></div>
+                    <div class="col-xs-12 col-sm-offset-2 col-sm-8">
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_user_permissions" bundle="${userPermissionsBundle}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -64,38 +164,198 @@ $(document).ready(function() {
         <main role="main">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-12 col-sm-offset-1 col-sm-10">
-
-                    <form name="user-permissions-form" class="form-horizontal" id="user-permissions-form" role="form">
+                <div class="col-xs-12 col-sm-offset-2 col-sm-8">
+<c:choose>
+    <c:when test="${userPermissions.changeUserPermissions}">
+                    <form name="user-permissions-form" method="post" action="/auth/user-permissions" class="form-horizontal" id="user-permissions-form" role="form">
                     <fieldset>
-<c:if test="${userPermissions.changePassword}">
+
                     <div class="form-group">
-        <c:choose>
-            <c:when test="${userPermissions.changeExclusiveSession and ((userPermissions.viewMaxSessions and userPermissions.changeMaxSessions) or (user.maxSessions eq 1))}">
-                <jsp:useBean id="exclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
-                <jsp:setProperty name="exclusiveSessionVariable" property="varName" value="EXCLUSIVE_SESSION" />
-                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                            <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
-                        </div>
-            </c:when>
-            <c:otherwise>
-                        <label class="col-xs-12 col-sm-3 control-label" for="exclusive-session"><fmt:message key="exclusive_session_label" bundle="${settings}" /></label>
-                        <div class="col-xs-12 col-sm-8"><p id="exclusive-session" class="form-control-static">${user.exclusiveSession ? fmtYes : fmtNo}</p></div>
-            </c:otherwise>
-        </c:choose>
-                    </div>
-</c:if>
-                    <div class="form-group">
-                        <label class="col-xs-12 col-sm-8 control-label" for="change-password"><fmt:message key="date_created_label" bundle="${settings}" /></label>
-                        <div class="col-xs-12 col-sm-3"><input name="${exclusiveSessionVariable.name}" id="change-password" type="checkbox" value="1"${userPermissions.changePassword ? " checked" : ""} /></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-xs-12 col-sm-8 control-label" for="change-password"><fmt:message key="date_created_label" bundle="${settings}" /></label>
-                        <div class="col-xs-12 col-sm-3"><p id="change-password" class="form-control-static"><c:out value="${user.dateCreated}" /></p></div>
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changePasswordVariable.name}" id="change-password" type="checkbox" value="1"${userPermissions.changePassword ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-password"><fmt:message key="change_password_label" bundle="${userPermissionsBundle}" /></label>
                     </div>
 
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewEmailAddressVariable.name}" id="view-email-address" type="checkbox" value="1"${userPermissions.viewEmailAddress ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-email-address"><fmt:message key="view_email_address_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeEmailAddressVariable.name}" id="change-email-address" type="checkbox" value="1"${userPermissions.changeEmailAddress ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-email-address"><fmt:message key="change_email_address_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewTimeZoneVariable.name}" id="view-time-zone" type="checkbox" value="1"${userPermissions.viewTimeZone ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-time-zone"><fmt:message key="view_time_zone_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeTimeZoneVariable.name}" id="change-time-zone" type="checkbox" value="1"${userPermissions.changeTimeZone ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-time-zone"><fmt:message key="change_time_zone_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewSessionTimeoutVariable.name}" id="view-session-timeout" type="checkbox" value="1"${userPermissions.viewSessionTimeout ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-session-timeout"><fmt:message key="view_session_timeout_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeSessionTimeoutVariable.name}" id="change-session-timeout" type="checkbox" value="1"${userPermissions.changeSessionTimeout ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-session-timeout"><fmt:message key="change_session_timeout_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewMaxSessionsVariable.name}" id="view-max-sessions" type="checkbox" value="1"${userPermissions.viewMaxSessions ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-max-sessions"><fmt:message key="view_max_sessions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeMaxSessionsVariable.name}" id="change-max-sessions" type="checkbox" value="1"${userPermissions.changeMaxSessions ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-max-sessions"><fmt:message key="change_max_sessions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewExclusiveSessionVariable.name}" id="view-exclusive-session" type="checkbox" value="1"${userPermissions.viewExclusiveSession ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-exclusive-session"><fmt:message key="view_exclusive_session_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeExclusiveSessionVariable.name}" id="change-exclusive-session" type="checkbox" value="1"${userPermissions.changeExclusiveSession ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-exclusive-session"><fmt:message key="change_exclusive_session_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewMaxFailedAttemptsVariable.name}" id="view-max-failed-attempts" type="checkbox" value="1"${userPermissions.viewMaxFailedAttempts ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-max-failed-attempts"><fmt:message key="view_max_failed_attempts_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeMaxFailedAttemptsVariable.name}" id="change-max-failed-attempts" type="checkbox" value="1"${userPermissions.changeMaxFailedAttempts ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-max-failed-attempts"><fmt:message key="change_max_failed_attempts_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewDisabledStatusVariable.name}" id="view-disabled-status" type="checkbox" value="1"${userPermissions.viewDisabledStatus ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-disabled-status"><fmt:message key="view_disabled_status_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewActivatedStatusVariable.name}" id="view-activated-status" type="checkbox" value="1"${userPermissions.viewActivatedStatus ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-activated-status"><fmt:message key="view_activated_status_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewUserPermissionsVariable.name}" id="view-user-permissions" type="checkbox" value="1"${userPermissions.viewUserPermissions ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="view-user-permissions"><fmt:message key="view_user_permissions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeUserPermissionsVariable.name}" id="change-user-permissions" type="checkbox" value="1"${userPermissions.changeUserPermissions ? " checked" : ""} /></div>
+                        <label class="col-xs-8 col-sm-8" for="change-user-permissions"><fmt:message key="change_user_permissions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <input id="submit-btn" type="submit" class="btn btn-default" value="<fmt:message key='change_user_permissions_button' bundle='${userPermissionsBundle}' />" />
+                            <input id="reset-btn" type="button" class="btn btn-default" value="<fmt:message key='reset_button' bundle='${userPermissionsBundle}' />" />
+                        </div>
+                    </div>
                     </fieldset>
                     </form>
+    </c:when>
+    <c:otherwise>
+                    <form name="user-permissions-form" class="form-horizontal" id="user-permissions-form" role="form">
+                    <fieldset>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changePassword ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-password"><fmt:message key="change_password_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewEmailAddress ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-email-address"><fmt:message key="view_email_address_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeEmailAddress ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-email-address"><fmt:message key="change_email_address_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewTimeZone ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-time-zone"><fmt:message key="view_time_zone_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeTimeZone ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-time-zone"><fmt:message key="change_time_zone_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewSessionTimeout ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-session-timeout"><fmt:message key="view_session_timeout_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeSessionTimeout ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-session-timeout"><fmt:message key="change_session_timeout_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewMaxSessions ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-max-sessions"><fmt:message key="view_max_sessions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeMaxSessions ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-max-sessions"><fmt:message key="change_max_sessions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewExclusiveSession ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-exclusive-session"><fmt:message key="view_exclusive_session_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeExclusiveSession ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-exclusive-session"><fmt:message key="change_exclusive_session_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewMaxFailedAttempts ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-max-failed-attempts"><fmt:message key="view_max_failed_attempts_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeMaxFailedAttempts ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-max-failed-attempts"><fmt:message key="change_max_failed_attempts_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewDisabledStatus ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-disabled-status"><fmt:message key="view_disabled_status_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewActivatedStatus ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-activated-status"><fmt:message key="view_activated_status_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.viewUserPermissions ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="view-user-permissions"><fmt:message key="view_user_permissions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-1 col-sm-3 text-right"><span class="glyphicon glyphicon-${userPermissions.changeUserPermissions ? "check" : "unchecked"}"></span></div>
+                        <label class="col-xs-8 col-sm-8" for="change-user-permissions"><fmt:message key="change_user_permissions_label" bundle="${userPermissionsBundle}" /></label>
+                    </div>
+                    </fieldset>
+                    </form>
+    </c:otherwise>
+</c:choose>
                 </div>
             </div>
         </div>

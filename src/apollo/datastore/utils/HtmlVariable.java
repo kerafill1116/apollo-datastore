@@ -19,7 +19,25 @@ public enum HtmlVariable {
     RESEND("resend"),
     SESSION_TIMEOUT("session-timeout"),
     TIME_ZONE_ID("time-zone-id"),
-    USER_ID("user-id");
+    USER_ID("user-id"),
+
+    CHANGE_PASSWORD("change-password"),
+    VIEW_EMAIL_ADDRESS("view-email-address"),
+    CHANGE_EMAIL_ADDRESS("change-email-address"),
+    VIEW_MAX_SESSIONS("view-max-sessions"),
+    CHANGE_MAX_SESSIONS("change-max-sessions"),
+    VIEW_EXCLUSIVE_SESSION("view-exclusive-session"),
+    CHANGE_EXCLUSIVE_SESSION("change-exclusive-session"),
+    VIEW_SESSION_TIMEOUT("view-session-timeout"),
+    CHANGE_SESSION_TIMEOUT("change-session-timeout"),
+    VIEW_MAX_FAILED_ATTEMPTS("view-max-failed-attempts"),
+    CHANGE_MAX_FAILED_ATTEMPTS("change-max-failed-attempts"),
+    VIEW_TIME_ZONE("view-time-zone"),
+    CHANGE_TIME_ZONE("change-time-zone"),
+    VIEW_DISABLED_STATUS("view-disabled-status"),
+    VIEW_ACTIVATED_STATUS("view-activated-status"),
+    VIEW_USER_PERMISSIONS("view-user-permissions"),
+    CHANGE_USER_PERMISSIONS("change-user-permissions");
 
     private final String name;
 

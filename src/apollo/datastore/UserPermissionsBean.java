@@ -27,6 +27,7 @@ public class UserPermissionsBean implements Serializable {
     private boolean viewDisabledStatus;
     private boolean viewActivatedStatus;
     private boolean viewUserPermissions;
+    private boolean changeUserPermissions;
 
     private boolean viewSessions;
     private boolean viewSessionPermissions;
@@ -66,6 +67,7 @@ public class UserPermissionsBean implements Serializable {
         this.viewActivatedStatus = (this.userPermissions & UserPermissions2.VIEW_ACTIVATED_STATUS.getCode()) == UserPermissions2.VIEW_ACTIVATED_STATUS.getCode();
 
         this.viewUserPermissions = (this.userPermissions & UserPermissions2.VIEW_USER_PERMISSIONS.getCode()) == UserPermissions2.VIEW_USER_PERMISSIONS.getCode();
+        this.changeUserPermissions = (this.userPermissions & UserPermissions2.CHANGE_USER_PERMISSIONS.getCode()) == UserPermissions2.CHANGE_USER_PERMISSIONS.getCode();
 
         this.viewSessions = (this.sessionPermissions & SessionPermissions.VIEW_SESSIONS.getCode()) == SessionPermissions.VIEW_SESSIONS.getCode();
         this.viewSessionPermissions = (this.sessionPermissions & SessionPermissions.VIEW_SESSION_PERMISSIONS.getCode()) == SessionPermissions.VIEW_SESSION_PERMISSIONS.getCode();
@@ -136,6 +138,10 @@ public class UserPermissionsBean implements Serializable {
 
     public boolean getViewUserPermissions() {
         return this.viewUserPermissions;
+    }
+
+    public boolean getChangeUserPermissions() {
+        return this.changeUserPermissions;
     }
 
     public boolean getViewSessions() {

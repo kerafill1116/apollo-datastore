@@ -154,20 +154,16 @@ $(document).ready(function() {
     <c:otherwise>
 $(document).ready(function() {
     $('#user-permissions-form label').each(function(index) {
+        var spanGlyphicon = $(this).prev().children('span');
+        var unchecked = spanGlyphicon.hasClass('glyphicon-unchecked');
+        if(unchecked)
+            $(this).parent().addClass('text-muted');
         var forProp = $(this).prop('for');
-        if(forProp.lastIndexOf('view-', 0) === 0 && forProp != 'view-user-permissions') {
+        if(forProp.lastIndexOf('view-', 0) === 0) {
             var nextLabel = $(this).parent().next().children('label');
             var nextProp = nextLabel.prop('for');
-            if(nextProp.lastIndexOf('change-', 0) === 0 ) {
-                var spanGlyphicon = $(this).prev().children('span');
-                if(spanGlyphicon.hasClass('glyphicon-unchecked'))
-                    $(this).parent().next().addClass('text-muted');
-            }
-        }
-        else if(forProp == 'view-user-permissions' || forProp == 'change-user-permissions') {
-            var spanGlyphicon = $(this).prev().children('span');
-            if(spanGlyphicon.hasClass('glyphicon-unchecked'))
-                $('#user-permissions-form .form-group').addClass('text-muted');
+            if(nextProp.lastIndexOf('change-', 0) === 0 && unchecked)
+                $(this).parent().next().addClass('text-muted');
         }
     });
 });

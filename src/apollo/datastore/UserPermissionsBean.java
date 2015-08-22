@@ -7,9 +7,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class UserPermissionsBean implements Serializable {
 
-    private int userPermissions;
-    private int sessionPermissions;
-    private int sessionLogPermissions;
+    private long userPermissions;
+    private long sessionPermissions;
+    private long sessionLogPermissions;
 
     private boolean changePassword;
     private boolean viewEmailAddress;

@@ -27,13 +27,13 @@ public enum UserPermissions2 {
                                VIEW_DISABLED_STATUS.code +
                                VIEW_ACTIVATED_STATUS.code);
 
-    private final int code;
+    private final long code;
 
-    private UserPermissions2(int code) {
+    private UserPermissions2(long code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

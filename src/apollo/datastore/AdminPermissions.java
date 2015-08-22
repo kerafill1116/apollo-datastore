@@ -13,7 +13,7 @@ public class AdminPermissions implements Serializable {
 
     private Entity entity;
 
-    public AdminPermissions(String userId, int usersPermissions, int sessionsPermissions, int sessionLogsPermissions) {
+    public AdminPermissions(String userId, long usersPermissions, long sessionsPermissions, long sessionLogsPermissions) {
         this.entity = new Entity(DatastoreProperties.KIND.getName(), userId);
 
         this.entity.setProperty(DatastoreProperties.USERS_PERMISSIONS.getName(), usersPermissions);
@@ -21,7 +21,7 @@ public class AdminPermissions implements Serializable {
         this.entity.setProperty(DatastoreProperties.SESSION_LOGS_PERMISSIONS.getName(), sessionLogsPermissions);
     }
 
-    public AdminPermissions(User user, int usersPermissions, int sessionsPermissions, int sessionLogsPermissions) {
+    public AdminPermissions(User user, long usersPermissions, long sessionsPermissions, long sessionLogsPermissions) {
         this(user.getUserId(), usersPermissions, sessionsPermissions, sessionLogsPermissions);
     }
 
@@ -41,27 +41,27 @@ public class AdminPermissions implements Serializable {
         this.entity = adminPermissionsEntity;
     }
 
-    public int getUsersPermissions() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.USERS_PERMISSIONS.getName());
+    public long getUsersPermissions() {
+        return (long)this.entity.getProperty(DatastoreProperties.USERS_PERMISSIONS.getName());
     }
 
-    public void setUsersPermissions(int usersPermissions) {
+    public void setUsersPermissions(long usersPermissions) {
         this.entity.setProperty(DatastoreProperties.USERS_PERMISSIONS.getName(), usersPermissions);
     }
 
-    public int getSessionsPermissions() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSIONS_PERMISSIONS.getName());
+    public long getSessionsPermissions() {
+        return (long)this.entity.getProperty(DatastoreProperties.SESSIONS_PERMISSIONS.getName());
     }
 
-    public void setSessionsPermissions(int sessionsPermissions) {
+    public void setSessionsPermissions(long sessionsPermissions) {
         this.entity.setProperty(DatastoreProperties.SESSIONS_PERMISSIONS.getName(), sessionsPermissions);
     }
 
-    public int getSessionLogsPermissions() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSION_LOGS_PERMISSIONS.getName());
+    public long getSessionLogsPermissions() {
+        return (long)this.entity.getProperty(DatastoreProperties.SESSION_LOGS_PERMISSIONS.getName());
     }
 
-    public void setSessionLogsPermissions(int sessionLogsPermissions) {
+    public void setSessionLogsPermissions(long sessionLogsPermissions) {
         this.entity.setProperty(DatastoreProperties.SESSION_LOGS_PERMISSIONS.getName(), sessionLogsPermissions);
     }
 

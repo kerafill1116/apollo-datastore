@@ -7,9 +7,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class AdminPermissionsBean implements Serializable {
 
-    private int usersPermissions;
-    private int sessionsPermissions;
-    private int sessionLogsPermissions;
+    private long usersPermissions;
+    private long sessionsPermissions;
+    private long sessionLogsPermissions;
 
     private boolean viewUsers;
     private boolean viewUsersPermissions;

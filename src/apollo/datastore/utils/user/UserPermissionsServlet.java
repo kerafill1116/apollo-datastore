@@ -45,7 +45,7 @@ public class UserPermissionsServlet extends HttpServlet {
 
         if(userPermissionsBean.getViewUserPermissions() && userPermissionsBean.getChangeUserPermissions()) {
 
-            int userPermissionsCode = 0;
+            long userPermissionsCode = 0;
             if(req.getParameter(HtmlVariable.CHANGE_PASSWORD.getName()) != null)
                 userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_PASSWORD.getCode();
             if(req.getParameter(HtmlVariable.VIEW_EMAIL_ADDRESS.getName()) != null)

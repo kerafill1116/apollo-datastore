@@ -8,13 +8,13 @@ public enum SessionPermissions {
     ALL_PERMISSIONS           ((1 << 4) - 1),
     DEFAULT_PERMISSIONS       (0);
 
-    private final int code;
+    private final long code;
 
-    private SessionPermissions(int code) {
+    private SessionPermissions(long code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

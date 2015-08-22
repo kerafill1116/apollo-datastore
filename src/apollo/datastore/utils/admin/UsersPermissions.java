@@ -27,13 +27,13 @@ public enum UsersPermissions {
     ALL_PERMISSIONS           ((1 << 23) - 1),
     DEFAULT_PERMISSIONS       (0);
 
-    private final int code;
+    private final long code;
 
-    private UsersPermissions(int code) {
+    private UsersPermissions(long code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

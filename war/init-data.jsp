@@ -37,12 +37,12 @@ try {
         if(timeZoneEntry.length >= 2) {
             txn = datastore.beginTransaction();
             if(TimeZoneFactory.getByTimeZoneId(datastore, txn, timeZoneEntry[1]) == null) {
-                TimeZone timeZone = new TimeZone(timeZoneEntry[1], Integer.parseInt(timeZoneEntry[0]));
+                TimeZone timeZone = new TimeZone(timeZoneEntry[1], Integer.parseInt(timeZoneEntry[0]), timeZoneEntry[2]);
                 TimeZoneFactory.add(datastore, txn, timeZone);
                 out.print("added - ");
             }
             txn.commit();
-            out.print(timeZoneEntry[0] + ";" + timeZoneEntry[1] + "\n");
+            out.print(timeZoneEntry[0] + ";" + timeZoneEntry[1] + ";" + timeZoneEntry[2] + "\n");
         }
     }
     out.print("\n\n");

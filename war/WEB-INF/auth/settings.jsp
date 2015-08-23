@@ -361,9 +361,10 @@ $(document).ready(function() {
                         </div>
                     </div>
 </c:if>
+<fmt:setTimeZone value="${user.dateFormatId}" />
                     <div class="form-group">
                         <label class="col-xs-12 col-sm-3 control-label" for="date-created"><fmt:message key="date_created_label" bundle="${settings}" /></label>
-                        <div class="col-xs-12 col-sm-8"><p id="date-created" class="form-control-static"><c:out value="${user.dateCreated}" /></p></div>
+                        <div class="col-xs-12 col-sm-8"><p id="date-created" class="form-control-static"><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${user.dateCreated}" /></p></div>
                     </div>
 
                     </fieldset>

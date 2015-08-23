@@ -5,6 +5,7 @@ import apollo.datastore.utils.HtmlVariable;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.datastore.TransactionOptions;
 
@@ -99,7 +100,14 @@ public class AuthFilter implements Filter {
             if(user == null)
                 error = Error.NON_EXISTENT_USER;
             else {
-                request.setAttribute(AuthRequestAttribute.USER.getName(), new UserBean(user));
+                UserBean userBean = new UserBean(user);
+                Key timeZoneKey = userBean.getTimeZoneKey();
+                TimeZone timeZone = null;
+                if(timeZoneKey != null && (timeZone = TimeZoneFactory.getByKey(datastore, null, timeZoneKey)) != null)
+                    userBean.setDateFormatId(timeZone.getDateFormatId());
+                else
+                    userBean.setDateFormatId(TimeZone.GMT_DATE_FORMAT_ID);
+                request.setAttribute(AuthRequestAttribute.USER.getName(), userBean);
                 AdminPermissions adminPermissions = PermissionsFactory.getAdminPermissionsByUserId(datastore, null, user.getUserId());
                 request.setAttribute(AuthRequestAttribute.ADMIN_PERMISSIONS.getName(), (adminPermissions != null) ? new AdminPermissionsBean(adminPermissions) : new AdminPermissionsBean());
                 UserPermissions userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, null, user.getUserId());

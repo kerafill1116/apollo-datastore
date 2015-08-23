@@ -21,6 +21,7 @@ public class UserBean implements Serializable {
     private int maxFailedAttempts;
     private boolean useTimeSlots;
     private Key timeZoneKey;
+    private String dateFormatId;
     private Date dateCreated;
 
     public UserBean(User user) {
@@ -121,6 +122,14 @@ public class UserBean implements Serializable {
         catch(IllegalArgumentException e) { }
         catch(NullPointerException e) { }
         return timeZoneKeyString;
+    }
+
+    public String getDateFormatId() {
+        return this.dateFormatId;
+    }
+
+    public void setDateFormatId(String dateFormatId) {
+        this.dateFormatId = dateFormatId;
     }
 
     public Date getDateCreated() {

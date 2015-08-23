@@ -20,6 +20,7 @@
 <%@ page import="java.io.FileReader" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.util.ConcurrentModificationException" %>
+<%@ page import="java.net.URLEncoder" %>
 <%
 DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 Transaction txn = null;
@@ -110,4 +111,13 @@ finally {
     if(txn != null && txn.isActive())
         txn.rollback();
 }
+
+String encrypted = MiscFunctions.encryptAES(userId, "datastorecursor");
+out.print("encrypted = " + encrypted + "\n");
+String decrypted = MiscFunctions.decryptAES(userId, encrypted);
+out.print("decrypted = " + decrypted);
+
+out.print("\nURLEncoder = " + URLEncoder.encode(encrypted, "UTF-8"));
+out.print("\nm = " + request.getParameter("m"));
+
 %>

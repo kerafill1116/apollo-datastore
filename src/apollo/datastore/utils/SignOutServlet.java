@@ -94,6 +94,6 @@ public class SignOutServlet extends HttpServlet {
         urlParams.append("=");
         urlParams.append(causeOfDisconnect.toString());
 
-        resp.sendRedirect(resp.encodeRedirectURL(urlParams.toString()));
+        resp.sendRedirect(urlParams.toString());
     }
 }

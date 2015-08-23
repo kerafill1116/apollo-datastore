@@ -129,7 +129,7 @@ public class AuthFilter implements Filter {
             urlParams.append("=");
             urlParams.append(causeOfDisconnect.toString());
 
-            response.sendRedirect(response.encodeRedirectURL(urlParams.toString()));
+            response.sendRedirect(urlParams.toString());
         }
     }
 

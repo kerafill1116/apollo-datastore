@@ -53,24 +53,16 @@ function inputChangeHandler(event) {
     settingsFormValidator.element(event.target);
 }
 
+function hideModal() {
+	updateSettingModal.modal('hide');
+	updateSettingModal.off('shown.bs.modal');
+}
+
 function updateSettingHandler(event) {
     updateSetting(event.target);
 }
 
-function updateSetting(element) {
-    var inputElement = $(element);
-    var isCheckbox = (element.type == 'checkbox');
-    if(!isCheckbox && (inputElement.data('oldVal') == inputElement.val()))
-        return;
-
-    updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settings}" />');
-    updateSettingModalContentDiv.removeClass('text-danger');
-    updateSettingModalContentDiv.removeClass('text-success');
-    updateSettingModal.modal('show');
-
-    var elementValue = element.value;
-    if(isCheckbox && !element.checked)
-        elementValue = '0';
+function updateSettingModalHandler(element, elementValue) {
     $.ajax({
         cache: false,
         dataType: 'json',
@@ -80,19 +72,37 @@ function updateSetting(element) {
         if(!data['${errorVariable.name}']) {
             updateSettingModalContentDiv.html('<fmt:message key="updated" bundle="${settings}" />');
             updateSettingModalContentDiv.addClass('text-success');
-            if(!isCheckbox)
-                inputElement.data('oldVal', elementValue);
+            if(!(element.type == 'checkbox'))
+            	$(element).data('oldVal', elementValue);
         }
         else {
             updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
             updateSettingModalContentDiv.addClass('text-danger');
         }
-        setTimeout(function() { updateSettingModal.modal('hide'); }, 500);
+        setTimeout(hideModal, 100);
     }).fail(function(jqXHR, textStatus, errorThrown) {
         updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
         updateSettingModalContentDiv.addClass('text-danger');
-        setTimeout(function() { updateSettingModal.modal('hide'); }, 500);
+        setTimeout(hideModal, 100);
     });
+}
+
+function updateSetting(element) {
+    var inputElement = $(element);
+    var isCheckbox = (element.type == 'checkbox');
+    if(!isCheckbox && (inputElement.data('oldVal') == inputElement.val()))
+        return;
+    var elementValue = element.value;
+    if(isCheckbox && !element.checked)
+        elementValue = '0';
+
+    updateSettingModal.on('shown.bs.modal', function(event) {
+    	updateSettingModalHandler(element, elementValue);
+    });
+    updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settings}" />');
+    updateSettingModalContentDiv.removeClass('text-danger');
+    updateSettingModalContentDiv.removeClass('text-success');
+    updateSettingModal.modal('show');
 }
 
 $(document).ready(function() {

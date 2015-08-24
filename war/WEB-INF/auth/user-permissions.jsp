@@ -149,6 +149,15 @@ $(document).ready(function() {
         });
     });
     resetBtn.trigger('click');
+
+    userPermissionsForm = $('#user-permissions-form');
+    userPermissionsForm.on('submit', function(event) {
+        allCheckboxes.each(function(index) {
+            if(this.checked)
+                this.disabled = false;
+        });
+    });
+
 });
     </c:when>
     <c:otherwise>

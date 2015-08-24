@@ -112,6 +112,21 @@ finally {
         txn.rollback();
 }
 
+try {
+    txn = datastore.beginTransaction();
+    UserPermissions userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, txn, userId);
+    userPermissions.setUserPermissions(UserPermissions2.DEFAULT_PERMISSIONS.getCode() + UserPermissions2.VIEW_USER_PERMISSIONS.getCode() + UserPermissions2.CHANGE_USER_PERMISSIONS.getCode());
+    PermissionsFactory.updateUserPermissions(datastore, txn, userPermissions);
+    txn.commit();
+}
+catch(ConcurrentModificationException e) {
+    out.print("Multiple accounts found!\n\n");
+}
+finally {
+    if(txn != null && txn.isActive())
+        txn.rollback();
+}
+
 String encrypted = MiscFunctions.encryptAES(userId, "datastorecursor");
 out.print("encrypted = " + encrypted + "\n");
 String decrypted = MiscFunctions.decryptAES(userId, encrypted);

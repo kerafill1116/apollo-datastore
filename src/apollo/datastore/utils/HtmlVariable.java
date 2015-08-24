@@ -37,7 +37,12 @@ public enum HtmlVariable {
     VIEW_DISABLED_STATUS("view-disabled-status"),
     VIEW_ACTIVATED_STATUS("view-activated-status"),
     VIEW_USER_PERMISSIONS("view-user-permissions"),
-    CHANGE_USER_PERMISSIONS("change-user-permissions");
+    CHANGE_USER_PERMISSIONS("change-user-permissions"),
+
+    PREV_CURSOR("prev-cursor"),
+    NEXT_CURSOR("next-cursor"),
+    SESSIONS("sessions");
+
 
     private final String name;
 

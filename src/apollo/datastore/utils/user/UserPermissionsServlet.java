@@ -41,6 +41,7 @@ public class UserPermissionsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
         if(userPermissionsBean.getViewUserPermissions() && userPermissionsBean.getChangeUserPermissions()) {
@@ -96,7 +97,8 @@ public class UserPermissionsServlet extends HttpServlet {
                     userPermissions.setUserPermissions(userPermissionsCode);
                     PermissionsFactory.updateUserPermissions(datastore, txn, userPermissions);
                     txn.commit();
-                    req.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), new UserPermissionsBean(userPermissions));
+                    userPermissionsBean = new UserPermissionsBean(userPermissions);
+                    req.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), userPermissionsBean);
                 }
                 catch(ConcurrentModificationException e) {
                     error = Error.ERROR_IN_USER_PERMISSIONS;
@@ -105,8 +107,12 @@ public class UserPermissionsServlet extends HttpServlet {
             if(error != Error.NONE && txn.isActive())
                 txn.rollback();
 
-            req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
-            req.getRequestDispatcher("/WEB-INF/auth/user-permissions.jsp").forward(req, resp);
+            if(userPermissionsBean.getViewUserPermissions()) {
+                req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+                req.getRequestDispatcher("/WEB-INF/auth/user-permissions.jsp").forward(req, resp);
+            }
+            else
+                resp.sendRedirect("/auth/settings");
         }
         else
             resp.sendRedirect("/auth/settings");

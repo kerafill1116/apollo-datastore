@@ -54,8 +54,8 @@ function inputChangeHandler(event) {
 }
 
 function hideModal() {
-	updateSettingModal.modal('hide');
-	updateSettingModal.off('shown.bs.modal');
+    updateSettingModal.modal('hide');
+    updateSettingModal.off('shown.bs.modal');
 }
 
 function updateSettingHandler(event) {
@@ -73,7 +73,7 @@ function updateSettingModalHandler(element, elementValue) {
             updateSettingModalContentDiv.html('<fmt:message key="updated" bundle="${settingsBundle}" />');
             updateSettingModalContentDiv.addClass('text-success');
             if(!(element.type == 'checkbox'))
-            	$(element).data('oldVal', elementValue);
+                $(element).data('oldVal', elementValue);
         }
         else {
             updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settingsBundle}" />');
@@ -97,7 +97,7 @@ function updateSetting(element) {
         elementValue = '0';
 
     updateSettingModal.on('shown.bs.modal', function(event) {
-    	updateSettingModalHandler(element, elementValue);
+        updateSettingModalHandler(element, elementValue);
     });
     updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settingsBundle}" />');
     updateSettingModalContentDiv.removeClass('text-danger');

@@ -4,6 +4,7 @@ import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.Session;
 import apollo.datastore.Session.DatastoreProperties;
 import apollo.datastore.MiscFunctions;
+import apollo.datastore.SessionLog;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserPermissionsBean;
 import apollo.datastore.utils.HtmlVariable;
@@ -64,7 +65,7 @@ public class SessionsServlet extends HttpServlet {
             catch(Exception e) { }
 
             Filter userFilter = new FilterPredicate(DatastoreProperties.USER_KEY.getName(), FilterOperator.EQUAL, userBean.getKey());
-            Query q = new Query(DatastoreProperties.KIND.getName());
+            Query q = new Query(SessionLog.DatastoreProperties.KIND.getName());
             q.setFilter(userFilter);
             PreparedQuery pq = datastore.prepare(q);
             ArrayList<Session> sessions = new ArrayList<Session>();
@@ -93,7 +94,9 @@ public class SessionsServlet extends HttpServlet {
                     responseJson.append(df.format(session.getLastSessionCheck()));
                     responseJson.append("\", ");
                     responseJson.append(session.getSessionTimeout());
-                    responseJson.append(" ], ");
+                    responseJson.append(", \"");
+                    responseJson.append(session.getSessionId());
+                    responseJson.append("\" ], ");
                 }
                 if(sessions.size() > 0)
                     responseJson.delete(responseJson.length() - 2, responseJson.length());
@@ -127,6 +130,7 @@ public class SessionsServlet extends HttpServlet {
                 }
                 cursorListJson.append(" ]");
                 req.setAttribute(AuthRequestAttribute.SESSIONS.getName(), sessions);
+                req.setAttribute(AuthRequestAttribute.PAGE_SIZE.getName(), PAGE_SIZE);
                 req.setAttribute(AuthRequestAttribute.CURSOR_LIST.getName(), cursorListJson);
                 req.getRequestDispatcher("/WEB-INF/auth/sessions.jsp").forward(req, resp);
             }

@@ -63,6 +63,13 @@ function populateTbody(sessions) {
     }
 }
 
+function updateCounter() {
+    var x = cursorList.length - 3;
+    var counterText1 = (x * pageSize) - (pageSize - 1);
+    var counterText2 = (counterText1 - 1) + sessionsTbody.children().length;
+    counterSpan.html(counterText1 + ' - ' + counterText2);
+}
+
 function initBtns() {
     var length = cursorList.length;
     prevBtn.prop('disabled', cursorList[length - 3] == null);
@@ -81,6 +88,7 @@ function fetchPrevModalHandler(event) {
         cursorList.pop();
         cursorList.pop();
         cursorList.push(data['${nextCursorVariable.name}']);
+        updateCounter();
         initBtns();
         setTimeout(hideModal, 100);
     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -107,6 +115,7 @@ function fetchNextModalHandler(event) {
         sessionsTbody.children().remove();
         populateTbody(data['${sessionsVariable.name}']);
         cursorList.push(data['${nextCursorVariable.name}']);
+        updateCounter();
         initBtns();
         setTimeout(hideModal, 500);
     }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -124,12 +133,15 @@ function fetchNextHandler(event) {
 }
 
 $(document).ready(function() {
+    pageSize = ${pageSize};
     cursorList = ${cursorList};
     prevBtn = $('#prev-btn');
     nextBtn = $('#next-btn');
     sessionsTbody = $('#sessions-tbody');
+    counterSpan = $('#counter');
     prevBtn.on('click', fetchPrevHandler);
     nextBtn.on('click', fetchNextHandler);
+    updateCounter();
     initBtns();
     loadingModal = $('#loading-modal');
     loadingModal.modal({
@@ -165,7 +177,7 @@ $(document).ready(function() {
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-xs-12 col-sm-offset-2 col-sm-8 text-right"><p>
+                <div class="col-xs-12 col-sm-offset-2 col-sm-8 text-right"><p><span id="counter"></span>
                     <button id="prev-btn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     <button id="next-btn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-right"></span></button>
                 </p></div>

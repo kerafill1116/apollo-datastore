@@ -7,8 +7,8 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.SettingsBundle" var="settings" />
-<fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZones" />
+<fmt:setBundle basename="apollo.datastore.i18n.SettingsBundle" var="settingsBundle" />
+<fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZonesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -18,7 +18,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_settings" bundle="${settings}" /></title>
+        <title><fmt:message key="title_settings" bundle="${settingsBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -70,18 +70,18 @@ function updateSettingModalHandler(element, elementValue) {
         data: element.name + '=' + elementValue
     }).done(function(data, textStatus, jqXHR) {
         if(!data['${errorVariable.name}']) {
-            updateSettingModalContentDiv.html('<fmt:message key="updated" bundle="${settings}" />');
+            updateSettingModalContentDiv.html('<fmt:message key="updated" bundle="${settingsBundle}" />');
             updateSettingModalContentDiv.addClass('text-success');
             if(!(element.type == 'checkbox'))
             	$(element).data('oldVal', elementValue);
         }
         else {
-            updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
+            updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settingsBundle}" />');
             updateSettingModalContentDiv.addClass('text-danger');
         }
         setTimeout(hideModal, 100);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settings}" />');
+        updateSettingModalContentDiv.html('<fmt:message key="update_failed" bundle="${settingsBundle}" />');
         updateSettingModalContentDiv.addClass('text-danger');
         setTimeout(hideModal, 100);
     });
@@ -99,7 +99,7 @@ function updateSetting(element) {
     updateSettingModal.on('shown.bs.modal', function(event) {
     	updateSettingModalHandler(element, elementValue);
     });
-    updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settings}" />');
+    updateSettingModalContentDiv.html('<fmt:message key="updating" bundle="${settingsBundle}" />');
     updateSettingModalContentDiv.removeClass('text-danger');
     updateSettingModalContentDiv.removeClass('text-success');
     updateSettingModal.modal('show');
@@ -217,7 +217,7 @@ $(document).ready(function() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_settings" bundle="${settings}" /></h3></div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_settings" bundle="${settingsBundle}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -238,13 +238,13 @@ $(document).ready(function() {
                     <fieldset>
 <c:if test="${userPermissions.viewEmailAddress}">
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="email-address"><fmt:message key="email_address_label" bundle="${settings}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="email-address"><fmt:message key="email_address_label" bundle="${settingsBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><p id="email-address" class="form-control-static"><c:out value="${user.emailAddress}" /></p></div>
                     </div>
 </c:if>
 <c:if test="${userPermissions.viewTimeZone}">
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="time-zone-id"><fmt:message key="time_zone_label" bundle="${settings}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="time-zone-id"><fmt:message key="time_zone_label" bundle="${settingsBundle}" /></label>
                         <div class="col-xs-12 col-sm-8">
     <c:set var="timeZoneId" value="${(user.timeZoneKey ne null) ? user.timeZoneKey.name : null}" />
     <c:choose>
@@ -252,19 +252,19 @@ $(document).ready(function() {
             <jsp:useBean id="timeZoneIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
             <jsp:setProperty name="timeZoneIdVariable" property="varName" value="TIME_ZONE_ID" />
                             <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id" >
-                                <option value=""><fmt:message key="time_zone_choose_option" bundle="${settings}" /></option>
+                                <option value=""><fmt:message key="time_zone_choose_option" bundle="${settingsBundle}" /></option>
             <c:forEach var="timeZone" items="${jf:timeZonesArray()}" varStatus="loopCounter" >
-                                <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneId ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZones}" /></option>
+                                <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneId ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZonesBundle}" /></option>
             </c:forEach>
                             </select>
         </c:when>
         <c:otherwise>
             <c:choose>
                 <c:when test="${timeZoneId ne null}">
-                            <p id="time-zone-id" class="form-control-static"><fmt:message key="${timeZoneId}" bundle="${timeZones}" /></p>
+                            <p id="time-zone-id" class="form-control-static"><fmt:message key="${timeZoneId}" bundle="${timeZonesBundle}" /></p>
                 </c:when>
                 <c:otherwise>
-                            <p id="time-zone-id" class="form-control-static"><fmt:message key="undefined" bundle="${settings}" /></p>
+                            <p id="time-zone-id" class="form-control-static"><fmt:message key="undefined" bundle="${settingsBundle}" /></p>
                 </c:otherwise>
             </c:choose>
         </c:otherwise>
@@ -273,25 +273,25 @@ $(document).ready(function() {
                     </div>
 </c:if>
 
-<fmt:message key="yes" bundle="${settings}" var="fmtYes"/>
-<fmt:message key="no" bundle="${settings}" var="fmtNo"/>
+<fmt:message key="yes" bundle="${settingsBundle}" var="fmtYes"/>
+<fmt:message key="no" bundle="${settingsBundle}" var="fmtNo"/>
 <c:if test="${userPermissions.viewSessionTimeout or userPermissions.viewMaxSessions or (userPermissions.viewExclusiveSession and (user.maxSessions eq 1))}">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><fmt:message key="session" bundle="${settings}" /></div>
+                        <div class="panel-heading"><fmt:message key="session" bundle="${settingsBundle}" /></div>
                         <div class="panel-body">
     <c:if test="${userPermissions.viewSessionTimeout}">
                             <div class="form-group">
-                                <label class="col-xs-12 col-sm-3 control-label" for="session-timeout"><fmt:message key="session_timeout_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="session-timeout"><fmt:message key="session_timeout_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8">
         <c:choose>
             <c:when test="${userPermissions.changeSessionTimeout}">
                                     <div class="input-group" id="session-timeout-input-group">
                                         <input name="${sessionTimeoutVariable.name}" type="number" min="0" class="form-control" id="session-timeout" required value="<c:out value='${user.sessionTimeout}' />" />
-                                        <span class="input-group-addon"><fmt:message key="seconds" bundle="${settings}" /></span>
+                                        <span class="input-group-addon"><fmt:message key="seconds" bundle="${settingsBundle}" /></span>
                                     </div>
             </c:when>
             <c:otherwise>
-                                    <p id="session-timeout" class="form-control-static">${user.sessionTimeout} <fmt:message key="seconds" bundle="${settings}" /></p>
+                                    <p id="session-timeout" class="form-control-static">${user.sessionTimeout} <fmt:message key="seconds" bundle="${settingsBundle}" /></p>
             </c:otherwise>
         </c:choose>
                                 </div>
@@ -299,7 +299,7 @@ $(document).ready(function() {
     </c:if>
     <c:if test="${userPermissions.viewMaxSessions}">
                             <div class="form-group">
-                                <label class="col-xs-12 col-sm-3 control-label" for="max-sessions"><fmt:message key="max_sessions_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="max-sessions"><fmt:message key="max_sessions_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8">
         <c:choose>
             <c:when test="${userPermissions.changeMaxSessions}">
@@ -319,11 +319,11 @@ $(document).ready(function() {
                 <jsp:useBean id="exclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
                 <jsp:setProperty name="exclusiveSessionVariable" property="varName" value="EXCLUSIVE_SESSION" />
                                 <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settings}" /></strong></label></div>
+                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settingsBundle}" /></strong></label></div>
                                 </div>
             </c:when>
             <c:otherwise>
-                                <label class="col-xs-12 col-sm-3 control-label" for="exclusive-session"><fmt:message key="exclusive_session_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="exclusive-session"><fmt:message key="exclusive_session_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8"><p id="exclusive-session" class="form-control-static">${user.exclusiveSession ? fmtYes : fmtNo}</p></div>
             </c:otherwise>
         </c:choose>
@@ -334,10 +334,10 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${userPermissions.viewMaxFailedAttempts}">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><fmt:message key="security" bundle="${settings}" /></div>
+                        <div class="panel-heading"><fmt:message key="security" bundle="${settingsBundle}" /></div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label class="col-xs-12 col-sm-3 control-label" for="max-failed-attempts"><fmt:message key="max_failed_attempts_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="max-failed-attempts"><fmt:message key="max_failed_attempts_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8">
     <c:choose>
         <c:when test="${userPermissions.changeMaxFailedAttempts}">
@@ -354,17 +354,17 @@ $(document).ready(function() {
 </c:if>
 <c:if test="${userPermissions.viewDisabledStatus or userPermissions.viewActivatedStatus}">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><fmt:message key="status" bundle="${settings}" /></div>
+                        <div class="panel-heading"><fmt:message key="status" bundle="${settingsBundle}" /></div>
                         <div class="panel-body">
     <c:if test="${userPermissions.viewDisabledStatus}">
                             <div class="form-group">
-                                <label class="col-xs-12 col-sm-3 control-label" for="disabled"><fmt:message key="disabled_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="disabled"><fmt:message key="disabled_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8"><p id="disabled" class="form-control-static">${user.disabled ? fmtYes : fmtNo}</p></div>
                             </div>
     </c:if>
     <c:if test="${userPermissions.viewActivatedStatus}">
                             <div class="form-group">
-                                <label class="col-xs-12 col-sm-3 control-label" for="activated"><fmt:message key="activated_label" bundle="${settings}" /></label>
+                                <label class="col-xs-12 col-sm-3 control-label" for="activated"><fmt:message key="activated_label" bundle="${settingsBundle}" /></label>
                                 <div class="col-xs-12 col-sm-8"><p id="activated" class="form-control-static">${user.activated ? fmtYes : fmtNo}</p></div>
                             </div>
     </c:if>
@@ -373,7 +373,7 @@ $(document).ready(function() {
 </c:if>
 <fmt:setTimeZone value="${user.dateFormatId}" />
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="date-created"><fmt:message key="date_created_label" bundle="${settings}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="date-created"><fmt:message key="date_created_label" bundle="${settingsBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><p id="date-created" class="form-control-static"><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${user.dateCreated}" /></p></div>
                     </div>
 

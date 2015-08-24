@@ -6,8 +6,8 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilities" />
-<fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
+<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
+<fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -30,32 +30,32 @@
 
 <c:choose>
     <c:when test="${errorVariable.value eq errorNone.code}" >
-        <fmt:message key="page_header_activate_user_report" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_activate_user_report" bundle="${utilities}" var="errorMessage" />
+        <fmt:message key="page_header_activate_user_report" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_activate_user_report" bundle="${utilitiesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorRequiredActivationKey.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_required_activation_key" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_required_activation_key" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorInvalidActivationKey.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_invalid_activation_key" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_invalid_activation_key" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorNonExistentUser.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_non_existent_user" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_non_existent_user" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorAlreadyActivatedUser.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_already_activated_user" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_already_activated_user" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorInActivation.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_in_activation" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_in_activation" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:otherwise>
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_invalid" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:otherwise>
 </c:choose>
 
@@ -64,7 +64,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_activate_user_report" bundle="${utilities}" /></title>
+        <title><fmt:message key="title_activate_user_report" bundle="${utilitiesBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -101,7 +101,7 @@
 
 <c:if test="${errorVariable.value eq errorNone.code}">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12"><br /><fmt:message key="redirecting" bundle="${utilities}" /> <span id="seconds">3</span></div>
+                        <div class="col-xs-12 col-sm-12"><br /><fmt:message key="redirecting" bundle="${utilitiesBundle}" /> <span id="seconds">3</span></div>
                     </div>
 
                     <script type="text/javascript">

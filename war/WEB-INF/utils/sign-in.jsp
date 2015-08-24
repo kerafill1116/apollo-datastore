@@ -7,7 +7,7 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilities" />
+<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -47,7 +47,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_sign_in" bundle="${utilities}" /></title>
+        <title><fmt:message key="title_sign_in" bundle="${utilitiesBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -142,7 +142,7 @@ $(document).ready(function() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_sign_in" bundle="${utilities}" /></h3></div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_sign_in" bundle="${utilitiesBundle}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -157,31 +157,31 @@ $(document).ready(function() {
 
                     <fieldset>
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" /></div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="password"><fmt:message key="password_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="password"><fmt:message key="password_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><input name="${passwordVariable.name}" type="password" class="form-control" id="password" maxlength="64" /></div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                            <input id="submit-btn" type="submit" class="btn btn-default" value="<fmt:message key='sign_in_button' bundle='${utilities}' />" />
-                            <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${utilities}' />" />
+                            <input id="submit-btn" type="submit" class="btn btn-default" value="<fmt:message key='sign_in_button' bundle='${utilitiesBundle}' />" />
+                            <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${utilitiesBundle}' />" />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                            <div class="checkbox"><label><input name="${rememberMeVariable.name}" type="checkbox" id="remember-me" value="1"${not empty rememberMeVariable.value ? " checked" : ""} /> <fmt:message key="remember_me" bundle="${utilities}" /></label></div>
+                            <div class="checkbox"><label><input name="${rememberMeVariable.name}" type="checkbox" id="remember-me" value="1"${not empty rememberMeVariable.value ? " checked" : ""} /> <fmt:message key="remember_me" bundle="${utilitiesBundle}" /></label></div>
                         </div>
                     </div>
                     </fieldset>
                     </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
+    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorRequiredUserId" property="constant" value="REQUIRED_USER_ID" />
     <jsp:useBean id="errorNonExistentUser" class="apollo.datastore.utils.ErrorBean" />
@@ -208,49 +208,49 @@ $(document).ready(function() {
     <jsp:setProperty name="errorInSessionCheck" property="constant" value="ERROR_IN_SESSION_CHECK" />
     <c:choose>
         <c:when test="${errorVariable.value eq errorRequiredUserId.code}" >
-            <fmt:message key="message_error_required_user_id" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_required_user_id" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorNonExistentUser.code}" >
-            <fmt:message key="message_error_non_existent_user" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_non_existent_user" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorIncorrectPassword.code}" >
-            <fmt:message key="message_error_incorrect_password" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_incorrect_password" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorNotActivatedUser.code}" >
-            <fmt:message key="message_error_not_activated_user" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_not_activated_user" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorDisabledUser.code}" >
-            <fmt:message key="message_error_disabled_user" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_disabled_user" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorReachedMaxSessions.code}" >
-            <fmt:message key="message_error_reached_max_sessions" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_reached_max_sessions" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorExclusiveSession.code}" >
-            <fmt:message key="message_error_exclusive_session" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_exclusive_session" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorMaxedFailedAttempts.code}" >
-            <fmt:message key="message_error_maxed_failed_attempts" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_maxed_failed_attempts" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInSignIn.code}" >
-            <fmt:message key="message_error_in_sign_in" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_in_sign_in" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorNonExistentSession.code}" >
-            <fmt:message key="message_error_non_existent_session" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_non_existent_session" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInSignOut.code}" >
-            <fmt:message key="message_error_in_sign_out" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_in_sign_out" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInSessionCheck.code}" >
-            <fmt:message key="message_error_in_session_check" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_in_session_check" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:otherwise>
-            <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_invalid" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:otherwise>
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
 <c:if test="${not empty causeOfDisconnectVariable.value and errorVariable.value eq errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.CauseOfDisconnectMessagesBundle" var="causeOfDisconnectMessages" />
+    <fmt:setBundle basename="apollo.datastore.i18n.CauseOfDisconnectMessagesBundle" var="causeOfDisconnectMessagesBundle" />
     <jsp:useBean id="noneDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
     <jsp:setProperty name="noneDisconnect" property="constant" value="NONE" />
     <jsp:useBean id="exclusiveSessionDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
@@ -259,25 +259,25 @@ $(document).ready(function() {
     <jsp:setProperty name="timedOutSessionDisconnect" property="constant" value="TIMED_OUT_SESSION" />
     <c:choose>
         <c:when test="${causeOfDisconnectVariable.value eq noneDisconnect.code}" >
-            <fmt:message key="none" bundle="${causeOfDisconnectMessages}" var="causeOfDisconnectMessage" />
+            <fmt:message key="none" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
         </c:when>
         <c:when test="${causeOfDisconnectVariable.value eq exclusiveSessionDisconnect.code}" >
-            <fmt:message key="exclusive_session" bundle="${causeOfDisconnectMessages}" var="causeOfDisconnectMessage" />
+            <fmt:message key="exclusive_session" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
         </c:when>
         <c:when test="${causeOfDisconnectVariable.value eq timedOutSessionDisconnect.code}" >
-            <fmt:message key="timed_out_session" bundle="${causeOfDisconnectMessages}" var="causeOfDisconnectMessage" />
+            <fmt:message key="timed_out_session" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
         </c:when>
         <c:otherwise>
-            <fmt:message key="invalid_cause_of_disconnect" bundle="${causeOfDisconnectMessages}" var="causeOfDisconnectMessage" />
+            <fmt:message key="invalid_cause_of_disconnect" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
         </c:otherwise>
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-warning">${causeOfDisconnectMessage}</p></div>
 </c:if>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="forgot_password" bundle="${utilities}" /></div>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="forgot_password" bundle="${utilitiesBundle}" /></div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="register_now" bundle="${utilities}" /></div>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8"><fmt:message key="register_now" bundle="${utilitiesBundle}" /></div>
                     </div>
                 </div>
             </div>

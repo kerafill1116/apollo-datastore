@@ -4,7 +4,6 @@ import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.Session;
 import apollo.datastore.Session.DatastoreProperties;
 import apollo.datastore.MiscFunctions;
-import apollo.datastore.SessionLog;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserPermissionsBean;
 import apollo.datastore.utils.HtmlVariable;

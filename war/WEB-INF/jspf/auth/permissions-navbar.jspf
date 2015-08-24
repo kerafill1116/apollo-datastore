@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<fmt:setBundle basename="apollo.datastore.i18n.TopNavbarBundle" var="topNavbar" />
+<fmt:setBundle basename="apollo.datastore.i18n.TopNavbarBundle" var="topNavbarBundle" />
 
         <div id="permissions-navbar" class="hidden" hidden>
 
@@ -8,29 +8,29 @@
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ${user.userId}</button>
                 <ul class="dropdown-menu" role="menu">
 <c:if test="${userPermissions.changePassword}">
-                    <li><a href="/auth/change-password"><fmt:message key="change_password" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/change-password"><fmt:message key="change_password" bundle="${topNavbarBundle}" /></a></li>
 </c:if>
 <c:if test="${userPermissions.viewEmailAddress and userPermissions.changeEmailAddress}">
-                    <li><a href="/auth/change-email-address"><fmt:message key="change_email_address" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/change-email-address"><fmt:message key="change_email_address" bundle="${topNavbarBundle}" /></a></li>
 </c:if>
-                    <li><a href="/auth/settings"><fmt:message key="settings" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/settings"><fmt:message key="settings" bundle="${topNavbarBundle}" /></a></li>
 <c:if test="${userPermissions.viewUserPermissions}">
-                    <li><a href="/auth/user-permissions"><fmt:message key="user_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/user-permissions"><fmt:message key="user_permissions" bundle="${topNavbarBundle}" /></a></li>
 </c:if>
 
 <c:if test="${userPermissions.viewSessions}">
                     <li class="divider"></li>
-                    <li><a href="/auth/sessions"><fmt:message key="sessions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/sessions"><fmt:message key="sessions" bundle="${topNavbarBundle}" /></a></li>
     <c:if test="${userPermissions.viewSessionPermissions}">
-                    <li><a href="/auth/session-permissions"><fmt:message key="session_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/session-permissions"><fmt:message key="session_permissions" bundle="${topNavbarBundle}" /></a></li>
     </c:if>
 </c:if>
 
 <c:if test="${userPermissions.viewSessionLogs}">
                     <li class="divider"></li>
-                    <li><a href="/auth/session-logs"><fmt:message key="session_logs" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/session-logs"><fmt:message key="session_logs" bundle="${topNavbarBundle}" /></a></li>
     <c:if test="${userPermissions.viewSessionLogPermissions}">
-                    <li><a href="/auth/session-log-permissions"><fmt:message key="session_log_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/session-log-permissions"><fmt:message key="session_log_permissions" bundle="${topNavbarBundle}" /></a></li>
     </c:if>
 </c:if>
                 </ul>
@@ -38,26 +38,26 @@
 
 <c:if test="${adminPermissions.viewUsers}">
             <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-wrench"></span><span class="hidden-xs"> <fmt:message key="root" bundle="${topNavbar}" /></span></button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-wrench"></span><span class="hidden-xs"> <fmt:message key="root" bundle="${topNavbarBundle}" /></span></button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/auth/admin-users"><fmt:message key="users" bundle="${topNavbar}" /></a>
+                    <li><a href="/auth/admin-users"><fmt:message key="users" bundle="${topNavbarBundle}" /></a>
     <c:if test="${adminPermissions.viewUsersPermissions}">
-                    <li><a href="/auth/admin-users-permissions"><fmt:message key="users_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/admin-users-permissions"><fmt:message key="users_permissions" bundle="${topNavbarBundle}" /></a></li>
     </c:if>
 
     <c:if test="${adminPermissions.viewSessions}">
                     <li class="divider"></li>
-                    <li><a href="/auth/admin-sessions"><fmt:message key="sessions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/admin-sessions"><fmt:message key="sessions" bundle="${topNavbarBundle}" /></a></li>
         <c:if test="${adminPermissions.viewSessionsPermissions}">
-                    <li><a href="/auth/admin-sessions-permissions"><fmt:message key="sessions_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/admin-sessions-permissions"><fmt:message key="sessions_permissions" bundle="${topNavbarBundle}" /></a></li>
         </c:if>
     </c:if>
 
     <c:if test="${adminPermissions.viewSessionLogs}">
                     <li class="divider"></li>
-                    <li><a href="/auth/admin-session-logs"><fmt:message key="session_logs" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/admin-session-logs"><fmt:message key="session_logs" bundle="${topNavbarBundle}" /></a></li>
         <c:if test="${adminPermissions.viewSessionLogsPermissions}">
-                    <li><a href="/auth/admin-session-logs-permissions"><fmt:message key="session_logs_permissions" bundle="${topNavbar}" /></a></li>
+                    <li><a href="/auth/admin-session-logs-permissions"><fmt:message key="session_logs_permissions" bundle="${topNavbarBundle}" /></a></li>
         </c:if>
     </c:if>
 

@@ -5,14 +5,14 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilities" />
+<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
 
 <html>
     <head>
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title><fmt:message key="title_reset_password_notice" bundle="${utilities}" /></title>
+      <title><fmt:message key="title_reset_password_notice" bundle="${utilitiesBundle}" /></title>
       <!-- Bootstrap -->
       <link rel="stylesheet" href="/css/bootstrap.min.css" />
       <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -32,7 +32,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row"><h3 class="col-xs-12 col-sm-12"><fmt:message key="page_header_reset_password_notice" bundle="${utilities}" /></h3></div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-12"><fmt:message key="page_header_reset_password_notice" bundle="${utilitiesBundle}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-offset-2 col-sm-8">
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12"><fmt:message key="message_reset_password_notice" bundle="${utilities}" /></div>
+                        <div class="col-xs-12 col-sm-12"><fmt:message key="message_reset_password_notice" bundle="${utilitiesBundle}" /></div>
                     </div>
                 </div>
             </div>

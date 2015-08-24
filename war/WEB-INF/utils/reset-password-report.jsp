@@ -6,8 +6,8 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilities" />
-<fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
+<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
+<fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -36,44 +36,44 @@
 
 <c:choose>
     <c:when test="${errorVariable.value eq errorNone.code}" >
-        <fmt:message key="page_header_reset_password_report" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_reset_password_report" bundle="${utilities}" var="errorMessage" />
+        <fmt:message key="page_header_reset_password_report" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_reset_password_report" bundle="${utilitiesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorRequiredUserId.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_required_user_id" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_required_user_id" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorRequiredRequestId.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_required_request_id" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_required_request_id" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorNonExistentRequest.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_non_existent_request" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_non_existent_request" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorExpiredRequest.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_expired_request" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_expired_request" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorNonExistentUser.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_non_existent_user" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_non_existent_user" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorNotActivatedUser.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_not_activated_user" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_not_activated_user" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorDisabledUser.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_disabled_user" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_disabled_user" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:when test="${errorVariable.value eq errorInResetPassword.code}" >
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_in_reset_password" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_in_reset_password" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:when>
     <c:otherwise>
-        <fmt:message key="page_header_error" bundle="${utilities}" var="pageHeader" />
-        <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
+        <fmt:message key="page_header_error" bundle="${utilitiesBundle}" var="pageHeader" />
+        <fmt:message key="message_error_invalid" bundle="${errorMessagesBundle}" var="errorMessage" />
     </c:otherwise>
 </c:choose>
 
@@ -82,7 +82,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_reset_password_report" bundle="${utilities}" /></title>
+        <title><fmt:message key="title_reset_password_report" bundle="${utilitiesBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

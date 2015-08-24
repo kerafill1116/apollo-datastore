@@ -7,8 +7,8 @@
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilities" />
-<fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZones" />
+<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
+<fmt:setBundle basename="apollo.datastore.i18n.TimeZonesBundle" var="timeZonesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -42,7 +42,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title><fmt:message key="title_register" bundle="${utilities}" /></title>
+        <title><fmt:message key="title_register" bundle="${utilitiesBundle}" /></title>
         <!-- Bootstrap -->
         <link rel="stylesheet" href="/css/bootstrap.min.css" />
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -292,7 +292,7 @@ $(document).ready(function() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_register" bundle="${utilities}" /></h3></div>
+                        <div class="row"><h3 class="col-xs-12 col-sm-offset-3 col-sm-9"><fmt:message key="page_header_register" bundle="${utilitiesBundle}" /></h3></div>
                     </div>
                 </div>
             </div>
@@ -307,41 +307,41 @@ $(document).ready(function() {
 
                     <fieldset>
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="user-id"><fmt:message key="user_id_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><input name="${userIdVariable.name}" type="text" class="form-control" id="user-id" pattern="^[a-zA-Z][a-zA-Z0-9_]{4,31}$" maxlength="32" required autofocus value="<c:out value='${userIdVariable.value}' />" /></div>
                     </div>
 
                     <div id="check-availability-div" class="form-group">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8">
                             <button class="btn btn-default btn-xs btn-success disabled hidden" type="button" id="available-btn" tabindex="-1" disabled>
-                                <span class="glyphicon glyphicon-thumbs-up"></span> <fmt:message key="available" bundle="${utilities}" /></button>
+                                <span class="glyphicon glyphicon-thumbs-up"></span> <fmt:message key="available" bundle="${utilitiesBundle}" /></button>
                             <button class="btn btn-default btn-xs btn-danger disabled hidden" type="button" id="unavailable-btn" tabindex="-1" disabled>
-                                <span class="glyphicon glyphicon-thumbs-down"></span> <fmt:message key="unavailable" bundle="${utilities}" /></button>
+                                <span class="glyphicon glyphicon-thumbs-down"></span> <fmt:message key="unavailable" bundle="${utilitiesBundle}" /></button>
                             <button class="btn btn-default btn-xs btn-danger disabled hidden" type="button" id="error-btn" tabindex="-1" disabled>
-                                <span class="glyphicon glyphicon-ban-circle"></span> <fmt:message key="error" bundle="${utilities}" /></button>
+                                <span class="glyphicon glyphicon-ban-circle"></span> <fmt:message key="error" bundle="${utilitiesBundle}" /></button>
 
-                            <button class="btn btn-default btn-xs disabled" type="button" id="check-availability-btn" tabindex="-1" data-loading-text="<fmt:message key='checking' bundle='${utilities}' />" disabled>
-                                <span class="glyphicon glyphicon-search"></span> <fmt:message key="check_availability" bundle="${utilities}" /></button>
+                            <button class="btn btn-default btn-xs disabled" type="button" id="check-availability-btn" tabindex="-1" data-loading-text="<fmt:message key='checking' bundle='${utilitiesBundle}' />" disabled>
+                                <span class="glyphicon glyphicon-search"></span> <fmt:message key="check_availability" bundle="${utilitiesBundle}" /></button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="password"><fmt:message key="password_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="password"><fmt:message key="password_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><input name="${passwordVariable.name}" type="password" class="form-control" id="password" maxlength="64" /></div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="email-address"><fmt:message key="email_address_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="email-address"><fmt:message key="email_address_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8"><input name="${emailAddressVariable.name}" type="email" class="form-control" id="email-address" maxlength="256" required value="<c:out value='${emailAddressVariable.value}' />" /></div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-xs-12 col-sm-3 control-label" for="time-zone-id"><fmt:message key="time_zone_label" bundle="${utilities}" /></label>
+                        <label class="col-xs-12 col-sm-3 control-label" for="time-zone-id"><fmt:message key="time_zone_label" bundle="${utilitiesBundle}" /></label>
                         <div class="col-xs-12 col-sm-8">
                             <select name="${timeZoneIdVariable.name}" class="form-control" id="time-zone-id">
-                                <option value=""><fmt:message key="time_zone_choose_option" bundle="${utilities}" /></option>
+                                <option value=""><fmt:message key="time_zone_choose_option" bundle="${utilitiesBundle}" /></option>
 <c:forEach var="timeZone" items="${jf:timeZonesArray()}" varStatus="loopCounter" >
-                                <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneIdVariable.value ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZones}" /></option>
+                                <option value="${timeZone.timeZoneId}"${timeZone.timeZoneId eq timeZoneIdVariable.value ? " selected" : ""}><fmt:message key="${timeZone.timeZoneId}" bundle="${timeZonesBundle}" /></option>
 </c:forEach>
                             </select>
                         </div>
@@ -349,14 +349,14 @@ $(document).ready(function() {
 
                     <div class="form-group">
                         <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                            <input id="submit-btn" type="submit" class="btn btn-default" value="<fmt:message key='register_button' bundle='${utilities}' />" />
-                            <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${utilities}' />" />
+                            <input id="submit-btn" type="submit" class="btn btn-default" value="<fmt:message key='register_button' bundle='${utilitiesBundle}' />" />
+                            <input id="clear-btn" type="reset" class="btn btn-default" value="<fmt:message key='clear_button' bundle='${utilitiesBundle}' />" />
                         </div>
                     </div>
                     </fieldset>
                     </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessages" />
+    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorRequiredUserId" property="constant" value="REQUIRED_USER_ID" />
     <jsp:useBean id="errorInvalidUserId" class="apollo.datastore.utils.ErrorBean" />
@@ -371,25 +371,25 @@ $(document).ready(function() {
     <jsp:setProperty name="errorInRegisterNewUser" property="constant" value="ERROR_IN_REGISTER_NEW_USER" />
     <c:choose>
         <c:when test="${errorVariable.value eq errorRequiredUserId.code}" >
-            <fmt:message key="message_error_required_user_id" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_required_user_id" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInvalidUserId.code}" >
-            <fmt:message key="message_error_invalid_user_id" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_invalid_user_id" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorRequiredEmailAddress.code}" >
-            <fmt:message key="message_error_required_email_address" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_required_email_address" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInvalidEmailAddress.code}" >
-            <fmt:message key="message_error_invalid_email_address" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_invalid_email_address" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorNotAvailableUserId.code}" >
-            <fmt:message key="message_error_not_available_user_id" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_not_available_user_id" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:when test="${errorVariable.value eq errorInRegisterNewUser.code}" >
-            <fmt:message key="message_error_in_register_new_user" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_in_register_new_user" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:when>
         <c:otherwise>
-            <fmt:message key="message_error_invalid" bundle="${errorMessages}" var="errorMessage" />
+            <fmt:message key="message_error_invalid" bundle="${errorMessagesBundle}" var="errorMessage" />
         </c:otherwise>
     </c:choose>
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>

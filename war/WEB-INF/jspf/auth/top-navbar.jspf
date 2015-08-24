@@ -1,17 +1,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/jstl-functions.tld" prefix="jf" %>
-<fmt:setBundle basename="apollo.datastore.i18n.TopNavbarBundle" var="topNavbar" />
+<fmt:setBundle basename="apollo.datastore.i18n.TopNavbarBundle" var="topNavbarBundle" />
         <nav id="top-navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-8 col-sm-10" id="permissions-top-navbar">
-                        <a href="/utils/sign-out" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-xs"> <fmt:message key="sign_out" bundle="${topNavbar}" /></span></a>
+                        <a href="/utils/sign-out" class="btn btn-default" role="button"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-xs"> <fmt:message key="sign_out" bundle="${topNavbarBundle}" /></span></a>
                     </div>
                     <div class="col-xs-4 col-sm-2 text-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <span class="hidden-xs"><fmt:message key="language" bundle="${topNavbar}" /> </span><span class="glyphicon glyphicon-globe"></span></button>
+                                <span class="hidden-xs"><fmt:message key="language" bundle="${topNavbarBundle}" /> </span><span class="glyphicon glyphicon-globe"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right text-left" role="menu">
 <c:set var="langOptionsQueryString" value="${jf:langOptionsQueryString(pageContext.request.queryString)}" />
 <c:set var="supportedLanguagesArray" value="${jf:supportedLanguagesArray()}" />

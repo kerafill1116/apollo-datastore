@@ -30,7 +30,9 @@ public class UserPermissionsBean implements Serializable {
     private boolean changeUserPermissions;
 
     private boolean viewSessions;
+    private boolean disconnectSessions;
     private boolean viewSessionPermissions;
+    private boolean changeSessionPermissions;
 
     private boolean viewSessionLogs;
     private boolean viewSessionLogPermissions;
@@ -70,7 +72,9 @@ public class UserPermissionsBean implements Serializable {
         this.changeUserPermissions = (this.userPermissions & UserPermissions2.CHANGE_USER_PERMISSIONS.getCode()) == UserPermissions2.CHANGE_USER_PERMISSIONS.getCode();
 
         this.viewSessions = (this.sessionPermissions & SessionPermissions.VIEW_SESSIONS.getCode()) == SessionPermissions.VIEW_SESSIONS.getCode();
+        this.disconnectSessions = (this.sessionPermissions & SessionPermissions.DISCONNECT_SESSIONS.getCode()) == SessionPermissions.DISCONNECT_SESSIONS.getCode();
         this.viewSessionPermissions = (this.sessionPermissions & SessionPermissions.VIEW_SESSION_PERMISSIONS.getCode()) == SessionPermissions.VIEW_SESSION_PERMISSIONS.getCode();
+        this.changeSessionPermissions = (this.sessionPermissions & SessionPermissions.CHANGE_SESSION_PERMISSIONS.getCode()) == SessionPermissions.CHANGE_SESSION_PERMISSIONS.getCode();
 
         this.viewSessionLogs = (this.sessionLogPermissions & SessionLogPermissions.VIEW_SESSION_LOGS.getCode()) == SessionLogPermissions.VIEW_SESSION_LOGS.getCode();
         this.viewSessionLogPermissions = (this.sessionLogPermissions & SessionLogPermissions.VIEW_SESSION_LOG_PERMISSIONS.getCode()) == SessionLogPermissions.VIEW_SESSION_LOG_PERMISSIONS.getCode();
@@ -148,8 +152,16 @@ public class UserPermissionsBean implements Serializable {
         return this.viewSessions;
     }
 
+    public boolean getDisconnectSessions() {
+        return this.disconnectSessions;
+    }
+
     public boolean getViewSessionPermissions() {
         return this.viewSessionPermissions;
+    }
+
+    public boolean getChangeSessionPermissions() {
+        return this.changeSessionPermissions;
     }
 
     public boolean getViewSessionLogs() {

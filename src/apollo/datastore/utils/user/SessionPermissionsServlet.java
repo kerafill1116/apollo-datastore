@@ -32,8 +32,8 @@ public class SessionPermissionsServlet extends HttpServlet {
 
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
-        if(userPermissionsBean.getViewUserPermissions())
-            req.getRequestDispatcher("/WEB-INF/auth/user-permissions.jsp").forward(req, resp);
+        if(userPermissionsBean.getViewSessions() && userPermissionsBean.getViewSessionPermissions())
+            req.getRequestDispatcher("/WEB-INF/auth/session-permissions.jsp").forward(req, resp);
         else
             resp.sendRedirect("/auth/settings");
     }
@@ -44,75 +44,53 @@ public class SessionPermissionsServlet extends HttpServlet {
 
         UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
 
-        if(userPermissionsBean.getViewUserPermissions() && userPermissionsBean.getChangeUserPermissions()) {
+        if(userPermissionsBean.getViewSessions() && userPermissionsBean.getViewSessionPermissions()) {
 
-            long userPermissionsCode = 0;
-            if(req.getParameter(HtmlVariable.CHANGE_PASSWORD.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_PASSWORD.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_EMAIL_ADDRESS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_EMAIL_ADDRESS.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_EMAIL_ADDRESS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_EMAIL_ADDRESS.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_TIME_ZONE.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_TIME_ZONE.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_TIME_ZONE.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_TIME_ZONE.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_SESSION_TIMEOUT.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_SESSION_TIMEOUT.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_SESSION_TIMEOUT.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_SESSION_TIMEOUT.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_MAX_SESSIONS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_MAX_SESSIONS.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_MAX_SESSIONS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_MAX_SESSIONS.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_EXCLUSIVE_SESSION.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_EXCLUSIVE_SESSION.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_EXCLUSIVE_SESSION.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_EXCLUSIVE_SESSION.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_MAX_FAILED_ATTEMPTS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_MAX_FAILED_ATTEMPTS.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_MAX_FAILED_ATTEMPTS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_MAX_FAILED_ATTEMPTS.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_DISABLED_STATUS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_DISABLED_STATUS.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_ACTIVATED_STATUS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_ACTIVATED_STATUS.getCode();
-            if(req.getParameter(HtmlVariable.VIEW_USER_PERMISSIONS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.VIEW_USER_PERMISSIONS.getCode();
-            if(req.getParameter(HtmlVariable.CHANGE_USER_PERMISSIONS.getName()) != null)
-                userPermissionsCode = userPermissionsCode + UserPermissions2.CHANGE_USER_PERMISSIONS.getCode();
+            if(userPermissionsBean.getChangeSessionPermissions()) {
+                long sessionPermissionsCode = 0;
+                if(req.getParameter(HtmlVariable.VIEW_SESSIONS.getName()) != null)
+                    sessionPermissionsCode = sessionPermissionsCode + SessionPermissions.VIEW_SESSIONS.getCode();
+                if(req.getParameter(HtmlVariable.DISCONNECT_SESSIONS.getName()) != null)
+                    sessionPermissionsCode = sessionPermissionsCode + SessionPermissions.DISCONNECT_SESSIONS.getCode();
+                if(req.getParameter(HtmlVariable.VIEW_SESSION_PERMISSIONS.getName()) != null)
+                    sessionPermissionsCode = sessionPermissionsCode + SessionPermissions.VIEW_SESSION_PERMISSIONS.getCode();
+                if(req.getParameter(HtmlVariable.CHANGE_SESSION_PERMISSIONS.getName()) != null)
+                    sessionPermissionsCode = sessionPermissionsCode + SessionPermissions.CHANGE_SESSION_PERMISSIONS.getCode();
 
-            Error error = Error.NONE;
-            UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
-            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-            Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
-            User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
-            UserPermissions userPermissions = null;
-            if(user == null)
-                error = Error.NON_EXISTENT_USER;
-            else if((userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, txn, user.getUserId())) == null)
-                error = Error.NO_PERMISSIONS;
-            else
-                try {
-                    userPermissions.setUserPermissions(userPermissionsCode);
-                    PermissionsFactory.updateUserPermissions(datastore, txn, userPermissions);
-                    txn.commit();
-                    userPermissionsBean = new UserPermissionsBean(userPermissions);
-                    req.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), userPermissionsBean);
+                Error error = Error.NONE;
+                UserBean userBean = (UserBean)req.getAttribute(AuthRequestAttribute.USER.getName());
+                DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+                Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
+                User user = UserFactory.getByKey(datastore, txn, userBean.getKey());
+                UserPermissions userPermissions = null;
+                if(user == null)
+                    error = Error.NON_EXISTENT_USER;
+                else if((userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, txn, user.getUserId())) == null)
+                    error = Error.NO_PERMISSIONS;
+                else
+                    try {
+                        userPermissions.setSessionPermissions(sessionPermissionsCode);
+                        PermissionsFactory.updateUserPermissions(datastore, txn, userPermissions);
+                        txn.commit();
+                        userPermissionsBean = new UserPermissionsBean(userPermissions);
+                        req.setAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName(), userPermissionsBean);
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_SESSION_PERMISSIONS;
+                    }
+
+                if(error != Error.NONE && txn.isActive())
+                    txn.rollback();
+
+                if(userPermissionsBean.getViewSessions() && userPermissionsBean.getViewSessionPermissions()) {
+                    req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
+                    req.getRequestDispatcher("/WEB-INF/auth/session-permissions.jsp").forward(req, resp);
                 }
-                catch(ConcurrentModificationException e) {
-                    error = Error.ERROR_IN_USER_PERMISSIONS;
-                }
-
-            if(error != Error.NONE && txn.isActive())
-                txn.rollback();
-
-            if(userPermissionsBean.getViewUserPermissions()) {
-                req.setAttribute(HtmlVariable.ERROR.getName(), error.toString());
-                req.getRequestDispatcher("/WEB-INF/auth/user-permissions.jsp").forward(req, resp);
+                else
+                    resp.sendRedirect("/auth/settings");
             }
             else
-                resp.sendRedirect("/auth/settings");
+                req.getRequestDispatcher("/WEB-INF/auth/session-permissions.jsp").forward(req, resp);
         }
         else
             resp.sendRedirect("/auth/settings");

@@ -41,8 +41,12 @@ public enum HtmlVariable {
 
     PREV_CURSOR("prev-cursor"),
     NEXT_CURSOR("next-cursor"),
-    SESSIONS("sessions");
+    SESSIONS("sessions"),
 
+    VIEW_SESSIONS("view-sessions"),
+    DISCONNECT_SESSIONS("disconnect-sessions"),
+    VIEW_SESSION_PERMISSIONS("view-session-permissions"),
+    CHANGE_SESSION_PERMISSIONS("change-session-permissions");
 
     private final String name;
 

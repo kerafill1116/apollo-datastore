@@ -3,10 +3,12 @@ package apollo.datastore.utils.user;
 import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.Session;
 import apollo.datastore.Session.DatastoreProperties;
+import apollo.datastore.CauseOfDisconnect;
 import apollo.datastore.MiscFunctions;
-import apollo.datastore.SessionLog;
+import apollo.datastore.SessionFactory;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserPermissionsBean;
+import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 
 import com.google.appengine.api.datastore.Cursor;
@@ -17,6 +19,8 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.QueryResultList;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -26,6 +30,10 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -65,7 +73,7 @@ public class SessionsServlet extends HttpServlet {
             catch(Exception e) { }
 
             Filter userFilter = new FilterPredicate(DatastoreProperties.USER_KEY.getName(), FilterOperator.EQUAL, userBean.getKey());
-            Query q = new Query(SessionLog.DatastoreProperties.KIND.getName());
+            Query q = new Query(DatastoreProperties.KIND.getName());
             q.setFilter(userFilter);
             PreparedQuery pq = datastore.prepare(q);
             ArrayList<Session> sessions = new ArrayList<Session>();
@@ -134,6 +142,66 @@ public class SessionsServlet extends HttpServlet {
                 req.setAttribute(AuthRequestAttribute.CURSOR_LIST.getName(), cursorListJson);
                 req.getRequestDispatcher("/WEB-INF/auth/sessions.jsp").forward(req, resp);
             }
+        }
+        else
+            resp.sendRedirect("/auth/settings");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        UserPermissionsBean userPermissionsBean = (UserPermissionsBean)req.getAttribute(AuthRequestAttribute.USER_PERMISSIONS.getName());
+
+        if(userPermissionsBean.getViewSessions() && userPermissionsBean.getDisconnectSessions()) {
+            String[] sessionIds = req.getParameterValues(HtmlVariable.SESSION_ID.getName() + "[]");
+            Map<String, Boolean> disconnectResults = new HashMap<String, Boolean>();
+            DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+            Calendar dateNow = Calendar.getInstance(java.util.TimeZone.getTimeZone(MiscFunctions.UTC_STRING));
+            for(int i = 0; i < sessionIds.length; ++i) {
+                Error error = Error.NONE;
+                CauseOfDisconnect causeOfDisconnect = CauseOfDisconnect.DISCONNECTED_SESSION;
+                Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
+                Session session = SessionFactory.getBySessionId(datastore, txn, sessionIds[i]);
+                if(session != null) {
+                    int sessionTimeout = session.getSessionTimeout();
+                    if(sessionTimeout > 0) {
+                        Calendar lastSessionCheck = MiscFunctions.toCalendar(session.getLastSessionCheck());
+                        lastSessionCheck.add(Calendar.SECOND, sessionTimeout);
+                        if(lastSessionCheck.compareTo(dateNow) < 0)
+                            causeOfDisconnect = CauseOfDisconnect.TIMED_OUT_SESSION;
+                    }
+                    try {
+                        SessionFactory.disconnect(datastore, txn, session, dateNow.getTime(), causeOfDisconnect);
+                        txn.commit();
+                        disconnectResults.put(sessionIds[i], true);
+                    }
+                    catch(ConcurrentModificationException e) {
+                        error = Error.ERROR_IN_SESSIONS;
+                    }
+                }
+                else {
+                    error = Error.NON_EXISTENT_SESSION;
+                    disconnectResults.put(sessionIds[i], false);
+                }
+
+                if(error != Error.NONE && txn.isActive())
+                    txn.rollback();
+            }
+
+            StringBuilder responseJson = new StringBuilder("{ ");
+            for (Map.Entry<String, Boolean> entry : disconnectResults.entrySet()) {
+                responseJson.append("\"");
+                responseJson.append(entry.getKey());
+                responseJson.append("\" : ");
+                responseJson.append(entry.getValue().toString());
+                responseJson.append(", ");
+            }
+            if(disconnectResults.size() > 0)
+                responseJson.delete(responseJson.length() - 2, responseJson.length());
+            responseJson.append(" }");
+            resp.setContentType("application/json; charset=UTF-8");
+            resp.getWriter().print(responseJson.toString());
         }
         else
             resp.sendRedirect("/auth/settings");

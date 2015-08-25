@@ -154,6 +154,36 @@ $(document).ready(function() {
     nextBtn.on('click', fetchNextHandler);
 <c:if test="${userPermissions.disconnectSessions}">
     disconnectBtn = $('#disconnect-btn');
+    disconnectBtn.on('click', function(event) {
+        var checkedBoxes = sessionsTbody.find(':checked');
+        var sessionIds = [];
+        for(var i = 0; i < checkedBoxes.length; ++i)
+            sessionIds[i] = checkedBoxes[i].value;
+        loadingModal.on('shown.bs.modal', function(event) {
+            $.ajax({
+                cache: false,
+                dataType: 'json',
+                type : 'POST',
+                url: '/auth/sessions',
+                data: { '${sessionIdVariable.name}' : sessionIds }
+            }).done(function(data, textStatus, jqXHR) {
+                for(var sessionId in data) if(data.hasOwnProperty(sessionId)) {
+                    var removeCheckbox = sessionsTbody.find(':checkbox[value=' + sessionId + ']');
+                    if(removeCheckbox.length == 1)
+                        removeCheckbox.closest('tr').remove();
+                }
+                updateCounter();
+                setTimeout(hideModal, 500);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                loadingModalContentDiv.html('<fmt:message key="disconnect_failed" bundle="${sessionsBundle}" />');
+                loadingModalContentDiv.addClass('text-danger');
+                setTimeout(hideModal, 500);
+            });
+        });
+        loadingModalContentDiv.html('<fmt:message key="disconnecting" bundle="${sessionsBundle}" />');
+        loadingModalContentDiv.removeClass('text-danger');
+        loadingModal.modal('show');
+    });
     checkAllCheckbox = $('#check-all');
     checkAllCheckbox.on('change', function(event) {
         sessionsTbody.find(':checkbox').prop('checked', event.currentTarget.checked).trigger('change');

@@ -257,6 +257,8 @@ $(document).ready(function() {
     <jsp:setProperty name="exclusiveSessionDisconnect" property="constant" value="EXCLUSIVE_SESSION" />
     <jsp:useBean id="timedOutSessionDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
     <jsp:setProperty name="timedOutSessionDisconnect" property="constant" value="TIMED_OUT_SESSION" />
+    <jsp:useBean id="disconnectedSessionDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
+    <jsp:setProperty name="disconnectedSessionDisconnect" property="constant" value="DISCONNECTED_SESSION" />
     <c:choose>
         <c:when test="${causeOfDisconnectVariable.value eq noneDisconnect.code}" >
             <fmt:message key="none" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
@@ -266,6 +268,9 @@ $(document).ready(function() {
         </c:when>
         <c:when test="${causeOfDisconnectVariable.value eq timedOutSessionDisconnect.code}" >
             <fmt:message key="timed_out_session" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
+        </c:when>
+        <c:when test="${causeOfDisconnectVariable.value eq disconnectedSessionDisconnect.code}" >
+            <fmt:message key="disconnected_session" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />
         </c:when>
         <c:otherwise>
             <fmt:message key="invalid_cause_of_disconnect" bundle="${causeOfDisconnectMessagesBundle}" var="causeOfDisconnectMessage" />

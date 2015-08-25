@@ -51,9 +51,10 @@ public enum Error {
     ALREADY_EXISTS_REQUEST(34),
     ERROR_IN_CHANGE_EMAIL_ADDRESS(35),
     ERROR_IN_USER_PERMISSIONS(36),
-    ERROR_IN_SESSION_PERMISSIONS(37),
+    ERROR_IN_SESSIONS(37),
+    ERROR_IN_SESSION_PERMISSIONS(38),
 
-    INVALID_ERROR(38);
+    INVALID_ERROR(39);
 
     private static final Error[] errorValues = Error.values();
 

@@ -4,7 +4,8 @@ public enum CauseOfDisconnect {
     NONE(0),
     EXCLUSIVE_SESSION(1),
     TIMED_OUT_SESSION(2),
-    INVALID_CAUSE_OF_DISCONNECT(3);
+    DISCONNECTED_SESSION(3),
+    INVALID_CAUSE_OF_DISCONNECT(4);
 
     private static final CauseOfDisconnect[] causeOfDisconnectValues = CauseOfDisconnect.values();
 

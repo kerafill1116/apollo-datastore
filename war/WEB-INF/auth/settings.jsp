@@ -41,8 +41,8 @@
         <script type="text/javascript">
 function inputChangeHandler(event) {
 <c:if test="${userPermissions.viewMaxSessions and userPermissions.changeMaxSessions and userPermissions.viewExclusiveSession and userPermissions.changeExclusiveSession}">
-    if(event.target.id == 'max-sessions') {
-        var disabled = (event.target.value != 1);
+    if(event.currentTarget.id == 'max-sessions') {
+        var disabled = (event.currentTarget.value != 1);
         exclusiveSessionCheckbox.prop('disabled', disabled);
         if(disabled)
             exclusiveSessionCheckbox.parent().addClass('text-muted').parent().addClass('disabled');
@@ -50,7 +50,7 @@ function inputChangeHandler(event) {
             exclusiveSessionCheckbox.parent().removeClass('text-muted').parent().removeClass('disabled');
     }
 </c:if>
-    settingsFormValidator.element(event.target);
+    settingsFormValidator.element(event.currentTarget);
 }
 
 function hideModal() {
@@ -59,7 +59,7 @@ function hideModal() {
 }
 
 function updateSettingHandler(event) {
-    updateSetting(event.target);
+    updateSetting(event.currentTarget);
 }
 
 function updateSettingModalHandler(element, elementValue) {

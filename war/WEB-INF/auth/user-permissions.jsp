@@ -94,8 +94,8 @@ function disableCheckboxes(element, id) {
 }
 
 function inputChangeHandler(event) {
-    dependentId = $(event.target).data('dependentId');
-    disableCheckboxes(event.target, dependentId);
+    dependentId = $(event.currentTarget).data('dependentId');
+    disableCheckboxes(event.currentTarget, dependentId);
 }
 
 $(document).ready(function() {
@@ -132,7 +132,15 @@ $(document).ready(function() {
     changeUserPermissionsCheckbox.data('dependentId', 'all');
     changeUserPermissionsCheckbox.on('change', inputChangeHandler);
 
-    allCheckboxes = $('#user-permissions-form input[type=checkbox]');
+    userPermissionsForm = $('#user-permissions-form');
+    userPermissionsForm.on('submit', function(event) {
+        allCheckboxes.each(function(index) {
+            if(this.checked)
+                this.disabled = false;
+        });
+    });
+
+    allCheckboxes = userPermissionsForm.find(':checkbox');
 
     resetBtn = $('#reset-btn');
     resetBtn.on('click', function(event) {
@@ -142,14 +150,6 @@ $(document).ready(function() {
         });
     });
     resetBtn.trigger('click');
-
-    userPermissionsForm = $('#user-permissions-form');
-    userPermissionsForm.on('submit', function(event) {
-        allCheckboxes.each(function(index) {
-            if(this.checked)
-                this.disabled = false;
-        });
-    });
 
 });
     </c:when>

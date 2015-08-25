@@ -54,7 +54,7 @@
 <c:if test="${empty changeEmailAddressRequest}">
         <script type="text/javascript">
 function inputChangeHandler(event) {
-    changeEmailAddressFormValidator.element(event.target);
+    changeEmailAddressFormValidator.element(event.currentTarget);
 }
 
 $(document).ready(function() {

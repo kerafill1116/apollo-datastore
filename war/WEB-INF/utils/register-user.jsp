@@ -69,11 +69,11 @@
         <script type="text/javascript">
 function inputChangeHandler(event) {
     var validElement = false;
-    if(event.target.value.length)
-        validElement = registerFormValidator.element(event.target);
+    if(event.currentTarget.value.length)
+        validElement = registerFormValidator.element(event.currentTarget);
     else
-        $(event.target).popover('hide');
-    if(event.target.id == 'user-id') {
+        $(event.currentTarget).popover('hide');
+    if(event.currentTarget.id == 'user-id') {
         availableBtn.addClass('hidden');
         unavailableBtn.addClass('hidden');
         errorBtn.addClass('hidden');

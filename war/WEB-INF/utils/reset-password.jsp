@@ -50,10 +50,10 @@
         <script type="text/javascript">
 function inputChangeHandler(event) {
     var validElement = false;
-    if(event.target.value.length)
-        validElement = resetPasswordFormValidator.element(event.target);
+    if(event.currentTarget.value.length)
+        validElement = resetPasswordFormValidator.element(event.currentTarget);
     else
-        $(event.target).popover('hide');
+        $(event.currentTarget).popover('hide');
 }
 
 $(document).ready(function() {

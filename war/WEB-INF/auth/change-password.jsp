@@ -41,7 +41,7 @@
 
         <script type="text/javascript">
 function inputChangeHandler(event) {
-    changePasswordFormValidator.element(event.target);
+    changePasswordFormValidator.element(event.currentTarget);
 }
 
 $(document).ready(function() {

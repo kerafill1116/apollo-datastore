@@ -17,6 +17,8 @@
 <jsp:setProperty name="nextCursorVariable" property="varName" value="NEXT_CURSOR" />
 <jsp:useBean id="sessionsVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="sessionsVariable" property="varName" value="SESSIONS" />
+<jsp:useBean id="sessionIdVariable" class="apollo.datastore.utils.HtmlVariableBean" />
+<jsp:setProperty name="sessionIdVariable" property="varName" value="SESSION_ID" />
 
 <html>
     <head>
@@ -58,6 +60,15 @@ function populateTbody(sessions) {
         $(td3).append(session[3]);
         $(td3).addClass('text-right');
         var tr = document.createElement('tr');
+<c:if test="${userPermissions.disconnectSessions}">
+        var tda = document.createElement('td');
+        var checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.name = '${sessionIdVariable.name}';
+        checkbox.value = session[4];
+        $(tda).append(checkbox);
+        $(tr).append(tda);
+</c:if>
         $(tr).append(td0).append(td1).append(td2).append(td3);
         sessionsTbody.append(tr);
     }
@@ -141,6 +152,35 @@ $(document).ready(function() {
     counterSpan = $('#counter');
     prevBtn.on('click', fetchPrevHandler);
     nextBtn.on('click', fetchNextHandler);
+<c:if test="${userPermissions.disconnectSessions}">
+    disconnectBtn = $('#disconnect-btn');
+    checkAllCheckbox = $('#check-all');
+    checkAllCheckbox.on('change', function(event) {
+        sessionsTbody.find(':checkbox').prop('checked', event.currentTarget.checked).trigger('change');
+    });
+    updateCounter2 = updateCounter;
+    updateCounter = function() {
+        updateCounter2();
+        sessionsTbody.find('tr').on('click', function(event) {
+            if(event.target.type != 'checkbox') {
+                var checkbox = $(event.currentTarget).find(':checkbox');
+                var checked = checkbox.prop('checked');
+                checkbox.prop('checked', !checked).trigger('change');
+            }
+        });
+        sessionsTbody.find(':checkbox').on('change', function(event) {
+            if(sessionsTbody.find(':checked').length > 0) {
+                disconnectBtn.removeClass('disabled');
+                disconnectBtn.prop('disabled', false);
+            }
+            else {
+                disconnectBtn.addClass('disabled');
+                disconnectBtn.prop('disabled', true);
+            }
+        });
+        checkAllCheckbox.prop('checked', false).trigger('change');
+    };
+</c:if>
     updateCounter();
     initBtns();
     loadingModal = $('#loading-modal');
@@ -177,7 +217,12 @@ $(document).ready(function() {
         <div class="container-fluid">
 
             <div class="row">
-                <div class="col-xs-12 col-sm-offset-2 col-sm-8 text-right"><p><span id="counter"></span>
+                <div class="col-xs-6 col-sm-offset-2 col-sm-4"><p>
+<c:if test="${userPermissions.disconnectSessions}">
+                    <button id="disconnect-btn" type="button" class="btn btn-default btn-sm disabled" disabled><span class="glyphicon glyphicon-remove"></span><span class="hidden-xs"> <fmt:message key="disconnect_sessions_button" bundle="${sessionsBundle}" /></span></button>
+</c:if>
+                </p></div>
+                <div class="col-xs-6 col-sm-4 text-right"><p><span id="counter"></span>
                     <button id="prev-btn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span></button>
                     <button id="next-btn" type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-right"></span></button>
                 </p></div>
@@ -185,9 +230,12 @@ $(document).ready(function() {
 
             <div class="row">
                 <div class="col-xs-12 col-sm-offset-2 col-sm-8 table-responsive">
-                    <table class="table table-condensed">
+                    <table class="table table-condensed table-hover">
                         <thead>
                         <tr>
+<c:if test="${userPermissions.disconnectSessions}">
+                            <th><input id="check-all" type="checkbox" /></th>
+</c:if>
                             <th><fmt:message key="table_header_session_id" bundle="${sessionsBundle}" /></th>
                             <th><fmt:message key="table_header_date_signed_in" bundle="${sessionsBundle}" /></th>
                             <th><fmt:message key="table_header_last_session_check" bundle="${sessionsBundle}" /></th>
@@ -196,14 +244,29 @@ $(document).ready(function() {
                         </thead>
                         <tbody id="sessions-tbody">
 <fmt:setTimeZone value="${user.dateFormatId}" />
-<c:forEach var="session" items="${sessions}" varStatus="loopCounter" >
+<c:choose>
+    <c:when test="${userPermissions.disconnectSessions}">
+        <c:forEach var="session" items="${sessions}" varStatus="loopCounter" >
+                        <tr>
+                            <td><input name="${sessionIdVariable.name}" type="checkbox" value="<c:out value='${session.sessionId}' />" /></td>
+                            <td><c:out value='${fn:substring(session.sessionId, 0, 32)}' />...</td>
+                            <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${session.dateSignedIn}" /></td>
+                            <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${session.lastSessionCheck}" /></td>
+                            <td class="text-right"><c:out value='${session.sessionTimeout}' /></td>
+                        </tr>
+        </c:forEach>
+    </c:when>
+    <c:otherwise>
+        <c:forEach var="session" items="${sessions}" varStatus="loopCounter" >
                         <tr>
                             <td><c:out value='${fn:substring(session.sessionId, 0, 32)}' />...</td>
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${session.dateSignedIn}" /></td>
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${session.lastSessionCheck}" /></td>
                             <td class="text-right"><c:out value='${session.sessionTimeout}' /></td>
                         </tr>
-</c:forEach>
+        </c:forEach>
+    </c:otherwise>
+</c:choose>
                         </tbody>
                     </table>
                 </div>

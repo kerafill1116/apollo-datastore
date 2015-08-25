@@ -69,10 +69,10 @@
 
         <script type="text/javascript">
 function inputChangeHandler(event) {
-    if(event.target.value.length)
-        signInFormValidator.element(event.target);
+    if(event.currentTarget.value.length)
+        signInFormValidator.element(event.currentTarget);
     else
-        $(event.target).popover('hide');
+        $(event.currentTarget).popover('hide');
 }
 
 $(document).ready(function() {

@@ -45,9 +45,9 @@ function inputChangeHandler(event) {
         var disabled = (event.currentTarget.value != 1);
         exclusiveSessionCheckbox.prop('disabled', disabled);
         if(disabled)
-            exclusiveSessionCheckbox.parent().addClass('text-muted').parent().addClass('disabled');
+            exclusiveSessionCheckbox.closest('label').addClass('text-muted').closest('.checkbox').addClass('disabled');
         else
-            exclusiveSessionCheckbox.parent().removeClass('text-muted').parent().removeClass('disabled');
+            exclusiveSessionCheckbox.closest('label').removeClass('text-muted').closest('.checkbox').removeClass('disabled');
     }
 </c:if>
     settingsFormValidator.element(event.currentTarget);
@@ -132,9 +132,9 @@ $(document).ready(function() {
                     errorListItem.popover('show');
                     popoverDiv = errorListItem.next();
                     popoverDiv.css({'left': '0px', 'margin-left': '10px', 'margin-right': '10px'});
-                    popoverDiv.children('.popover-content').addClass('text-danger');
+                    popoverDiv.find('.popover-content').addClass('text-danger');
                 }
-                popoverDiv.children('.popover-content').html(errorList[i].message);
+                popoverDiv.find('.popover-content').html(errorList[i].message);
             }
             this.defaultShowErrors();
         },
@@ -318,8 +318,9 @@ $(document).ready(function() {
             <c:when test="${userPermissions.changeExclusiveSession and ((userPermissions.viewMaxSessions and userPermissions.changeMaxSessions) or (user.maxSessions eq 1))}">
                 <jsp:useBean id="exclusiveSessionVariable" class="apollo.datastore.utils.HtmlVariableBean" />
                 <jsp:setProperty name="exclusiveSessionVariable" property="varName" value="EXCLUSIVE_SESSION" />
-                                <div class="col-xs-12 col-sm-offset-3 col-sm-8">
-                                    <div class="checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}"><label id="exclusive-session-input-group" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} /> <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settingsBundle}" /></strong></label></div>
+                                <div class="col-xs-12 col-sm-offset-3 col-sm-8 checkbox${(user.maxSessions eq 1) ? '' : ' disabled'}">
+                                    <label for="exclusive-session" class="${(user.maxSessions eq 1) ? '' : 'text-muted'}"><input${(user.maxSessions eq 1) ? '' : ' disabled'} name="${exclusiveSessionVariable.name}" id="exclusive-session" type="checkbox" value="1"${user.exclusiveSession ? " checked" : ""} />
+                                    <strong><fmt:message key="exclusive_session_checkbox_label" bundle="${settingsBundle}" /></strong></label>
                                 </div>
             </c:when>
             <c:otherwise>

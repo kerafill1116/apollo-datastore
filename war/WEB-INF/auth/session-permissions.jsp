@@ -51,18 +51,18 @@ function disableCheckboxes(element, id) {
         checkbox = $(id);
     if(element.checked) {
         checkbox.prop('disabled', false);
-        checkbox.parent().next().removeClass('text-muted').removeClass('disabled');
+        checkbox.closest('label').removeClass('text-muted').closest('.checkbox').removeClass('disabled');
     }
     else {
         checkbox.prop('disabled', true);
-        checkbox.parent().next().addClass('text-muted').addClass('disabled');
+        checkbox.closest('label').addClass('text-muted').closest('.checkbox').addClass('disabled');
     }
     $(element).prop('disabled', false);
-    $(element).parent().next().removeClass('text-muted').removeClass('disabled');
+    $(element).closest('label').removeClass('text-muted').closest('.checkbox').removeClass('disabled');
     if(id == 'all' && element.checked) {
-        checkbox.each(function(index) {
-            if(this.id != 'view-session-permissions' && this.id != 'change-session-permissions')
-                $(this).triggerHandler('change');
+        checkbox.each(function(index, element) {
+            if(element.id != 'view-session-permissions' && element.id != 'change-session-permissions')
+                $(element).triggerHandler('change');
         });
     }
 }
@@ -88,9 +88,8 @@ $(document).ready(function() {
 
     sessionPermissionsForm = $('#session-permissions-form');
     sessionPermissionsForm.on('submit', function(event) {
-        allCheckboxes.each(function(index) {
-            if(this.checked)
-                this.disabled = false;
+        allCheckboxes.each(function(index, element) {
+            element.disabled = !element.checked;
         });
     });
 
@@ -99,8 +98,8 @@ $(document).ready(function() {
     resetBtn = $('#reset-btn');
     resetBtn.on('click', function(event) {
         this.form.reset();
-        allCheckboxes.each(function(index) {
-            $(this).triggerHandler('change');
+        allCheckboxes.each(function(index, element) {
+            $(element).triggerHandler('change');
         });
     });
     resetBtn.trigger('click');
@@ -109,19 +108,19 @@ $(document).ready(function() {
     </c:when>
     <c:otherwise>
 $(document).ready(function() {
-    $('#session-permissions-form label').each(function(index) {
-        var spanGlyphicon = $(this).prev().children('span');
+    $('#session-permissions-form label').each(function(index, element) {
+        var spanGlyphicon = $(element).find('span');
         var unchecked = spanGlyphicon.hasClass('glyphicon-unchecked');
         if(unchecked)
-            $(this).parent().addClass('text-muted');
-        var forProp = $(this).prop('for');
+            $(element).addClass('text-muted');
+        var forProp = $(element).prop('for');
         if(forProp.lastIndexOf('view-', 0) === 0) {
-            var nextLabel = $(this).parent().next().children('label');
+            var nextLabel = $(element).closest('.form-group').next().find('label');
             var nextProp = nextLabel.prop('for');
             if(nextProp.lastIndexOf('change-', 0) === 0 && unchecked)
-                $(this).parent().next().addClass('text-muted');
+                nextLabel.addClass('text-muted');
             else if(nextProp.lastIndexOf('disconnect-', 0) === 0 && unchecked)
-                $(this).parent().next().addClass('text-muted');
+                nextLabel.addClass('text-muted');
         }
     });
 });
@@ -153,23 +152,31 @@ $(document).ready(function() {
                     <fieldset>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewSessionsVariable.name}" id="view-sessions" type="checkbox" value="1"${userPermissions.viewSessions ? " checked" : ""} /></div>
-                        <label class="col-xs-8 col-sm-8" for="view-sessions"><fmt:message key="view_sessions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8 checkbox">
+                            <label for="view-sessions"><input name="${viewSessionsVariable.name}" id="view-sessions" type="checkbox" value="1"${userPermissions.viewSessions ? " checked" : ""} />
+                            <strong><fmt:message key="view_sessions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right"><input name="${disconnectSessionsVariable.name}" id="disconnect-sessions" type="checkbox" value="1"${userPermissions.disconnectSessions ? " checked" : ""} /></div>
-                        <label class="col-xs-8 col-sm-8" for="disconnect-sessions"><fmt:message key="disconnect_sessions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8 checkbox">
+                            <label for="disconnect-sessions"><input name="${disconnectSessionsVariable.name}" id="disconnect-sessions" type="checkbox" value="1"${userPermissions.disconnectSessions ? " checked" : ""} />
+                            <strong><fmt:message key="disconnect_sessions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right"><input name="${viewSessionPermissionsVariable.name}" id="view-session-permissions" type="checkbox" value="1"${userPermissions.viewSessionPermissions ? " checked" : ""} /></div>
-                        <label class="col-xs-8 col-sm-8" for="view-session-permissions"><fmt:message key="view_session_permissions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8 checkbox">
+                            <label for="view-session-permissions"><input name="${viewSessionPermissionsVariable.name}" id="view-session-permissions" type="checkbox" value="1"${userPermissions.viewSessionPermissions ? " checked" : ""} />
+                            <strong><fmt:message key="view_session_permissions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right"><input name="${changeSessionPermissionsVariable.name}" id="change-session-permissions" type="checkbox" value="1"${userPermissions.changeSessionPermissions ? " checked" : ""} /></div>
-                        <label class="col-xs-8 col-sm-8" for="change-session-permissions"><fmt:message key="change_session_permissions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8 checkbox">
+                            <label for="change-session-permissions"><input name="${changeSessionPermissionsVariable.name}" id="change-session-permissions" type="checkbox" value="1"${userPermissions.changeSessionPermissions ? " checked" : ""} />
+                            <strong><fmt:message key="change_session_permissions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -186,23 +193,31 @@ $(document).ready(function() {
                     <fieldset>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right">${userPermissions.viewSessions ? "<span class='glyphicon glyphicon-check'></span>" : "<span class='glyphicon glyphicon-unchecked'></span>"}</div>
-                        <label class="col-xs-8 col-sm-8" for="view-sessions"><fmt:message key="view_sessions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <label for="view-sessions"><span class="glyphicon ${userPermissions.viewSessions ? 'glyphicon-check' : 'glyphicon-unchecked'}"></span>
+                            <strong><fmt:message key="view_sessions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right">${userPermissions.disconnectSessions ? "<span class='glyphicon glyphicon-check'></span>" : "<span class='glyphicon glyphicon-unchecked'></span>"}</div>
-                        <label class="col-xs-8 col-sm-8" for="disconnect-sessions"><fmt:message key="disconnect_sessions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <label for="disconnect-sessions"><span class="glyphicon ${userPermissions.disconnectSessions ? 'glyphicon-check' : 'glyphicon-unchecked'}"></span>
+                            <strong><fmt:message key="disconnect_sessions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right">${userPermissions.viewSessionPermissions ? "<span class='glyphicon glyphicon-check'></span>" : "<span class='glyphicon glyphicon-unchecked'></span>"}</div>
-                        <label class="col-xs-8 col-sm-8" for="view-session-permissions"><fmt:message key="view_session_permissions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <label for="view-session-permissions"><span class="glyphicon ${userPermissions.viewSessionPermissions ? 'glyphicon-check' : 'glyphicon-unchecked'}"></span>
+                            <strong><fmt:message key="view_session_permissions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-xs-1 col-sm-3 text-right">${userPermissions.changeSessionPermissions ? "<span class='glyphicon glyphicon-check'></span>" : "<span class='glyphicon glyphicon-unchecked'></span>"}</div>
-                        <label class="col-xs-8 col-sm-8" for="change-session-permissions"><fmt:message key="change_session_permissions_label" bundle="${sessionPermissionsBundle}" /></label>
+                        <div class="col-xs-12 col-sm-offset-3 col-sm-8">
+                            <label for="change-session-permissions"><span class="glyphicon ${userPermissions.changeSessionPermissions ? 'glyphicon-check' : 'glyphicon-unchecked'}"></span>
+                            <strong><fmt:message key="change_session_permissions_label" bundle="${sessionPermissionsBundle}" /></strong></label>
+                        </div>
                     </div>
 
                     </fieldset>

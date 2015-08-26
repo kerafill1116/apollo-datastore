@@ -63,7 +63,7 @@ $(document).ready(function() {
 
     $('#clear-btn').click(function () {
         resetPasswordFormValidator.resetForm();
-        resetPasswordForm[0].reset();
+        this.form.reset();
         userIdInput.popover('hide');
     });
 
@@ -81,9 +81,9 @@ $(document).ready(function() {
                     errorListItem.popover('show');
                     popoverDiv = errorListItem.next();
                     popoverDiv.css({'left': '0px', 'margin-left': '10px', 'margin-right': '10px'});
-                    popoverDiv.children('.popover-content').addClass('text-danger');
+                    popoverDiv.find('.popover-content').addClass('text-danger');
                 }
-                popoverDiv.children('.popover-content').html(errorList[i].message);
+                popoverDiv.find('.popover-content').html(errorList[i].message);
             }
             this.defaultShowErrors();
         },

@@ -6,6 +6,7 @@ public enum AuthRequestAttribute {
     USER_PERMISSIONS("userPermissions"),
     CHANGE_EMAIL_ADDRESS_REQUEST("changeEmailAddressRequest"),
     SESSIONS("sessions"),
+    SESSION_LOGS("sessionLogs"),
     PAGE_SIZE("pageSize"),
     CURSOR_LIST("cursorList");
 

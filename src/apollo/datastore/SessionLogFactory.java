@@ -33,4 +33,10 @@ public class SessionLogFactory {
     public static SessionLog getBySessionId(DatastoreService datastore, Transaction txn, String sessionId) {
         return getByKey(datastore, txn, KeyFactory.createKey(DatastoreProperties.KIND.getName(), sessionId));
     }
+
+    public static void remove(DatastoreService datastore, Transaction txn, SessionLog sessionLog)
+            throws ConcurrentModificationException {
+
+        datastore.delete(txn, sessionLog.getKey());
+    }
 }

@@ -251,4 +251,14 @@
         <url-pattern>/auth/session-permissions</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>SessionLogsServlet</servlet-name>
+        <servlet-class>apollo.datastore.utils.user.SessionLogsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SessionLogsServlet</servlet-name>
+        <url-pattern>/auth/session-logs</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -29,6 +29,30 @@ public class SessionLog implements Serializable {
         this.entity = sessionLogEntity;
     }
 
+    public String getSessionId() {
+        return (String)this.entity.getProperty(DatastoreProperties.SESSION_ID.getName());
+    }
+
+    public Key getUserKey() {
+        return (Key)this.entity.getProperty(DatastoreProperties.USER_KEY.getName());
+    }
+
+    public Date getDateSignedIn() {
+        return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.DATE_SIGNED_IN.getName()));
+    }
+
+    public Date getLastSessionCheck() {
+        return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.LAST_SESSION_CHECK.getName()));
+    }
+
+    public int getSessionTimeout() {
+        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
+    }
+
+    public Date getDateSignedOut() {
+        return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.DATE_SIGNED_OUT.getName()));
+    }
+
     public void setDateSignedOut(Date dateSignedOut) {
         this.entity.setProperty(DatastoreProperties.DATE_SIGNED_OUT.getName(), MiscFunctions.toUTCDateString(dateSignedOut));
     }

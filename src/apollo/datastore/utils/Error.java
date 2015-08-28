@@ -55,8 +55,9 @@ public enum Error {
     ERROR_IN_SESSION_PERMISSIONS(38),
     ERROR_IN_SESSION_LOGS(39),
     NON_EXISTENT_SESSION_LOG(40),
+    ERROR_IN_SESSION_LOG_PERMISSIONS(41),
 
-    INVALID_ERROR(41);
+    INVALID_ERROR(42);
 
     private static final Error[] errorValues = Error.values();
 

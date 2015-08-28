@@ -48,7 +48,12 @@ public enum HtmlVariable {
     VIEW_SESSIONS("view-sessions"),
     DISCONNECT_SESSIONS("disconnect-sessions"),
     VIEW_SESSION_PERMISSIONS("view-session-permissions"),
-    CHANGE_SESSION_PERMISSIONS("change-session-permissions");
+    CHANGE_SESSION_PERMISSIONS("change-session-permissions"),
+
+    VIEW_SESSION_LOGS("view-session-logs"),
+    REMOVE_SESSION_LOGS("remove-session-logs"),
+    VIEW_SESSION_LOG_PERMISSIONS("view-session-log-permissions"),
+    CHANGE_SESSION_LOG_PERMISSIONS("change-session-log-permissions");
 
     private final String name;
 

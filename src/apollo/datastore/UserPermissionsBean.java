@@ -37,6 +37,7 @@ public class UserPermissionsBean implements Serializable {
     private boolean viewSessionLogs;
     private boolean removeSessionLogs;
     private boolean viewSessionLogPermissions;
+    private boolean changeSessionLogPermissions;
 
     public UserPermissionsBean(UserPermissions userPermissions) {
         this.userPermissions = userPermissions.getUserPermissions();
@@ -80,6 +81,7 @@ public class UserPermissionsBean implements Serializable {
         this.viewSessionLogs = (this.sessionLogPermissions & SessionLogPermissions.VIEW_SESSION_LOGS.getCode()) == SessionLogPermissions.VIEW_SESSION_LOGS.getCode();
         this.removeSessionLogs = (this.sessionLogPermissions & SessionLogPermissions.REMOVE_SESSION_LOGS.getCode()) == SessionLogPermissions.REMOVE_SESSION_LOGS.getCode();
         this.viewSessionLogPermissions = (this.sessionLogPermissions & SessionLogPermissions.VIEW_SESSION_LOG_PERMISSIONS.getCode()) == SessionLogPermissions.VIEW_SESSION_LOG_PERMISSIONS.getCode();
+        this.changeSessionLogPermissions = (this.sessionLogPermissions & SessionLogPermissions.CHANGE_SESSION_LOG_PERMISSIONS.getCode()) == SessionLogPermissions.CHANGE_SESSION_LOG_PERMISSIONS.getCode();
     }
 
     public boolean getChangePassword() {
@@ -176,5 +178,9 @@ public class UserPermissionsBean implements Serializable {
 
     public boolean getViewSessionLogPermissions() {
         return this.viewSessionLogPermissions;
+    }
+
+    public boolean getChangeSessionLogPermissions() {
+        return this.changeSessionLogPermissions;
     }
 }

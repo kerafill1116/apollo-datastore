@@ -40,6 +40,14 @@
         <link rel="stylesheet" href="/css/styles.css" />
 
         <script type="text/javascript">
+function translateCauseOfDisconnectMessages() {
+    var causeOfDisconnectMessageCells = sessionLogsTbody.find('.cause-of-disconnect-message');
+    causeOfDisconnectMessageCells.each(function(index, element) {
+        var index = parseInt(element.innerHTML);
+        element.innerHTML = causeOfDisconnectMessages[index];
+    });
+}
+
 function hideModal() {
     loadingModal.modal('hide');
     loadingModal.off('shown.bs.modal');
@@ -61,6 +69,7 @@ function populateTbody(sessionLogs) {
         $(td3).append(sessionLog[3]);
         var td4 = document.createElement('td');
         $(td4).append(sessionLog[4]);
+        $(td4).addClass('cause-of-disconnect-message')
         var tr = document.createElement('tr');
 <c:if test="${userPermissions.removeSessionLogs}">
         var tda = document.createElement('td');
@@ -101,6 +110,7 @@ function fetchPrevModalHandler(event) {
         cursorList.pop();
         cursorList.pop();
         cursorList.push(data['${nextCursorVariable.name}']);
+        translateCauseOfDisconnectMessages();
         updateCounter();
         initBtns();
         setTimeout(hideModal, 100);
@@ -128,6 +138,7 @@ function fetchNextModalHandler(event) {
         sessionLogsTbody.children().remove();
         populateTbody(data['${sessionLogsVariable.name}']);
         cursorList.push(data['${nextCursorVariable.name}']);
+        translateCauseOfDisconnectMessages();
         updateCounter();
         initBtns();
         setTimeout(hideModal, 500);
@@ -146,11 +157,13 @@ function fetchNextHandler(event) {
 }
 
 $(document).ready(function() {
+    causeOfDisconnectMessages = ${causeOfDisconnectMessages};
     pageSize = ${pageSize};
     cursorList = ${cursorList};
     prevBtn = $('#prev-btn');
     nextBtn = $('#next-btn');
     sessionLogsTbody = $('#session-logs-tbody');
+    translateCauseOfDisconnectMessages();
     counterSpan = $('#counter');
     prevBtn.on('click', fetchPrevHandler);
     nextBtn.on('click', fetchNextHandler);
@@ -286,7 +299,7 @@ $(document).ready(function() {
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${sessionLog.dateSignedIn}" /></td>
                             <td class="text-right"><c:out value='${sessionLog.sessionTimeout}' /></td>
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${sessionLog.dateSignedOut}" /></td>
-                            <td><c:out value='${sessionLog.causeOfDisconnect}' /></td>
+                            <td class="cause-of-disconnect-message"><c:out value='${sessionLog.causeOfDisconnect}' /></td>
                         </tr>
         </c:forEach>
     </c:when>
@@ -297,7 +310,7 @@ $(document).ready(function() {
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${sessionLog.dateSignedIn}" /></td>
                             <td class="text-right"><c:out value='${sessionLog.sessionTimeout}' /></td>
                             <td><fmt:formatDate pattern="yyyy/MM/dd HH:mm:ss z" value="${sessionLog.dateSignedOut}" /></td>
-                            <td><c:out value='${sessionLog.causeOfDisconnect}' /></td>
+                            <td class="cause-of-disconnect-message"><c:out value='${sessionLog.causeOfDisconnect}' /></td>
                         </tr>
         </c:forEach>
     </c:otherwise>

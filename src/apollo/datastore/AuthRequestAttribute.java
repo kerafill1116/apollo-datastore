@@ -8,7 +8,8 @@ public enum AuthRequestAttribute {
     SESSIONS("sessions"),
     SESSION_LOGS("sessionLogs"),
     PAGE_SIZE("pageSize"),
-    CURSOR_LIST("cursorList");
+    CURSOR_LIST("cursorList"),
+    CAUSE_OF_DISCONNECT_MESSAGES("causeOfDisconnectMessages");
 
     private final String name;
 

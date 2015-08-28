@@ -135,7 +135,7 @@ $(document).ready(function() {
     userPermissionsForm = $('#user-permissions-form');
     userPermissionsForm.on('submit', function(event) {
         allCheckboxes.each(function(index, element) {
-        	element.disabled = !element.checked;
+            element.disabled = !element.checked;
         });
     });
 
@@ -164,7 +164,7 @@ $(document).ready(function() {
             var nextLabel = $(element).closest('.form-group').next().find('label');
             var nextProp = nextLabel.prop('for');
             if(nextProp.lastIndexOf('change-', 0) === 0 && unchecked)
-            	nextLabel.addClass('text-muted');
+                nextLabel.addClass('text-muted');
         }
     });
 });

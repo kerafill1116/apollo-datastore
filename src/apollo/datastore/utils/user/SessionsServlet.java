@@ -112,31 +112,27 @@ public class SessionsServlet extends HttpServlet {
                 responseJson.append(HtmlVariable.NEXT_CURSOR.getName());
                 responseJson.append("\" : ");
                 if(sessions.size() < PAGE_SIZE)
-                    responseJson.append("null");
+                    responseJson.append("null }");
                 else {
                     responseJson.append("\"");
                     responseJson.append(urlEncodedCursor);
-                    responseJson.append("\"");
+                    responseJson.append("\" }");
                 }
-                responseJson.append(" }");
                 resp.setContentType("application/json; charset=UTF-8");
                 resp.getWriter().print(responseJson.toString());
             }
             else {
-                StringBuilder cursorListJson = new StringBuilder("[ ");
-                cursorListJson.append("null, ");
-                cursorListJson.append("null, ");
+                StringBuilder cursorListJson = new StringBuilder("[ null, null, ");
                 if(sessions.size() < PAGE_SIZE) {
                     cursorListJson.append("null, ");
-                    cursorListJson.append("null");
+                    cursorListJson.append("null ]");
                 }
                 else {
                     cursorListJson.append("\"\", ");
                     cursorListJson.append("\"");
                     cursorListJson.append(urlEncodedCursor);
-                    cursorListJson.append("\"");
+                    cursorListJson.append("\" ]");
                 }
-                cursorListJson.append(" ]");
                 req.setAttribute(AuthRequestAttribute.SESSIONS.getName(), sessions);
                 req.setAttribute(AuthRequestAttribute.PAGE_SIZE.getName(), PAGE_SIZE);
                 req.setAttribute(AuthRequestAttribute.CURSOR_LIST.getName(), cursorListJson);

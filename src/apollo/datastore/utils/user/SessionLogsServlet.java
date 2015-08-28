@@ -3,6 +3,7 @@ package apollo.datastore.utils.user;
 import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.SessionLog;
 import apollo.datastore.SessionLog.DatastoreProperties;
+import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.SessionLogFactory;
 import apollo.datastore.UserBean;
@@ -30,7 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -111,34 +114,46 @@ public class SessionLogsServlet extends HttpServlet {
                 responseJson.append(HtmlVariable.NEXT_CURSOR.getName());
                 responseJson.append("\" : ");
                 if(sessionLogs.size() < PAGE_SIZE)
-                    responseJson.append("null");
+                    responseJson.append("null }");
                 else {
                     responseJson.append("\"");
                     responseJson.append(urlEncodedCursor);
-                    responseJson.append("\"");
+                    responseJson.append("\" }");
                 }
-                responseJson.append(" }");
                 resp.setContentType("application/json; charset=UTF-8");
                 resp.getWriter().print(responseJson.toString());
             }
             else {
-                StringBuilder cursorListJson = new StringBuilder("[ ");
-                cursorListJson.append("null, ");
-                cursorListJson.append("null, ");
+                StringBuilder cursorListJson = new StringBuilder("[ null, null, ");
                 if(sessionLogs.size() < PAGE_SIZE) {
                     cursorListJson.append("null, ");
-                    cursorListJson.append("null");
+                    cursorListJson.append("null ]");
                 }
                 else {
                     cursorListJson.append("\"\", ");
                     cursorListJson.append("\"");
                     cursorListJson.append(urlEncodedCursor);
-                    cursorListJson.append("\"");
+                    cursorListJson.append("\" ]");
                 }
-                cursorListJson.append(" ]");
+
+                Locale locale = new Locale((String)req.getAttribute(Cookies.LANG.getName()));
+                ResourceBundle causeOfDisconnectMessagesBundle = ResourceBundle.getBundle("apollo.datastore.i18n.CauseOfDisconnectMessagesBundle", locale);
+                StringBuilder causeOfDisconnectMessagesJson = new StringBuilder("[ \"");
+                causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("none").replace("\"", "\\\""));
+                causeOfDisconnectMessagesJson.append("\", \"");
+                causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("exclusive_session").replace("\"", "\\\""));
+                causeOfDisconnectMessagesJson.append("\", \"");
+                causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("timed_out_session").replace("\"", "\\\""));
+                causeOfDisconnectMessagesJson.append("\", \"");
+                causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("disconnected_session").replace("\"", "\\\""));
+                causeOfDisconnectMessagesJson.append("\", \"");
+                causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("invalid_cause_of_disconnect").replace("\"", "\\\""));
+                causeOfDisconnectMessagesJson.append("\" ]");
+
                 req.setAttribute(AuthRequestAttribute.SESSION_LOGS.getName(), sessionLogs);
                 req.setAttribute(AuthRequestAttribute.PAGE_SIZE.getName(), PAGE_SIZE);
                 req.setAttribute(AuthRequestAttribute.CURSOR_LIST.getName(), cursorListJson);
+                req.setAttribute(AuthRequestAttribute.CAUSE_OF_DISCONNECT_MESSAGES.getName(), causeOfDisconnectMessagesJson);
                 req.getRequestDispatcher("/WEB-INF/auth/session-logs.jsp").forward(req, resp);
             }
         }

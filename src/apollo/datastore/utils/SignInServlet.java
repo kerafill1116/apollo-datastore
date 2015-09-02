@@ -77,8 +77,8 @@ public class SignInServlet extends HttpServlet {
                         error = Error.DISABLED_USER;
                     else {
                         Date dateNow = new Date();
-                        int sessionsCount = sessions.size();
-                        int maxSessions = user.getMaxSessions();
+                        long sessionsCount = sessions.size();
+                        long maxSessions = user.getMaxSessions();
                         if(maxSessions == 1) {
                             if(sessionsCount >= 1) {
                                 if(user.getExclusiveSession())

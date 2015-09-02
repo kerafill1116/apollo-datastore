@@ -15,13 +15,13 @@ public enum CauseOfDisconnect {
         return causeOfDisconnectValues[x];
     }
 
-    private final int code;
+    private final long code;
 
-    private CauseOfDisconnect(int code) {
+    private CauseOfDisconnect(long code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

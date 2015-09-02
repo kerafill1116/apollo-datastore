@@ -13,7 +13,7 @@ public class TimeZone implements Serializable {
 
     private Entity entity;
 
-    public TimeZone(String timeZoneId, int offset, String dateFormatId) {
+    public TimeZone(String timeZoneId, long offset, String dateFormatId) {
         this.entity = new Entity(DatastoreProperties.KIND.getName(), timeZoneId);
         this.entity.setProperty(DatastoreProperties.TIME_ZONE_ID.getName(), timeZoneId);
         this.entity.setProperty(DatastoreProperties.OFFSET.getName(), offset);
@@ -28,8 +28,8 @@ public class TimeZone implements Serializable {
         return (String)this.entity.getProperty(DatastoreProperties.TIME_ZONE_ID.getName());
     }
 
-    public int getOffset() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.OFFSET.getName());
+    public long getOffset() {
+        return (long)this.entity.getProperty(DatastoreProperties.OFFSET.getName());
     }
 
     public String getDateFormatId() {

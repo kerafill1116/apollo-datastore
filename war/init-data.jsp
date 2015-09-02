@@ -37,7 +37,7 @@ try {
         if(timeZoneEntry.length >= 2) {
             txn = datastore.beginTransaction();
             if(TimeZoneFactory.getByTimeZoneId(datastore, txn, timeZoneEntry[1]) == null) {
-                TimeZone timeZone = new TimeZone(timeZoneEntry[1], Integer.parseInt(timeZoneEntry[0]), timeZoneEntry[2]);
+                TimeZone timeZone = new TimeZone(timeZoneEntry[1], Long.parseLong(timeZoneEntry[0]), timeZoneEntry[2]);
                 TimeZoneFactory.add(datastore, txn, timeZone);
                 out.print("added - ");
             }

@@ -45,8 +45,8 @@ public class SessionLog implements Serializable {
         return MiscFunctions.toUTCDate((String)this.entity.getProperty(DatastoreProperties.LAST_SESSION_CHECK.getName()));
     }
 
-    public int getSessionTimeout() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
+    public long getSessionTimeout() {
+        return (long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
     }
 
     public Date getDateSignedOut() {

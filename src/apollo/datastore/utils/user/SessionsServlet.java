@@ -160,10 +160,10 @@ public class SessionsServlet extends HttpServlet {
                 Transaction txn = datastore.beginTransaction(TransactionOptions.Builder.withXG(true));
                 Session session = SessionFactory.getBySessionId(datastore, txn, sessionIds[i]);
                 if(session != null) {
-                    int sessionTimeout = session.getSessionTimeout();
+                    long sessionTimeout = session.getSessionTimeout();
                     if(sessionTimeout > 0) {
                         Calendar lastSessionCheck = MiscFunctions.toCalendar(session.getLastSessionCheck());
-                        lastSessionCheck.add(Calendar.SECOND, sessionTimeout);
+                        lastSessionCheck.add(Calendar.SECOND, (int)sessionTimeout);
                         if(lastSessionCheck.compareTo(dateNow) < 0)
                             causeOfDisconnect = CauseOfDisconnect.TIMED_OUT_SESSION;
                     }

@@ -9,7 +9,7 @@ public class ErrorBean implements Serializable {
 
     private Error error;
 
-    public int getCode() {
+    public long getCode() {
         return this.error.getCode();
     }
 

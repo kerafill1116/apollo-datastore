@@ -9,7 +9,7 @@ public class CauseOfDisconnectBean implements Serializable {
 
     private CauseOfDisconnect causeOfDisconnect;
 
-    public int getCode() {
+    public long getCode() {
         return this.causeOfDisconnect.getCode();
     }
 

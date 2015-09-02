@@ -14,11 +14,11 @@ public class UserBean implements Serializable {
     private String emailAddress;
     private boolean activated;
     private boolean disabled;
-    private int maxSessions;
+    private long maxSessions;
     private boolean exclusiveSession;
-    private int sessionTimeout;
-    private int failedAttempts;
-    private int maxFailedAttempts;
+    private long sessionTimeout;
+    private long failedAttempts;
+    private long maxFailedAttempts;
     private boolean useTimeSlots;
     private Key timeZoneKey;
     private String dateFormatId;
@@ -86,7 +86,7 @@ public class UserBean implements Serializable {
         return this.disabled;
     }
 
-    public int getMaxSessions() {
+    public long getMaxSessions() {
         return this.maxSessions;
     }
 
@@ -94,15 +94,15 @@ public class UserBean implements Serializable {
         return this.exclusiveSession;
     }
 
-    public int getSessionTimeout() {
+    public long getSessionTimeout() {
         return this.sessionTimeout;
     }
 
-    public int getFailedAttempts() {
+    public long getFailedAttempts() {
         return this.failedAttempts;
     }
 
-    public int getMaxFailedAttempts() {
+    public long getMaxFailedAttempts() {
         return this.maxFailedAttempts;
     }
 

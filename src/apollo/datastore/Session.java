@@ -49,8 +49,8 @@ public class Session implements Serializable {
         this.entity.setProperty(DatastoreProperties.LAST_SESSION_CHECK.getName(), MiscFunctions.toUTCDateString(lastSessionCheck));
     }
 
-    public int getSessionTimeout() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
+    public long getSessionTimeout() {
+        return (long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
     }
 
     public Entity getEntity() {

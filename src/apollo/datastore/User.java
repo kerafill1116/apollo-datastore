@@ -12,10 +12,10 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class User implements Serializable {
 
-    public static final int DEFAULT_MAX_SESSIONS = 1;
+    public static final long DEFAULT_MAX_SESSIONS = 1;
     public static final boolean DEFAULT_EXCLUSIVE_SESSION = false;
-    public static final int DEFAULT_SESSION_TIMEOUT = 1800;
-    public static final int DEFAULT_MAX_FAILED_ATTEMPTS = 10;
+    public static final long DEFAULT_SESSION_TIMEOUT = 1800;
+    public static final long DEFAULT_MAX_FAILED_ATTEMPTS = 10;
     public static final boolean DEFAULT_USE_TIME_SLOTS = false;
 
     private Entity entity;
@@ -96,11 +96,11 @@ public class User implements Serializable {
         this.entity.setProperty(DatastoreProperties.DISABLED.getName(), disabled);
     }
 
-    public int getMaxSessions() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.MAX_SESSIONS.getName());
+    public long getMaxSessions() {
+        return (long)this.entity.getProperty(DatastoreProperties.MAX_SESSIONS.getName());
     }
 
-    public void setMaxSessions(int maxSessions) {
+    public void setMaxSessions(long maxSessions) {
         this.entity.setProperty(DatastoreProperties.MAX_SESSIONS.getName(), maxSessions);
     }
 
@@ -112,27 +112,27 @@ public class User implements Serializable {
         this.entity.setProperty(DatastoreProperties.EXCLUSIVE_SESSION.getName(), exclusiveSession);
     }
 
-    public int getSessionTimeout() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
+    public long getSessionTimeout() {
+        return (long)this.entity.getProperty(DatastoreProperties.SESSION_TIMEOUT.getName());
     }
 
-    public void setSessionTimeout(int sessionTimeout) {
+    public void setSessionTimeout(long sessionTimeout) {
         this.entity.setProperty(DatastoreProperties.SESSION_TIMEOUT.getName(), sessionTimeout);
     }
 
-    public int getFailedAttempts() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.FAILED_ATTEMPTS.getName());
+    public long getFailedAttempts() {
+        return (long)this.entity.getProperty(DatastoreProperties.FAILED_ATTEMPTS.getName());
     }
 
-    public void setFailedAttempts(int failedAttempts) {
+    public void setFailedAttempts(long failedAttempts) {
         this.entity.setProperty(DatastoreProperties.FAILED_ATTEMPTS.getName(), failedAttempts);
     }
 
-    public int getMaxFailedAttempts() {
-        return (int)(long)this.entity.getProperty(DatastoreProperties.MAX_FAILED_ATTEMPTS.getName());
+    public long getMaxFailedAttempts() {
+        return (long)this.entity.getProperty(DatastoreProperties.MAX_FAILED_ATTEMPTS.getName());
     }
 
-    public void setMaxFailedAttempts(int maxFailedAttempts) {
+    public void setMaxFailedAttempts(long maxFailedAttempts) {
         this.entity.setProperty(DatastoreProperties.MAX_FAILED_ATTEMPTS.getName(), maxFailedAttempts);
     }
 

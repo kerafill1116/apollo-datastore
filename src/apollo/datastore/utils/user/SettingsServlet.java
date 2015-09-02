@@ -58,9 +58,9 @@ public class SettingsServlet extends HttpServlet {
         else if((paramValue = req.getParameter(HtmlVariable.SESSION_TIMEOUT.getName())) != null) {
             updateSetting = true;
             if(userPermissionsBean.getViewSessionTimeout() && userPermissionsBean.getChangeSessionTimeout()) {
-                int sessionTimeout = 0;
+                long sessionTimeout = 0;
                 try {
-                    sessionTimeout = Integer.parseInt(paramValue);
+                    sessionTimeout = Long.parseLong(paramValue);
                     /* 0 or negative - infinite session timeout
                     if(sessionTimeout < 0)
                         error = Error.INVALID_SESSION_TIMEOUT;
@@ -78,9 +78,9 @@ public class SettingsServlet extends HttpServlet {
         else if((paramValue = req.getParameter(HtmlVariable.MAX_SESSIONS.getName())) != null) {
             updateSetting = true;
             if(userPermissionsBean.getViewMaxSessions() && userPermissionsBean.getChangeMaxSessions()) {
-                int maxSessions = 0;
+                long maxSessions = 0;
                 try {
-                    maxSessions = Integer.parseInt(paramValue);
+                    maxSessions = Long.parseLong(paramValue);
                     /* 0 or negative - infinite sessions
                     if(maxSessions < 0)
                         error = Error.INVALID_MAX_SESSIONS;
@@ -115,9 +115,9 @@ public class SettingsServlet extends HttpServlet {
         else if((paramValue = req.getParameter(HtmlVariable.MAX_FAILED_ATTEMPTS.getName())) != null) {
             updateSetting = true;
             if(userPermissionsBean.getViewMaxFailedAttempts() && userPermissionsBean.getChangeMaxFailedAttempts()) {
-                int maxFailedAttempts = 0;
+                long maxFailedAttempts = 0;
                 try {
-                    maxFailedAttempts = Integer.parseInt(paramValue);
+                    maxFailedAttempts = Long.parseLong(paramValue);
                     /* negative - infinite failed attempts
                     if(maxFailedAttempts < -1)
                         error = Error.INVALID_MAX_FAILED_ATTEMPTS;

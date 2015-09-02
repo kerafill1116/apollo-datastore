@@ -67,13 +67,13 @@ public enum Error {
         return errorValues[x];
     }
 
-    private final int code;
+    private final long code;
 
-    private Error(int code) {
+    private Error(long code) {
         this.code = code;
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
 

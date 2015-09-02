@@ -80,10 +80,10 @@ public class SessionCheckFilter implements Filter {
             session = SessionFactory.getBySessionId(datastore, txn, sessionId);
             if(session != null) {
                 Calendar dateNow = Calendar.getInstance(java.util.TimeZone.getTimeZone(MiscFunctions.UTC_STRING));
-                int sessionTimeout = session.getSessionTimeout();
+                long sessionTimeout = session.getSessionTimeout();
                 if(sessionTimeout > 0) {
                     Calendar lastSessionCheck = MiscFunctions.toCalendar(session.getLastSessionCheck());
-                    lastSessionCheck.add(Calendar.SECOND, sessionTimeout);
+                    lastSessionCheck.add(Calendar.SECOND, (int)sessionTimeout);
                     if(lastSessionCheck.compareTo(dateNow) < 0)
                         causeOfDisconnect = CauseOfDisconnect.TIMED_OUT_SESSION;
                 }

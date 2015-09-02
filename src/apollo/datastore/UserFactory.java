@@ -39,8 +39,8 @@ public class UserFactory {
     public static boolean updateFailedAttempts(DatastoreService datastore, Transaction txn, User user)
             throws ConcurrentModificationException {
 
-        int failedAttempts = user.getFailedAttempts();
-        int maxFailedAttempts = user.getMaxFailedAttempts();
+        long failedAttempts = user.getFailedAttempts();
+        long maxFailedAttempts = user.getMaxFailedAttempts();
         if(maxFailedAttempts >= 0 && failedAttempts >= maxFailedAttempts)
             user.setDisabled(true);
         else

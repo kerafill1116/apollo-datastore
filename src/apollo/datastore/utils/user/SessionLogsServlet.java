@@ -92,7 +92,7 @@ public class SessionLogsServlet extends HttpServlet {
                 responseJson.append(HtmlVariable.SESSION_LOGS.getName());
                 responseJson.append("\" : [ ");
                 DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss z");
-                df.setTimeZone(java.util.TimeZone.getTimeZone(userBean.getDateFormatId()));
+                df.setTimeZone(java.util.TimeZone.getTimeZone(userBean.getTimeZoneLocaleId()));
                 for(SessionLog sessionLog : sessionLogs) {
                     responseJson.append("[ \"");
                     responseJson.append(sessionLog.getSessionId().substring(0, 32));

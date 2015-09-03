@@ -3,7 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/commons-codec-1.10.jar" sourcepath="war/WEB-INF/lib/src/commons-codec-1.10-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/javax.servlet.jsp.jstl-1.2.1.jar" sourcepath="war/WEB-INF/lib/src/javax.servlet.jsp.jstl-1.2.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="war/WEB-INF/lib/appengine-testing.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

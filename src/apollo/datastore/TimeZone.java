@@ -9,15 +9,15 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class TimeZone implements Serializable {
 
-    public static final String GMT_DATE_FORMAT_ID = "GMT";
+    public static final String GMT_LOCALE_ID = "GMT";
 
     private Entity entity;
 
-    public TimeZone(String timeZoneId, long offset, String dateFormatId) {
+    public TimeZone(String timeZoneId, long offset, String localeId) {
         this.entity = new Entity(DatastoreProperties.KIND.getName(), timeZoneId);
         this.entity.setProperty(DatastoreProperties.TIME_ZONE_ID.getName(), timeZoneId);
         this.entity.setProperty(DatastoreProperties.OFFSET.getName(), offset);
-        this.entity.setProperty(DatastoreProperties.DATE_FORMAT_ID.getName(), dateFormatId);
+        this.entity.setProperty(DatastoreProperties.LOCALE_ID.getName(), localeId);
     }
 
     public TimeZone(Entity entity) {
@@ -32,8 +32,8 @@ public class TimeZone implements Serializable {
         return (long)this.entity.getProperty(DatastoreProperties.OFFSET.getName());
     }
 
-    public String getDateFormatId() {
-        return (String)this.entity.getProperty(DatastoreProperties.DATE_FORMAT_ID.getName());
+    public String getLocaleId() {
+        return (String)this.entity.getProperty(DatastoreProperties.LOCALE_ID.getName());
     }
 
     public Entity getEntity() {
@@ -52,7 +52,7 @@ public class TimeZone implements Serializable {
         KIND("TimeZone"),
         TIME_ZONE_ID("timeZoneId"),
         OFFSET("offset"),
-        DATE_FORMAT_ID("dateFormatId");
+        LOCALE_ID("localeId");
 
         private final String name;
 

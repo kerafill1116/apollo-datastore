@@ -12,10 +12,10 @@ import java.util.Date;
 @SuppressWarnings("serial")
 public class User implements Serializable {
 
-    public static final long DEFAULT_MAX_SESSIONS = 1;
+    public static final long DEFAULT_MAX_SESSIONS = 1L;
     public static final boolean DEFAULT_EXCLUSIVE_SESSION = false;
-    public static final long DEFAULT_SESSION_TIMEOUT = 1800;
-    public static final long DEFAULT_MAX_FAILED_ATTEMPTS = 10;
+    public static final long DEFAULT_SESSION_TIMEOUT = 1800L;
+    public static final long DEFAULT_MAX_FAILED_ATTEMPTS = 10L;
     public static final boolean DEFAULT_USE_TIME_SLOTS = false;
 
     private Entity entity;
@@ -39,7 +39,7 @@ public class User implements Serializable {
         this.entity.setProperty(DatastoreProperties.MAX_SESSIONS.getName(), DEFAULT_MAX_SESSIONS);
         this.entity.setProperty(DatastoreProperties.EXCLUSIVE_SESSION.getName(), DEFAULT_EXCLUSIVE_SESSION);
         this.entity.setProperty(DatastoreProperties.SESSION_TIMEOUT.getName(), DEFAULT_SESSION_TIMEOUT);
-        this.entity.setProperty(DatastoreProperties.FAILED_ATTEMPTS.getName(), 0);
+        this.entity.setProperty(DatastoreProperties.FAILED_ATTEMPTS.getName(), 0L);
         this.entity.setProperty(DatastoreProperties.MAX_FAILED_ATTEMPTS.getName(), DEFAULT_MAX_FAILED_ATTEMPTS);
         this.entity.setProperty(DatastoreProperties.USE_TIME_SLOTS.getName(), DEFAULT_USE_TIME_SLOTS);
 

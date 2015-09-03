@@ -273,7 +273,7 @@ $(document).ready(function() {
                         </tr>
                         </thead>
                         <tbody id="sessions-tbody">
-<fmt:setTimeZone value="${user.dateFormatId}" />
+<fmt:setTimeZone value="${user.timeZoneLocaleId}" />
 <c:choose>
     <c:when test="${userPermissions.disconnectSessions}">
         <c:forEach var="session" items="${sessions}" varStatus="loopCounter" >

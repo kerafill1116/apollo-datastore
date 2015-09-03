@@ -289,7 +289,7 @@ $(document).ready(function() {
                         </tr>
                         </thead>
                         <tbody id="session-logs-tbody">
-<fmt:setTimeZone value="${user.dateFormatId}" />
+<fmt:setTimeZone value="${user.timeZoneLocaleId}" />
 <c:choose>
     <c:when test="${userPermissions.removeSessionLogs}">
         <c:forEach var="sessionLog" items="${sessionLogs}" varStatus="loopCounter" >

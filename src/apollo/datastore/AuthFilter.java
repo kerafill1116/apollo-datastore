@@ -104,9 +104,9 @@ public class AuthFilter implements Filter {
                 Key timeZoneKey = userBean.getTimeZoneKey();
                 TimeZone timeZone = null;
                 if(timeZoneKey != null && (timeZone = TimeZoneFactory.getByKey(datastore, null, timeZoneKey)) != null)
-                    userBean.setDateFormatId(timeZone.getDateFormatId());
+                    userBean.setTimeZoneLocaleId(timeZone.getLocaleId());
                 else
-                    userBean.setDateFormatId(TimeZone.GMT_DATE_FORMAT_ID);
+                    userBean.setTimeZoneLocaleId(TimeZone.GMT_LOCALE_ID);
                 request.setAttribute(AuthRequestAttribute.USER.getName(), userBean);
                 AdminPermissions adminPermissions = PermissionsFactory.getAdminPermissionsByUserId(datastore, null, user.getUserId());
                 request.setAttribute(AuthRequestAttribute.ADMIN_PERMISSIONS.getName(), (adminPermissions != null) ? new AdminPermissionsBean(adminPermissions) : new AdminPermissionsBean());

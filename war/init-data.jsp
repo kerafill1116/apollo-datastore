@@ -94,7 +94,7 @@ try {
 
     if(PermissionsFactory.getUserPermissionsByUserId(datastore, txn, userId) == null) {
         UserPermissions userPermissions = new UserPermissions(userId);
-        userPermissions.setUserPermissions(UserPermissions2.DEFAULT_PERMISSIONS.getCode() + UserPermissions2.VIEW_USER_PERMISSIONS.getCode() + UserPermissions2.CHANGE_USER_PERMISSIONS.getCode());
+        userPermissions.setUserPermissions(UserPermissions2.ALL_PERMISSIONS.getCode());
         userPermissions.setSessionPermissions(SessionPermissions.ALL_PERMISSIONS.getCode());
         userPermissions.setSessionLogPermissions(SessionLogPermissions.ALL_PERMISSIONS.getCode());
         PermissionsFactory.addUserPermissions(datastore, txn, userPermissions);
@@ -111,29 +111,4 @@ finally {
     if(txn != null && txn.isActive())
         txn.rollback();
 }
-
-try {
-    txn = datastore.beginTransaction();
-    UserPermissions userPermissions = PermissionsFactory.getUserPermissionsByUserId(datastore, txn, userId);
-    userPermissions.setUserPermissions(UserPermissions2.DEFAULT_PERMISSIONS.getCode() + UserPermissions2.VIEW_USER_PERMISSIONS.getCode() + UserPermissions2.CHANGE_USER_PERMISSIONS.getCode());
-    userPermissions.setSessionPermissions(SessionPermissions.ALL_PERMISSIONS.getCode());
-    PermissionsFactory.updateUserPermissions(datastore, txn, userPermissions);
-    txn.commit();
-}
-catch(ConcurrentModificationException e) {
-    out.print("Multiple accounts found!\n\n");
-}
-finally {
-    if(txn != null && txn.isActive())
-        txn.rollback();
-}
-
-String encrypted = MiscFunctions.encryptAES(userId, "datastorecursor");
-out.print("encrypted = " + encrypted + "\n");
-String decrypted = MiscFunctions.decryptAES(userId, encrypted);
-out.print("decrypted = " + decrypted);
-
-out.print("\nURLEncoder = " + URLEncoder.encode(encrypted, "UTF-8"));
-out.print("\nm = " + request.getParameter("m"));
-
 %>

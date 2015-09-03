@@ -21,7 +21,7 @@ public class UserBean implements Serializable {
     private long maxFailedAttempts;
     private boolean useTimeSlots;
     private Key timeZoneKey;
-    private String dateFormatId;
+    private String timeZoneLocaleId;
     private Date dateCreated;
 
     public UserBean(User user) {
@@ -124,12 +124,12 @@ public class UserBean implements Serializable {
         return timeZoneKeyString;
     }
 
-    public String getDateFormatId() {
-        return this.dateFormatId;
+    public String getTimeZoneLocaleId() {
+        return this.timeZoneLocaleId;
     }
 
-    public void setDateFormatId(String dateFormatId) {
-        this.dateFormatId = dateFormatId;
+    public void setTimeZoneLocaleId(String timeZoneLocaleId) {
+        this.timeZoneLocaleId = timeZoneLocaleId;
     }
 
     public Date getDateCreated() {

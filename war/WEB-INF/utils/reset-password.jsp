@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/jstl-functions.tld" prefix="jf" %>
 
-<jsp:useBean id="langCookie" class="apollo.datastore.CookiesBean" />
+<jsp:useBean id="langCookie" class="apollo.datastore.utils.CookiesBean" />
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
+<fmt:setBundle basename="apollo.datastore.utils.i18n.UtilitiesBundle" var="utilitiesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -150,7 +150,7 @@ $(document).ready(function() {
                     </fieldset>
                     </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
+    <fmt:setBundle basename="apollo.datastore.utils.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorRequiredUserId" property="constant" value="REQUIRED_USER_ID" />
     <jsp:useBean id="errorAlreadyExistsRequest" class="apollo.datastore.utils.ErrorBean" />

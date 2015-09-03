@@ -1,4 +1,6 @@
-package apollo.datastore;
+package apollo.datastore.utils;
+
+import apollo.datastore.TimeZone;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;

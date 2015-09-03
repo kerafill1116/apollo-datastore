@@ -1,7 +1,21 @@
-package apollo.datastore;
+package apollo.datastore.utils;
 
-import apollo.datastore.utils.Error;
-import apollo.datastore.utils.HtmlVariable;
+import apollo.datastore.AdminPermissions;
+import apollo.datastore.AdminPermissionsBean;
+import apollo.datastore.CauseOfDisconnect;
+import apollo.datastore.MiscFunctions;
+import apollo.datastore.PermissionsFactory;
+import apollo.datastore.Session;
+import apollo.datastore.SessionFactory;
+import apollo.datastore.SessionLog;
+import apollo.datastore.SessionLogFactory;
+import apollo.datastore.TimeZone;
+import apollo.datastore.TimeZoneFactory;
+import apollo.datastore.User;
+import apollo.datastore.UserBean;
+import apollo.datastore.UserFactory;
+import apollo.datastore.UserPermissions;
+import apollo.datastore.UserPermissionsBean;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;

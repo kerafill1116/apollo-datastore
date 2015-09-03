@@ -1,4 +1,4 @@
-package apollo.datastore;
+package apollo.datastore.utils;
 
 public enum AuthRequestAttribute {
     USER("user"),

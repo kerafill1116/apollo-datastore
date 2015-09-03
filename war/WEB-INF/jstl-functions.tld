@@ -9,31 +9,31 @@
 
     <function>
         <name>defaultLanguage</name>
-        <function-class>apollo.datastore.JSTLFunctions</function-class>
+        <function-class>apollo.datastore.utils.JSTLFunctions</function-class>
         <function-signature>java.lang.String defaultLanguage()</function-signature>
     </function>
 
     <function>
         <name>langOptionsQueryString</name>
-        <function-class>apollo.datastore.JSTLFunctions</function-class>
+        <function-class>apollo.datastore.utils.JSTLFunctions</function-class>
         <function-signature>java.lang.String langOptionsQueryString(java.lang.String)</function-signature>
     </function>
 
     <function>
         <name>supportedLanguagesArray</name>
-        <function-class>apollo.datastore.JSTLFunctions</function-class>
+        <function-class>apollo.datastore.utils.JSTLFunctions</function-class>
         <function-signature>java.lang.String[] supportedLanguagesArray()</function-signature>
     </function>
 
     <function>
         <name>supportedLanguagesTextArray</name>
-        <function-class>apollo.datastore.JSTLFunctions</function-class>
+        <function-class>apollo.datastore.utils.JSTLFunctions</function-class>
         <function-signature>java.lang.String[] supportedLanguagesTextArray()</function-signature>
     </function>
 
     <function>
         <name>timeZonesArray</name>
-        <function-class>apollo.datastore.JSTLFunctions</function-class>
+        <function-class>apollo.datastore.utils.JSTLFunctions</function-class>
         <function-signature>java.util.ArrayList&lt;apollo.datastore.TimeZone&gt; timeZonesArray()</function-signature>
     </function>
 

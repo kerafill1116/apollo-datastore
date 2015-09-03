@@ -1,7 +1,6 @@
 package apollo.datastore.utils;
 
 import apollo.datastore.AdminPermissions;
-import apollo.datastore.Cookies;
 import apollo.datastore.PermissionsFactory;
 import apollo.datastore.TimeZone;
 import apollo.datastore.User;

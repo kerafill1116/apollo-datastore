@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/jstl-functions.tld" prefix="jf" %>
 
-<jsp:useBean id="langCookie" class="apollo.datastore.CookiesBean" />
+<jsp:useBean id="langCookie" class="apollo.datastore.utils.CookiesBean" />
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.ChangePasswordBundle" var="changePasswordBundle" />
+<fmt:setBundle basename="apollo.datastore.utils.i18n.ChangePasswordBundle" var="changePasswordBundle" />
 
 <jsp:useBean id="currentPasswordVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="currentPasswordVariable" property="varName" value="CURRENT_PASSWORD" />
@@ -140,7 +140,7 @@ $(document).ready(function() {
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
 <c:if test="${not empty requestScope[errorVariable.name]}">
-    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
+    <fmt:setBundle basename="apollo.datastore.utils.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
     <jsp:setProperty name="errorVariable" property="value" value="${requestScope[errorVariable.name]}" />
     <jsp:useBean id="errorNone" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorNone" property="constant" value="NONE" />

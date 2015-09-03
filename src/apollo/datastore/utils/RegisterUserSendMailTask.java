@@ -1,6 +1,5 @@
 package apollo.datastore.utils;
 
-import apollo.datastore.Cookies;
 import apollo.datastore.User;
 import apollo.datastore.UserFactory;
 
@@ -43,7 +42,7 @@ public class RegisterUserSendMailTask extends HttpServlet {
                     try {
                         Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                         // get i18n ResourceBundle
-                        ResourceBundle utilitiesMailBundle = ResourceBundle.getBundle("apollo.datastore.i18n.UtilitiesMailBundle", locale);
+                        ResourceBundle utilitiesMailBundle = ResourceBundle.getBundle("apollo.datastore.utils.i18n.UtilitiesMailBundle", locale);
 
                         Properties props = new Properties();
                         Session session = Session.getDefaultInstance(props, null);

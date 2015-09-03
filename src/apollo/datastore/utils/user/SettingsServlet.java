@@ -1,12 +1,12 @@
 package apollo.datastore.utils.user;
 
-import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.TimeZone;
 import apollo.datastore.TimeZoneFactory;
 import apollo.datastore.User;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserFactory;
 import apollo.datastore.UserPermissionsBean;
+import apollo.datastore.utils.AuthRequestAttribute;
 import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 

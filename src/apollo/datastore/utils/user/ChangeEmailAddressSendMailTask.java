@@ -2,7 +2,7 @@ package apollo.datastore.utils.user;
 
 import apollo.datastore.ChangeEmailAddressRequest;
 import apollo.datastore.ChangeEmailAddressRequestFactory;
-import apollo.datastore.Cookies;
+import apollo.datastore.utils.Cookies;
 import apollo.datastore.utils.HtmlVariable;
 
 import com.google.appengine.api.datastore.DatastoreService;
@@ -44,7 +44,7 @@ public class ChangeEmailAddressSendMailTask extends HttpServlet {
                     try {
                         Locale locale = new Locale(req.getParameter(Cookies.LANG.getName()));
                         // get i18n ResourceBundle
-                        ResourceBundle changeEmailAddressMailBundle = ResourceBundle.getBundle("apollo.datastore.i18n.ChangeEmailAddressMailBundle", locale);
+                        ResourceBundle changeEmailAddressMailBundle = ResourceBundle.getBundle("apollo.datastore.utils.i18n.ChangeEmailAddressMailBundle", locale);
 
                         Properties props = new Properties();
                         Session session = Session.getDefaultInstance(props, null);

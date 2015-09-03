@@ -11,7 +11,7 @@
 
     <filter>
         <filter-name>LangFilter</filter-name>
-        <filter-class>apollo.datastore.LangFilter</filter-class>
+        <filter-class>apollo.datastore.utils.LangFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LangFilter</filter-name>
@@ -19,7 +19,7 @@
     </filter-mapping>
 
     <filter>
-        <filter-name>UtilsSessionCheckFilter</filter-name>
+        <filter-name>SessionCheckFilter</filter-name>
         <filter-class>apollo.datastore.utils.SessionCheckFilter</filter-class>
         <init-param>
             <param-name>excludeURL1</param-name>
@@ -27,13 +27,13 @@
         </init-param>
     </filter>
     <filter-mapping>
-        <filter-name>UtilsSessionCheckFilter</filter-name>
+        <filter-name>SessionCheckFilter</filter-name>
         <url-pattern>/utils/*</url-pattern>
     </filter-mapping>
 
     <filter>
         <filter-name>AuthFilter</filter-name>
-        <filter-class>apollo.datastore.AuthFilter</filter-class>
+        <filter-class>apollo.datastore.utils.AuthFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
@@ -164,7 +164,7 @@
 
     <servlet>
         <servlet-name>AuthDefaultServlet</servlet-name>
-        <servlet-class>apollo.datastore.AuthDefaultServlet</servlet-class>
+        <servlet-class>apollo.datastore.utils.AuthDefaultServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

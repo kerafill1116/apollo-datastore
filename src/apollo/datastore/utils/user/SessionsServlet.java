@@ -1,6 +1,5 @@
 package apollo.datastore.utils.user;
 
-import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.Session;
 import apollo.datastore.Session.DatastoreProperties;
 import apollo.datastore.CauseOfDisconnect;
@@ -8,6 +7,7 @@ import apollo.datastore.MiscFunctions;
 import apollo.datastore.SessionFactory;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserPermissionsBean;
+import apollo.datastore.utils.AuthRequestAttribute;
 import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 

@@ -1,4 +1,4 @@
-package apollo.datastore;
+package apollo.datastore.utils;
 
 import java.io.Serializable;
 

@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="/WEB-INF/jstl-functions.tld" prefix="jf" %>
 
-<jsp:useBean id="langCookie" class="apollo.datastore.CookiesBean" />
+<jsp:useBean id="langCookie" class="apollo.datastore.utils.CookiesBean" />
 <jsp:setProperty name="langCookie" property="varName" value="LANG" />
 <jsp:setProperty name="langCookie" property="value" value="${requestScope[langCookie.name]}" />
 <fmt:setLocale value="${langCookie.value}" />
-<fmt:setBundle basename="apollo.datastore.i18n.UtilitiesBundle" var="utilitiesBundle" />
+<fmt:setBundle basename="apollo.datastore.utils.i18n.UtilitiesBundle" var="utilitiesBundle" />
 
 <jsp:useBean id="errorVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="errorVariable" property="varName" value="ERROR" />
@@ -22,11 +22,11 @@
 <jsp:useBean id="rememberMeVariable" class="apollo.datastore.utils.HtmlVariableBean" />
 <jsp:setProperty name="rememberMeVariable" property="varName" value="REMEMBER_ME" />
 
-<jsp:useBean id="rememberMeCookie" class="apollo.datastore.CookiesBean" />
+<jsp:useBean id="rememberMeCookie" class="apollo.datastore.utils.CookiesBean" />
 <jsp:setProperty name="rememberMeCookie" property="varName" value="REMEMBER_ME" />
 <c:if test="${not empty cookie[rememberMeCookie.name]}">
     <jsp:setProperty name="rememberMeVariable" property="value" value="${cookie[rememberMeCookie.name].value}" />
-    <jsp:useBean id="userIdCookie" class="apollo.datastore.CookiesBean" />
+    <jsp:useBean id="userIdCookie" class="apollo.datastore.utils.CookiesBean" />
     <jsp:setProperty name="userIdCookie" property="varName" value="USER_ID" />
     <jsp:setProperty name="userIdVariable" property="value" value="${cookie[userIdCookie.name].value}" />
 </c:if>
@@ -181,7 +181,7 @@ $(document).ready(function() {
                     </fieldset>
                     </form>
 <c:if test="${errorVariable.value ne errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
+    <fmt:setBundle basename="apollo.datastore.utils.i18n.ErrorMessagesBundle" var="errorMessagesBundle" />
     <jsp:useBean id="errorRequiredUserId" class="apollo.datastore.utils.ErrorBean" />
     <jsp:setProperty name="errorRequiredUserId" property="constant" value="REQUIRED_USER_ID" />
     <jsp:useBean id="errorNonExistentUser" class="apollo.datastore.utils.ErrorBean" />
@@ -250,7 +250,7 @@ $(document).ready(function() {
                     <div class="row alert-row"><p class="col-xs-12 col-sm-offset-3 col-sm-8 alert alert-danger">${errorMessage}</p></div>
 </c:if>
 <c:if test="${not empty causeOfDisconnectVariable.value and errorVariable.value eq errorNone.code}">
-    <fmt:setBundle basename="apollo.datastore.i18n.CauseOfDisconnectMessagesBundle" var="causeOfDisconnectMessagesBundle" />
+    <fmt:setBundle basename="apollo.datastore.utils.i18n.CauseOfDisconnectMessagesBundle" var="causeOfDisconnectMessagesBundle" />
     <jsp:useBean id="noneDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />
     <jsp:setProperty name="noneDisconnect" property="constant" value="NONE" />
     <jsp:useBean id="exclusiveSessionDisconnect" class="apollo.datastore.CauseOfDisconnectBean" />

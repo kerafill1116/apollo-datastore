@@ -1,4 +1,4 @@
-package apollo.datastore.tests;
+package apollo.datastore.utils.tests;
 
 import static org.junit.Assert.*;
 import apollo.datastore.TimeZone;

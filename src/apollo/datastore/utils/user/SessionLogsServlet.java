@@ -1,13 +1,13 @@
 package apollo.datastore.utils.user;
 
-import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.SessionLog;
 import apollo.datastore.SessionLog.DatastoreProperties;
-import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.SessionLogFactory;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserPermissionsBean;
+import apollo.datastore.utils.AuthRequestAttribute;
+import apollo.datastore.utils.Cookies;
 import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 
@@ -137,7 +137,7 @@ public class SessionLogsServlet extends HttpServlet {
                 }
 
                 Locale locale = new Locale((String)req.getAttribute(Cookies.LANG.getName()));
-                ResourceBundle causeOfDisconnectMessagesBundle = ResourceBundle.getBundle("apollo.datastore.i18n.CauseOfDisconnectMessagesBundle", locale);
+                ResourceBundle causeOfDisconnectMessagesBundle = ResourceBundle.getBundle("apollo.datastore.utils.i18n.CauseOfDisconnectMessagesBundle", locale);
                 StringBuilder causeOfDisconnectMessagesJson = new StringBuilder("[ \"");
                 causeOfDisconnectMessagesJson.append(causeOfDisconnectMessagesBundle.getString("none").replace("\"", "\\\""));
                 causeOfDisconnectMessagesJson.append("\", \"");

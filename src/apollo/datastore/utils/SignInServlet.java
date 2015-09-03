@@ -1,9 +1,8 @@
 package apollo.datastore.utils;
 
 import apollo.datastore.CauseOfDisconnect;
-import apollo.datastore.Cookies;
-import apollo.datastore.MiscFunctions;
 import apollo.datastore.MiscFunctions.HashAlgorithms;
+import apollo.datastore.MiscFunctions;
 import apollo.datastore.Session;
 import apollo.datastore.SessionFactory;
 import apollo.datastore.User;

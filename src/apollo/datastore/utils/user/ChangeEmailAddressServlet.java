@@ -1,16 +1,16 @@
 package apollo.datastore.utils.user;
 
-import apollo.datastore.AuthRequestAttribute;
 import apollo.datastore.ChangeEmailAddressRequest;
 import apollo.datastore.ChangeEmailAddressRequestBean;
 import apollo.datastore.ChangeEmailAddressRequestFactory;
-import apollo.datastore.Cookies;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.User;
 import apollo.datastore.UserBean;
 import apollo.datastore.UserFactory;
 import apollo.datastore.UserPermissionsBean;
 import apollo.datastore.MiscFunctions.HashAlgorithms;
+import apollo.datastore.utils.AuthRequestAttribute;
+import apollo.datastore.utils.Cookies;
 import apollo.datastore.utils.Error;
 import apollo.datastore.utils.HtmlVariable;
 

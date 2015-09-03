@@ -1,10 +1,10 @@
-package apollo.datastore.tests;
+package apollo.datastore.utils.tests;
 
 import static org.junit.Assert.*;
-
-import apollo.datastore.MiscFunctions;
 import apollo.datastore.MiscFunctions.HashAlgorithms;
+import apollo.datastore.MiscFunctions;
 import apollo.datastore.Session;
+import apollo.datastore.SessionLog;
 import apollo.datastore.User;
 
 import com.google.appengine.api.datastore.Key;
@@ -15,7 +15,7 @@ import java.util.Date;
 
 import org.junit.*;
 
-public class SessionTest {
+public class SessionLogTest {
 
     private final static LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
@@ -41,12 +41,13 @@ public class SessionTest {
         String sessionId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + user.getKeyString(), HashAlgorithms.SHA_256);
 
         Session session = new Session(sessionId, user, dateNow);
-        assertEquals(session.getKey().getName(), sessionId);
-        assertEquals(session.getSessionId(), sessionId);
-        assertEquals(session.getUserKey(), user.getKey());
-        assertEquals(session.getDateSignedIn().toString(), dateNow.toString());
-        assertEquals(session.getLastSessionCheck().toString(), dateNow.toString());
-        assertEquals(session.getSessionTimeout(), user.getSessionTimeout());
+        SessionLog sessionLog = new SessionLog(session);
+        assertEquals(sessionLog.getKey().getName(), sessionId);
+        assertEquals(sessionLog.getSessionId(), sessionId);
+        assertEquals(sessionLog.getUserKey(), user.getKey());
+        assertEquals(sessionLog.getDateSignedIn().toString(), dateNow.toString());
+        assertEquals(sessionLog.getLastSessionCheck().toString(), dateNow.toString());
+        assertEquals(sessionLog.getSessionTimeout(), user.getSessionTimeout());
     }
 
     @Test
@@ -60,13 +61,15 @@ public class SessionTest {
         Date dateNow = new Date();
         String sessionId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + user.getKeyString(), HashAlgorithms.SHA_256);
 
-        Session sessionDummy = new Session(sessionId, user, dateNow);
-        Session session = new Session(sessionDummy.getEntity());
-        assertEquals(session.getKey().getName(), sessionId);
-        assertEquals(session.getSessionId(), sessionId);
-        assertEquals(session.getUserKey(), user.getKey());
-        assertEquals(session.getDateSignedIn().toString(), dateNow.toString());
-        assertEquals(session.getLastSessionCheck().toString(), dateNow.toString());
-        assertEquals(session.getSessionTimeout(), user.getSessionTimeout());
+        Session session = new Session(sessionId, user, dateNow);
+        SessionLog sessionLogDummy = new SessionLog(session);
+        SessionLog sessionLog = new SessionLog(sessionLogDummy.getEntity());
+
+        assertEquals(sessionLog.getKey().getName(), sessionId);
+        assertEquals(sessionLog.getSessionId(), sessionId);
+        assertEquals(sessionLog.getUserKey(), user.getKey());
+        assertEquals(sessionLog.getDateSignedIn().toString(), dateNow.toString());
+        assertEquals(sessionLog.getLastSessionCheck().toString(), dateNow.toString());
+        assertEquals(sessionLog.getSessionTimeout(), user.getSessionTimeout());
     }
 }

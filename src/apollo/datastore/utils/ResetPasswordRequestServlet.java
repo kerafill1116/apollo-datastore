@@ -1,8 +1,7 @@
 package apollo.datastore.utils;
 
-import apollo.datastore.Cookies;
-import apollo.datastore.MiscFunctions;
 import apollo.datastore.MiscFunctions.HashAlgorithms;
+import apollo.datastore.MiscFunctions;
 import apollo.datastore.ResetPasswordRequest;
 import apollo.datastore.ResetPasswordRequestFactory;
 import apollo.datastore.User;

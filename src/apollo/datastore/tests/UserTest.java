@@ -1,6 +1,7 @@
-package apollo.datastore.utils.tests;
+package apollo.datastore.tests;
 
 import static org.junit.Assert.*;
+
 import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.User;
@@ -33,7 +34,9 @@ public class UserTest {
         String emailAddress = "kerafill1116@gmail.com";
         Key timeZoneKey = null;
         User user = new User(userId, password, emailAddress, timeZoneKey);
-        assertEquals(user.getKey().getName(), userId);
+        Key key = user.getKey();
+        assertEquals(key.getKind(), User.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), userId);
         assertEquals(user.getUserId(), userId);
         assertEquals(user.getPassword(), MiscFunctions.getEncryptedHash(password, HashAlgorithms.SHA_256));
         assertEquals(user.getEmailAddress(), emailAddress);
@@ -56,7 +59,9 @@ public class UserTest {
         Key timeZoneKey = null;
         User userDummy = new User(userId, password, emailAddress, timeZoneKey);
         User user = new User(userDummy.getEntity());
-        assertEquals(user.getKey().getName(), userId);
+        Key key = user.getKey();
+        assertEquals(key.getKind(), User.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), userId);
         assertEquals(user.getUserId(), userId);
         assertEquals(user.getPassword(), MiscFunctions.getEncryptedHash(password, HashAlgorithms.SHA_256));
         assertEquals(user.getEmailAddress(), emailAddress);

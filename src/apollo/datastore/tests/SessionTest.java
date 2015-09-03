@@ -1,6 +1,7 @@
-package apollo.datastore.utils.tests;
+package apollo.datastore.tests;
 
 import static org.junit.Assert.*;
+
 import apollo.datastore.MiscFunctions.HashAlgorithms;
 import apollo.datastore.MiscFunctions;
 import apollo.datastore.Session;
@@ -40,7 +41,9 @@ public class SessionTest {
         String sessionId = MiscFunctions.getEncryptedHash(MiscFunctions.toUTCDateString(dateNow) + user.getKeyString(), HashAlgorithms.SHA_256);
 
         Session session = new Session(sessionId, user, dateNow);
-        assertEquals(session.getKey().getName(), sessionId);
+        Key key = session.getKey();
+        assertEquals(key.getKind(), Session.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), sessionId);
         assertEquals(session.getSessionId(), sessionId);
         assertEquals(session.getUserKey(), user.getKey());
         assertEquals(session.getDateSignedIn().toString(), dateNow.toString());
@@ -61,7 +64,9 @@ public class SessionTest {
 
         Session sessionDummy = new Session(sessionId, user, dateNow);
         Session session = new Session(sessionDummy.getEntity());
-        assertEquals(session.getKey().getName(), sessionId);
+        Key key = session.getKey();
+        assertEquals(key.getKind(), Session.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), sessionId);
         assertEquals(session.getSessionId(), sessionId);
         assertEquals(session.getUserKey(), user.getKey());
         assertEquals(session.getDateSignedIn().toString(), dateNow.toString());

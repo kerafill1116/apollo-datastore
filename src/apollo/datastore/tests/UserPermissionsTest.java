@@ -1,4 +1,4 @@
-package apollo.datastore.utils.tests;
+package apollo.datastore.tests;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import apollo.datastore.UserPermissions;
 import apollo.datastore.UserPermissionsBean;
 import apollo.datastore.utils.user.*;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -29,7 +30,9 @@ public class UserPermissionsTest {
     public void testConstructorWithExplicitPermissions() {
         String userId = "admin";
         UserPermissions userPermissions = new UserPermissions(userId, UserPermissions2.ALL_PERMISSIONS.getCode(), SessionPermissions.ALL_PERMISSIONS.getCode(), SessionLogPermissions.ALL_PERMISSIONS.getCode());
-        assertEquals(userPermissions.getKey().getName(), userId);
+        Key key = userPermissions.getKey();
+        assertEquals(key.getKind(), UserPermissions.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), userId);
         assertEquals(UserPermissions2.ALL_PERMISSIONS.getCode(), userPermissions.getUserPermissions());
         assertEquals(SessionPermissions.ALL_PERMISSIONS.getCode(), userPermissions.getSessionPermissions());
         assertEquals(SessionLogPermissions.ALL_PERMISSIONS.getCode(), userPermissions.getSessionLogPermissions());
@@ -39,7 +42,9 @@ public class UserPermissionsTest {
     public void testConstructorWithDefaultPermissions() {
         String userId = "admin";
         UserPermissions userPermissions = new UserPermissions(userId);
-        assertEquals(userPermissions.getKey().getName(), userId);
+        Key key = userPermissions.getKey();
+        assertEquals(key.getKind(), UserPermissions.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), userId);
         assertEquals(UserPermissions2.DEFAULT_PERMISSIONS.getCode(), userPermissions.getUserPermissions());
         assertEquals(SessionPermissions.DEFAULT_PERMISSIONS.getCode(), userPermissions.getSessionPermissions());
         assertEquals(SessionLogPermissions.DEFAULT_PERMISSIONS.getCode(), userPermissions.getSessionLogPermissions());
@@ -50,7 +55,9 @@ public class UserPermissionsTest {
         String userId = "admin";
         UserPermissions userPermissionsDummy = new UserPermissions(userId);
         UserPermissions userPermissions = new UserPermissions(userPermissionsDummy.getEntity());
-        assertEquals(userPermissions.getKey().getName(), userId);
+        Key key = userPermissions.getKey();
+        assertEquals(key.getKind(), UserPermissions.DatastoreProperties.KIND.getName());
+        assertEquals(key.getName(), userId);
         assertEquals(UserPermissions2.DEFAULT_PERMISSIONS.getCode(), userPermissions.getUserPermissions());
         assertEquals(SessionPermissions.DEFAULT_PERMISSIONS.getCode(), userPermissions.getSessionPermissions());
         assertEquals(SessionLogPermissions.DEFAULT_PERMISSIONS.getCode(), userPermissions.getSessionLogPermissions());

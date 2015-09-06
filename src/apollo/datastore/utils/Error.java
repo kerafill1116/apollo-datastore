@@ -62,7 +62,7 @@ public enum Error {
     private static final Error[] errorValues = Error.values();
 
     public static Error fromInteger(int x) {
-        if(x < 0 || x > 28)
+        if(x < 0 || x > 42)
             return INVALID_ERROR;
         return errorValues[x];
     }

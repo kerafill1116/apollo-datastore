@@ -52,7 +52,7 @@ public class UserFactory {
     public static void resetFailedAttempts(DatastoreService datastore, Transaction txn, User user)
             throws ConcurrentModificationException {
 
-        user.setFailedAttempts(0);
+        user.setFailedAttempts(0L);
         datastore.put(txn, user.getEntity());
     }
 

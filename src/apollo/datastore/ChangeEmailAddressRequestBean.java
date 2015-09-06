@@ -1,9 +1,9 @@
 package apollo.datastore;
 
+import com.google.appengine.api.datastore.Key;
+
 import java.io.Serializable;
 import java.util.Date;
-
-import com.google.appengine.api.datastore.Key;
 
 @SuppressWarnings("serial")
 public class ChangeEmailAddressRequestBean implements Serializable {

@@ -53,7 +53,9 @@ public enum HtmlVariable {
     VIEW_SESSION_LOGS("view-session-logs"),
     REMOVE_SESSION_LOGS("remove-session-logs"),
     VIEW_SESSION_LOG_PERMISSIONS("view-session-log-permissions"),
-    CHANGE_SESSION_LOG_PERMISSIONS("change-session-log-permissions");
+    CHANGE_SESSION_LOG_PERMISSIONS("change-session-log-permissions"),
+
+    USERS("users");
 
     private final String name;
 

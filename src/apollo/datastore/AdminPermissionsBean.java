@@ -12,6 +12,7 @@ public class AdminPermissionsBean implements Serializable {
     private long sessionLogsPermissions;
 
     private boolean viewUsers;
+    private boolean removeUser;
     private boolean viewUsersPermissions;
 
     private boolean viewSessions;
@@ -36,6 +37,7 @@ public class AdminPermissionsBean implements Serializable {
 
     private void evaluatePermissions() {
         this.viewUsers = (this.usersPermissions & UsersPermissions.VIEW_USERS.getCode()) == UsersPermissions.VIEW_USERS.getCode();
+        this.removeUser = (this.usersPermissions & UsersPermissions.REMOVE_USER.getCode()) == UsersPermissions.REMOVE_USER.getCode();
         this.viewUsersPermissions = (this.usersPermissions & UsersPermissions.VIEW_USERS_PERMISSIONS.getCode()) == UsersPermissions.VIEW_USERS_PERMISSIONS.getCode();
 
         this.viewSessions = (this.sessionsPermissions & SessionsPermissions.VIEW_SESSIONS.getCode()) == SessionsPermissions.VIEW_SESSIONS.getCode();
@@ -47,6 +49,10 @@ public class AdminPermissionsBean implements Serializable {
 
     public boolean getViewUsers() {
         return this.viewUsers;
+    }
+
+    public boolean getRemoveUser() {
+        return this.removeUser;
     }
 
     public boolean getViewUsersPermissions() {
